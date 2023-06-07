@@ -1,0 +1,11 @@
+<app-nav-bar></app-nav-bar>
+<p>all-projects-dashboard works!</p>
+
+<ng-container *ngIf="user$ | async as user">
+      <h2 >{{ user.name }}</h2>
+      <span>{{ user.email }}</span>
+      <br><br>
+      <ng-container *ngIf="code$ | async as code">
+        {{code}}
+      </ng-container>
+</ng-container>
