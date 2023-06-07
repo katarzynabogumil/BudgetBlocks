@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth0/auth0-angular';
+import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
+// import { MessageService } from '@app/core';
+
 @Component({
   selector: 'app-all-projects-dashboard',
   templateUrl: './all-projects-dashboard.component.html',

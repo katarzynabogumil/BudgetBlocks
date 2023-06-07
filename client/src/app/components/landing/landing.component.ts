@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-landing',
@@ -7,6 +9,10 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent {
+  options: AnimationOptions = {
+    path: '/assets/animation.json',
+  };
+
   constructor(private auth: AuthService) {}
 
   handleLogin(): void {
@@ -30,5 +36,9 @@ export class LandingComponent {
         screen_hint: 'signup',
       },
     });
+  }
+
+  animationCreated(animationItem: AnimationItem): void {
+    console.log(animationItem);
   }
 }

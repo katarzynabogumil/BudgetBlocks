@@ -1,0 +1,74 @@
+#title {
+ font-size: var(--larger);
+ font-weight: var(--black);
+}
+
+#landing-desc {
+  font-size: var(--medium);
+}
+
+#landing-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+}
+
+#landing {
+  width: 35%;
+  min-width: 300px;
+  margin-left: 5vw;
+  margin-top: 30vh;
+}
+
+#animation {
+  margin-top: 80px;
+  width: 60%;
+  max-height: 80vh;
+}
+
+.auth-btn {
+  background-color: var(--red);
+  border-radius: 5px;
+  border: none;
+  margin: 20px 20px 0 0;
+  padding: 10px;
+  min-width: 100px;
+  width: 40%;
+  font-size: var(--medium);
+  font-weight: var(--bold);
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  opacity: 80%;
+  z-index: -1;
+  background: var(--orange); /* fallback*/
+  background: -webkit-linear-gradient(90deg, var(--orange), var(--pink));  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(90deg, var(--orange), var(--pink)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+@media only screen and (max-width: 1000px) {
+  #landing {
+    width: 85%;
+    margin: 20px auto;
+  }
+  
+  #animation {
+    width: 80vw;
+    margin: 0 auto;
+  }
+
+  #title {
+    font-size: var(--large);
+  }
+
+  #landing-desc, .auth-btn {
+    font-size: var(--small);
+  }
+}
+

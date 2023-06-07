@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --orange: #F18626;
+  --pink: #E20262;
+  --red: #D3190F;
+  --yellow: #F5AD00;
+  
+  --small: 14px;
+  --medium: 18px;
+  --large: 28px;
+  --larger: 62px;
+
+  --main-font: Playfair Display;
+  --regular-font: Open Sans;
+
+  --black: 900;
+  --bold: 600;
+  --regular: 400;
+}
+
+* {
+  font-size: var(--small);
+  font-family: var(--regular-font);
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: var(--main-font);
+  font-size: var(--large);
+  font-weight: var(--black);
+}
+
+h2 {
+  font-family: var(--main-font);
+  font-size: var(--medium);
+  font-weight: var(--bold);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 5px;
+}

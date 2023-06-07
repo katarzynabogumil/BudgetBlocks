@@ -1,3 +1,12 @@
-<p>landing works!</p>
-<button (click)="handleLogin()">Log In</button>
-<button (click)="handleSignUp()">Sign Up</button>
+<!-- <div id="background"></div> -->
+<div id="landing-container">
+  <div id="landing">
+    <h1 id="title">BudgetBlocks</h1>
+    <p id="landing-desc">BudgetBlocks is a tool that helps you keep your budget for a specific goal in check, for example: a trip, an event or a home renovation. It allows you to set up new projects with a set budget goal with other users, add different expenses or even different options for each expense and compare their effect on the overall cost.</p>
+    <button class="auth-btn" (click)="handleLogin()">Log In</button>
+    <button class="auth-btn" (click)="handleSignUp()">Sign Up</button>
+  </div>
+  <div id="animation">
+    <ng-lottie [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+  </div>
+</div>
