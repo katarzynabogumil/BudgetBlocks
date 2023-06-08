@@ -1,70 +1,75 @@
 #title {
- font-size: var(--larger);
  font-weight: var(--black);
-}
-
-#landing-desc {
-  font-size: var(--medium);
+ margin-bottom: 20px;
 }
 
 #landing-container {
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap-reverse;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 #landing {
-  width: 35%;
-  min-width: 300px;
-  margin-left: 5vw;
-  margin-top: 30vh;
+  text-align: justify;
 }
 
-#animation {
-  margin-top: 80px;
-  width: 60%;
-  max-height: 80vh;
+#auth-btn-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .auth-btn {
-  background-color: var(--red);
+  background-color: var(--pink);
   border-radius: 5px;
   border: none;
-  margin: 20px 20px 0 0;
+  margin: 20px 0 0 0;
   padding: 10px;
   min-width: 100px;
-  width: 40%;
-  font-size: var(--medium);
+  width: 48%;
   font-weight: var(--bold);
 }
 
-#background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 45%;
-  height: 100%;
-  opacity: 80%;
-  z-index: -1;
-  background: var(--orange); /* fallback*/
-  background: -webkit-linear-gradient(90deg, var(--orange), var(--pink));  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(90deg, var(--orange), var(--pink)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+@media screen and (min-width: 1201px) {
+  #landing {
+    width: 400px;
+    margin-left: 5%;
+    margin-bottom: 15%;
+  }
+  
+  #animation-container {
+    width: calc(100% - 5% - 400px);
+    height: 80%;
+    margin-bottom: 10%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  #title {
+    font-size: var(--larger);
+  }
+
+  #landing-desc, .auth-btn {
+    font-size: var(--medium);
+  }
 }
 
-@media only screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   #landing {
     width: 85%;
     margin: 20px auto;
   }
   
-  #animation {
-    width: 80vw;
+  #animation-container {
+    width: 70%;
     margin: 0 auto;
   }
 
   #title {
-    font-size: var(--large);
+    font-size: 44px;
   }
 
   #landing-desc, .auth-btn {
