@@ -5,6 +5,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 
 import router from './router';
+
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 

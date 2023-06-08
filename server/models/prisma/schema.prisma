@@ -10,28 +10,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  sub                String    @unique
+  firstName          String
+  lastName           String?
+  nickname           String?
+  email              String?
+  createdAt          DateTime  @default(now())
+  projects           Project[] @relation(name: "owners")
+  projectInvitations Project[] @relation(name: "invites")
+  upvotedExpenses    Expense[] @relation(name: "upvotes")
+  downvotedExpenses  Expense[] @relation(name: "downvotes")
+  comments           Comment[] 
+}
+
+model Project {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  owners       User[]   @relation(name: "owners")
+  invitedUsers User[]   @relation(name: "invites")
+  name         String   @db.VarChar(255)
+  type         String   @db.VarChar(255)
+  budget       Int
+  currency     String
+  dateFrom     DateTime? 
+  dateTo       DateTime?  
+  area         Int? 
+  noOfGuests   Int?
+  occasion     String?
+  description  String?
+  expenses     Expense[]
+}
+
+model Expense {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  project   Project   @relation(fields: [projectId], references: [id])
+  projectId Int
+  name      String    @db.VarChar(255)
+  category  String    @db.VarChar(255)
+  cost      Int
+  currency  String
+  photo     String
+  notes     String
+  optional  Boolean   @default(false)
+  upvotes   User[]    @relation(name: "upvotes")
+  downvotes User[]    @relation(name: "downvotes")
+  comments  Comment[]
+}
+
+model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  expense   Expense  @relation(fields: [expenseId], references: [id])
+  expenseId Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  text      String
 }
