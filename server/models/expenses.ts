@@ -42,6 +42,15 @@ async function updateExpenseinDb (expenseId: number, data: Prisma.ExpenseUpdateI
 //   return expenses;
 // }; 
 
+async function getExpenseFromDB (id: number) {
+  const expense = await prisma.expense.findUnique({
+    where: {
+      id
+    },
+  });
+  return expense;
+}; 
+
 async function deleteExpenseFromDB (expenseId: number) {
   const expense = await prisma.expense.delete({
     where: {
@@ -54,6 +63,7 @@ async function deleteExpenseFromDB (expenseId: number) {
 export {
   saveExpenseToDb,
   updateExpenseinDb,
+  getExpenseFromDB,
   // getExpensesFromDB,
   deleteExpenseFromDB,
 };

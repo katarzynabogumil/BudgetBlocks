@@ -2,10 +2,23 @@ import express from 'express';
 import { Prisma } from '@prisma/client'
 
 import { 
+  // getCommentFromDB,
   saveCommentToDb,
   deleteCommentFromDB,
 } from '../models/comments';
 import { getUserFromDB } from '../models/users';
+
+// async function getComment (req: express.Request, res: express.Response) {
+//   try {
+//     const id = Number(req.query.id);
+//     const comment = await getCommentFromDB(id);
+//     res.status(200);
+//     res.send(comment);
+//   } catch (e) {
+//     console.log('Error: ', e);
+//     res.sendStatus(500);
+//   }
+// }; 
 
 async function saveComment (req: express.Request<{}, {}, Prisma.CommentCreateInput>, res: express.Response) {
   try {
@@ -29,7 +42,7 @@ async function deleteComment (req: express.Request, res: express.Response) {
   try {
     const id = Number(req.query.id);
     const comment = await deleteCommentFromDB(id);
-    res.status(200);
+    res.status(204);
     res.send(comment);
   } catch (e) {
     console.log('Error: ', e);
@@ -38,6 +51,7 @@ async function deleteComment (req: express.Request, res: express.Response) {
 };
 
 export {
+  // getComment,
   saveComment,
   deleteComment,
 };

@@ -46,6 +46,19 @@ async function getProjectsFromDB (userSub: string) {
   return projects;
 }; 
 
+async function getProjectFromDB (id: number) {
+  const project = await prisma.project.findUnique({
+    where: {
+      id
+    },
+    include: {
+      owners: true,
+      invitedUsers: true,
+    },
+  });
+  return project;
+}; 
+
 async function updateProjectinDb (projectId: number, data: Prisma.ProjectUpdateInput) {
   // TODO - seperate functions for adding-removing users?
   const project = await prisma.project.update({
@@ -73,5 +86,6 @@ export {
   saveProjectToDb,
   updateProjectinDb,
   getProjectsFromDB,
+  getProjectFromDB,
   deleteProjectsFromDB,
 };

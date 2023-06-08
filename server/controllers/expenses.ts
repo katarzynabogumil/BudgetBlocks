@@ -2,6 +2,7 @@ import express from 'express';
 import { Prisma } from '@prisma/client'
 
 import { 
+  getExpenseFromDB,
   saveExpenseToDb,
   updateExpenseinDb,
   deleteExpenseFromDB,
@@ -16,6 +17,18 @@ async function saveExpense (req: express.Request<{}, {}, Prisma.ExpenseCreateInp
 
     res.status(201);
     res.send(newExpense);
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(500);
+  }
+}; 
+
+async function getExpense (req: express.Request, res: express.Response) {
+  try {
+    const id = Number(req.query.id);
+    const expense = await getExpenseFromDB(id);
+    res.status(200);
+    res.send(expense);
   } catch (e) {
     console.log('Error: ', e);
     res.sendStatus(500);
@@ -43,7 +56,7 @@ async function deleteExpense (req: express.Request, res: express.Response) {
   try {
     const id = Number(req.query.id);
     const expense = await deleteExpenseFromDB(id);
-    res.status(200);
+    res.status(204);
     res.send(expense);
   } catch (e) {
     console.log('Error: ', e);
@@ -53,6 +66,7 @@ async function deleteExpense (req: express.Request, res: express.Response) {
 
 export {
   saveExpense,
+  getExpense,
   editExpense,
   deleteExpense,
 };

@@ -1,6 +1,16 @@
 import prisma from "./prisma";
 import { Prisma } from '@prisma/client'
 
+
+// async function getCommentFromDB (id: number) {
+//   const comment = await prisma.comment.findUnique({
+//     where: {
+//       id
+//     },
+//   });
+//   return comment;
+// }; 
+
 async function saveCommentToDb (expenseId: number, userId: number, data: Prisma.CommentCreateInput) { 
   const newComment = await prisma.comment.create({ 
     data: {
@@ -28,6 +38,7 @@ async function deleteCommentFromDB (commentId: number) {
 }; 
 
 export {
+  // getCommentFromDB,
   saveCommentToDb,
   deleteCommentFromDB,
 };

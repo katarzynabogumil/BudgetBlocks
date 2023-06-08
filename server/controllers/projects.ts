@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import { 
   saveProjectToDb, 
   getProjectsFromDB, 
+  getProjectFromDB,
   updateProjectinDb, 
   deleteProjectsFromDB
 } from '../models/projects';
@@ -40,6 +41,18 @@ async function getAllProjects (req: express.Request, res: express.Response) {
   }
 }; 
 
+async function getProject (req: express.Request, res: express.Response) {
+  try {
+    const id = Number(req.query.id);
+    const project = await getProjectFromDB(id);
+    res.status(200);
+    res.send(project);
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(500);
+  }
+}; 
+
 async function editProject 
   (
     req: express.Request<{}, {}, Prisma.ProjectUpdateInput>, 
@@ -61,7 +74,7 @@ async function deleteProject (req: express.Request, res: express.Response) {
   try {
     const id = Number(req.query.id);
     const project = await deleteProjectsFromDB(id);
-    res.status(200);
+    res.status(204);
     res.send(project);
   } catch (e) {
     console.log('Error: ', e);
@@ -71,6 +84,7 @@ async function deleteProject (req: express.Request, res: express.Response) {
 
 export {
   getAllProjects,
+  getProject,
   saveProject,
   editProject,
   deleteProject

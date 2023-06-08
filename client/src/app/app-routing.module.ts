@@ -22,6 +22,8 @@ const routes: Routes = [
     component: ProjectDashboardComponent, 
     canActivate: [AuthGuard] 
   },
+  // { path: 'add', component: FormComponent },
+  // { path: 'edit/:id', component: FormComponent }
   { 
     path: '**', 
     redirectTo: ''
