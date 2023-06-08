@@ -1,15 +1,14 @@
 import express from 'express';
+import { Prisma } from '@prisma/client'
 
 import { saveUserToDb, getUserFromDB } from '../models/users';
-import { User } from '../interfaces/user';
 
-async function saveUser (req: express.Request<{}, {}, User>, res: express.Response) {
+async function saveUser (req: express.Request<{}, {}, Prisma.UserCreateInput>, res: express.Response) {
   try {
-    console.log('saving')
     const userData = req.body;
-    console.log(userData)
     const newUser = await saveUserToDb(userData);
-    res.status(200);
+
+    res.status(201);
     res.send(newUser);
   } catch (e) {
     console.log('Error: ', e);
@@ -25,7 +24,7 @@ async function getUser (req: express.Request, res: express.Response) {
       res.status(200);
       res.send(user);
     } else {
-      console.log('Error: Fail authentication.');
+      console.log('Error: Failed authentication.');
       res.sendStatus(401);
     }
   } catch (e) {

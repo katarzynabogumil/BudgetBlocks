@@ -1,7 +1,13 @@
+import { ExpenseModel } from "./expense.model";
+import { UserModel } from "./user.model";
+
 export interface CommentModel {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+  id?: number;
+  createdAt?: string;
+  updatedAt?: string;
   text: string;
-  category: string;
+  expense?: ExpenseModel;
+  expenseId?: number;
+  user?: UserModel;
+  userId?: number;
 }

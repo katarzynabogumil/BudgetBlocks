@@ -1,6 +1,6 @@
-// import { Project } from './project';
-// import { Expense } from './expense';
-// import { Comment } from './comment';
+import { Expense } from './expense';
+import { Comment } from './comment';
+import { Project } from './project';
 
 export interface User {
   id?: number;
@@ -10,9 +10,9 @@ export interface User {
   nickname?: string;
   email?: string;
   createdAt?: string;
-  // projects: Project[];
-  // projectInvitations: Project[];
-  // upvotedExpenses: Expense[];
-  // downvotedExpenses: Expense[];
-  // comments: Comment[];
+  projects?: Project[];
+  projectInvitations?: Project[];
+  upvotedExpenses?: Expense[];
+  downvotedExpenses?: Expense[];
+  comments?: Comment[];
 }

@@ -55,8 +55,8 @@ model Expense {
   category  String    @db.VarChar(255)
   cost      Int
   currency  String
-  photo     String
-  notes     String
+  photo     String?
+  notes     String?
   optional  Boolean   @default(false)
   upvotes   User[]    @relation(name: "upvotes")
   downvotes User[]    @relation(name: "downvotes")

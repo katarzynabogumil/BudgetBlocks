@@ -1,6 +1,6 @@
-// import { Project } from './project';
-// import { Expense } from './expense';
-// import { Comment } from './comment';
+import { ProjectModel } from './project.model';
+import { ExpenseModel } from "./expense.model";
+import { CommentModel } from "./comment.model";
 
 export interface UserModel {
   id?: number;
@@ -10,9 +10,9 @@ export interface UserModel {
   nickname?: string;
   email?: string;
   createdAt?: string;
-  // projects: Project[];
-  // projectInvitations: Project[];
-  // upvotedExpenses: Expense[];
-  // downvotedExpenses: Expense[];
-  // comments: Comment[];
+  projects?: ProjectModel[];
+  projectInvitations?: ProjectModel[];
+  upvotedExpenses?: ExpenseModel[];
+  downvotedExpenses?: ExpenseModel[];
+  comments?: CommentModel[];
 }

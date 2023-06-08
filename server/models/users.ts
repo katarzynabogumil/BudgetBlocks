@@ -1,9 +1,13 @@
 import prisma from "./prisma";
-import { User } from '../interfaces/user';
+import { Prisma } from '@prisma/client'
 
-async function saveUserToDb (data: User) {
-  data.createdAt = new Date().toISOString();
-  const newUser = await prisma.user.create({ data });
+async function saveUserToDb (data: Prisma.UserCreateInput) {
+  const newUser = await prisma.user.create({
+    data: {
+      ...data,
+      createdAt: new Date().toISOString(),
+    }
+  });
   return newUser;
 }; 
 
