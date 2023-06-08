@@ -2,7 +2,7 @@
 // import { Expense } from './expense';
 // import { Comment } from './comment';
 
-export interface User {
+export interface UserModel {
   id?: number;
   sub: string;
   firstName: string;

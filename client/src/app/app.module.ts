@@ -1,7 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
 
 import { LottieModule } from 'ngx-lottie';
@@ -35,10 +35,19 @@ export function playerFactory() {
     HttpClientModule,
     AuthModule.forRoot({
       ...env.auth0,
+      httpInterceptor: {
+        ...env.httpInterceptor,
+      },
     }),
     LottieModule.forRoot({ player: playerFactory }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

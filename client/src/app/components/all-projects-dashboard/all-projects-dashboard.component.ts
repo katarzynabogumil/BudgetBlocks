@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-import { map } from 'rxjs/operators';
-// import { MessageService } from '@app/core';
+import { AuthService, AuthClientConfig, User } from '@auth0/auth0-angular';
+import { map, switchMap } from 'rxjs/operators';
+import { ApiResponseModel, UserModel, ProjectModel, UserService } from '@app/core';
+import { of, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-all-projects-dashboard',
@@ -10,22 +11,58 @@ import { map } from 'rxjs/operators';
 })
 export class AllProjectsDashboardComponent implements OnInit {
   user$ = this.auth.user$;
+  userSub$ = this.auth.user$.pipe(map(user => user?.sub || ''));
   code$ = this.user$.pipe(map((user) => JSON.stringify(user, null, 2)));
 
-  userSub: string = '';
+  projects: ProjectModel[] = [];
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService, 
+    private configFactory: AuthClientConfig,
+    public userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.getUser();
+    this.checkIfNewUser();
+    this.getProjects();
   }
 
-  getUser() {
-    this.auth.user$.subscribe(user => {
-      console.log("test", user?.sub);
-      this.userSub = user?.sub || '';
-      // check if user id saved in services, if not, call service savig user
-      // get projects for this user - userid in url - escape pipe symbol!!
-    });
+  checkIfNewUser() {
+    if (!this.userService.userSub) {
+      this.auth.user$.subscribe(user => {
+
+        if (user) this.userService.userSub =  user?.sub || '';
+        
+        this.checkIfInDb().subscribe((isInDb => {
+          if (!isInDb) this.saveToDb(user);
+        }));
+      })
+    }
+  }
+
+  checkIfInDb ():Observable<boolean> {
+    return this.userService.getUser().pipe(
+      switchMap((res: ApiResponseModel) => {
+      return of(res.data ? true : false);
+    }));
+  }
+
+  saveToDb (userData: User | null | undefined) {
+    if (userData) {
+      const user: UserModel = {
+        sub: userData.sub || '',
+        firstName: userData.given_name || userData.name || '',
+        lastName: userData.family_name || userData.name || '',
+        nickname: userData.nickname || '',
+        email: userData.email || '',
+      }
+      this.userService.saveUser(user).subscribe();
+    }
+  }
+
+  getProjects() {
+    // input: this.userService.userSub
+    // TODO
+    return [];
   }
 }

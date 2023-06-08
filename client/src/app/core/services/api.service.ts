@@ -6,12 +6,15 @@ import { ApiResponseModel, RequestConfigModel } from '../models';
 @Injectable({
   providedIn: 'root'
 })
-export class ExternalApiService {
+export class ApiService {
   constructor(private http: HttpClient) {}
 
   callApi = (config: RequestConfigModel): Observable<ApiResponseModel> => {
     return this.http
-      .request<unknown>(config.method, config.url, config.headers)
+      .request<unknown>(
+        config.method, 
+        config.url, 
+        { headers: config.headers, body: config.body})
       .pipe(
         mergeMap((data) => {
           return of({

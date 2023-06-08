@@ -32,7 +32,7 @@ router.get('/project/:id', validateAccessToken, getProject);
 // router.post('/comment/:id', validateAccessToken, func);
 // router.put('/comment/:id', validateAccessToken, func);
 
-router.get('/user', getUser);
-router.post('/user', saveUser);
+router.get('/user', validateAccessToken, getUser);
+router.post('/user', validateAccessToken, saveUser);
 
 export default router;

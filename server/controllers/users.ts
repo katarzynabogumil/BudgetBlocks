@@ -5,7 +5,9 @@ import { User } from '../interfaces/user';
 
 async function saveUser (req: express.Request<{}, {}, User>, res: express.Response) {
   try {
+    console.log('saving')
     const userData = req.body;
+    console.log(userData)
     const newUser = await saveUserToDb(userData);
     res.status(200);
     res.send(newUser);
@@ -28,7 +30,7 @@ async function getUser (req: express.Request, res: express.Response) {
     }
   } catch (e) {
     console.log('Error: ', e);
-    res.sendStatus(404);
+    res.sendStatus(500);
   }
 }; 
 
