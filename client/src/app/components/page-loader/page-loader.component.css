@@ -1,12 +1,12 @@
 .loader {
   position: absolute;
-  left: 45vw;
-  top: 45vh;
-  border: 5px solid #f3f3f3; 
-  border-top: 5px solid darkgrey; 
+  left: 50%;
+  top: 50%;
+  border: 5px solid lightgrey; 
+  border-top: 5px solid grey; 
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   animation: spin 2s linear infinite;
 }
 

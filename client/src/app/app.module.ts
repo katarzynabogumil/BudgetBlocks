@@ -20,6 +20,8 @@ import { AllProjectsItemComponent } from './components/all-projects-item/all-pro
 import { ExpenseItemComponent } from './components/expense-item/expense-item.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { AddItemComponent } from './components/add-item/add-item.component';
+import { ProjectItemsContainerComponent } from './components/project-items-container/project-items-container.component';
 
 export function playerFactory() {
   return player;
@@ -36,7 +38,9 @@ export function playerFactory() {
     AllProjectsItemComponent,
     ExpenseItemComponent,
     ProjectFormComponent,
-    ExpenseFormComponent
+    ExpenseFormComponent,
+    AddItemComponent,
+    ProjectItemsContainerComponent
   ],
   imports: [
     BrowserModule,

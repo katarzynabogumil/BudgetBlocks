@@ -1,4 +1,5 @@
 <div *ngIf="isAuth0Loading$ | async; else auth0Loaded">
+  <div class="background"></div>
   <app-page-loader></app-page-loader>
 </div>
 <ng-template #auth0Loaded>

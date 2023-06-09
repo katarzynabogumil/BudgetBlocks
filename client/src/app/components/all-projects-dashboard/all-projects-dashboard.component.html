@@ -1,11 +1,14 @@
-<app-nav-bar></app-nav-bar>
-<p>all-projects-dashboard works!</p>
+<div class="background"></div>
 
-<ng-container *ngIf="user$ | async as user">
-      <h2 >{{ user.name }}</h2>
-      <span>{{ user.email }}</span>
-      <br><br>
-      <ng-container *ngIf="code$ | async as code">
-        {{code}}
+<div id="all-projects-dashboard">
+  <div class="card main-card">
+    <div>
+      <h1>BudgetBlocks</h1>
+      <ng-container *ngIf="user$ | async as user">
+        <h2 >Hi, {{ user.nickname }}! Here are your projects.</h2>
       </ng-container>
-</ng-container>
+    </div>
+    <app-nav-bar></app-nav-bar>
+  </div>
+  <router-outlet></router-outlet> 
+</div>

@@ -9,67 +9,60 @@
   </form>
 </div> -->
 
-
-<h1 *ngIf="isAddMode">Add User</h1>
-<h1 *ngIf="!isAddMode">Edit User</h1>
-<div class="form-container">
-  
-  <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-
-    
-
-            <label>Title</label>
-            <select formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
-                <option value=""></option>
-                <option value="Mr">Mr</option>
-                <option value="Mrs">Mrs</option>
-                <option value="Miss">Miss</option>
-                <option value="Ms">Ms</option>
-            </select>
-            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-                <div *ngIf="f.title.errors.required">Title is required</div>
-            </div>
-
-            
-            <label>First Name</label>
-            <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                <div *ngIf="f.firstName.errors.required">First Name is required</div>
-            </div>
-
-            
-            <label>Last Name</label>
-            <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
-            </div>
-
-            
-            <label>Email</label>
-            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                <div *ngIf="f.email.errors.required">Email is required</div>
-                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
-            </div>
-
-            
-            <label>Role</label>
-            <select formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
-                <option value=""></option>
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
-            <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
-                <div *ngIf="f.role.errors.required">Role is required</div>
-            </div>
-
-
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Save
-        </button>
-        <!-- <a routerLink="/users" class="btn btn-link">Cancel</a> -->
+<div class="card form-card">
+    <div class="form-row grid-double">
+        <div></div>
+        <h2 *ngIf="isAddMode">Add Project</h2>
+        <h2 *ngIf="!isAddMode">Edit Project</h2>
     </div>
-</form>
+    <div class="form-container">
+    
+        <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
+            <div *ngIf="submitted && this.projectForm.controls['name'].errors" class="invalid-feedback">
+                <div *ngIf="this.projectForm.controls['name'].errors">Name is required.</div>
+            </div>
+            <div class="form-row grid-single">
+                <label>NAME</label>
+                <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['name'].errors }"/>
+            </div>
+
+            <div *ngIf="submitted && this.projectForm.controls['budget'].errors" class="invalid-feedback">
+                <div *ngIf="this.projectForm.controls['budget'].errors">Budget is required.</div>
+            </div>
+            <div class="form-row grid-double">
+                <label>BUDGET</label>
+                <input type="number" formControlName="budget" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['budget'].errors }"/>
+                
+                <label>CURRENCY</label>
+                <select formControlName="currency" class="form-control">
+                    <option value="EUR" >EUR</option>
+                </select>
+            </div>
+        
+            <div class="form-row grid-double">
+                <label>TYPE</label>
+                <select formControlName="type" class="form-control">
+                    <option value="" disabled="[true]"></option>
+                    <option value="trip" >trip</option>
+                    <option value="event" >event</option>
+                    <option value="construction" >construction</option>
+                    <option value="other">other</option>
+                </select>
+
+        <!--     IF OTHER
+                <label>CURRENCY</label>
+                <select formControlName="currency" class="form-control">
+                    <option value="EUR" >EUR</option>
+                </select> -->
+            </div>
+
+
+            <div class="form-row grid-double">
+                <div></div>
+                <button [disabled]="loading" class="btn form-btn">
+                    Save
+                </button> 
+            </div>
+        </form> 
+    </div>
 </div>

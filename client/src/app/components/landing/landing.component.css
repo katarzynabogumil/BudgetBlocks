@@ -22,16 +22,11 @@
 }
 
 .auth-btn {
-  background-color: var(--pink);
-  border-radius: 5px;
-  border: none;
   margin: 20px 0 0 0;
   padding: 10px;
   min-width: 100px;
   width: 48%;
-  font-weight: var(--bold);
 }
-
 
 @media screen and (min-width: 1201px) {
   #landing {

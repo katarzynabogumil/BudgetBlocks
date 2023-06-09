@@ -16,7 +16,7 @@ export class ProjectFormComponent implements OnInit {
     name:["", [Validators.required, Validators.minLength(1)]],
     type:["", [Validators.required, Validators.minLength(1)]],
     budget:["", [Validators.required, Validators.minLength(1)]],
-    currency:["", [Validators.required, Validators.minLength(1)]],
+    currency:["EUR"],
     dateFrom:[""],
     dateTo:[""],
     area:[""],
@@ -85,7 +85,7 @@ export class ProjectFormComponent implements OnInit {
     //  this.editqueForm.setValue({user: this.question.user, questioning: this.question.questioning})
     // }
  
-      get f() { return this.projectForm.controls; }
+      // get f() { return this.projectForm.controls; }
   
       // private createUser() {
       //     this.userService.create(this.projectForm.value)
