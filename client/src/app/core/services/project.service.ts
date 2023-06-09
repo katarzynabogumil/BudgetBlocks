@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { mergeMap, Observable, of } from 'rxjs';
+import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, ProjectModel, RequestConfigModel } from '../models';
+import { ApiResponseProjectModel, ApiResponseProjectModelArr, ProjectModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  // TODO: behavioural subject!!!!!!
+  projects$ = new BehaviorSubject<ProjectModel[]>([]);
+  private projects: ProjectModel[] = [];
 
   constructor(public api: ApiService) {}
 
-  getAllProjects = (): Observable<ApiResponseModel> => {
+  getAllProjects = (): Observable<ApiResponseProjectModelArr> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/projects`,
       method: 'GET',
@@ -23,18 +24,21 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        const projectData = data ? (data as ProjectModel[]) : null;
+        const data = response.data as ProjectModel[];
+        const error = response.error;
 
+        this.projects = data;
+        this.projects$.next(this.projects);
+        
         return of({
-          data: projectData,
+          data: data,
           error,
         });
       }))
     ;
   };
 
-  getProject = (id: number): Observable<ApiResponseModel> => {
+  getProject = (id: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'GET',
@@ -46,17 +50,15 @@ export class ProjectService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
-        const projectData = data ? (data as ProjectModel) : null;
-
         return of({
-          data: projectData,
+          data: data as ProjectModel,
           error,
         });
       }))
     ;
   };
 
-  addProject = (projectData: ProjectModel): Observable<ApiResponseModel> => {
+  addProject = (projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project`,
       method: 'POST',
@@ -68,17 +70,20 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ProjectModel;
+        const error = response.error;
+        this.projects.push(data);
+        this.projects$.next(this.projects);
+
         return of({
-          data: data ? (data as ProjectModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
+      }))
+    ;
+  }
 
-  editProject = (id: number, projectData: ProjectModel): Observable<ApiResponseModel> => {
+  editProject = (id: number, projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'PUT',
@@ -90,17 +95,22 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ProjectModel;
+        const error = response.error;
+        this.projects = this.projects.map(project => {
+          if (project.id === id) project = data;
+          return project;
+        });
+        this.projects$.next(this.projects);
         return of({
-          data: data ? (data as ProjectModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
+      }))
+    ;
+  }
 
-  deleteProject = (id: number): Observable<ApiResponseModel> => {
+  deleteProject = (id: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'DELETE',
@@ -111,13 +121,15 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ProjectModel;
+        const error = response.error;
+        this.projects = this.projects.filter(project => project.id !== id);
+        this.projects$.next(this.projects);
         return of({
-          data: data ? (data as ProjectModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
+      }))
+    ;
+  }
 }

@@ -43,6 +43,7 @@ async function getProjectsFromDB (userSub: string) {
       }
     },
   });
+  console.log(projects)
   return projects;
 }; 
 

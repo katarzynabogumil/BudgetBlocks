@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-add-item',
@@ -6,6 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-item.component.css']
 })
 export class AddItemComponent {
-  item: string = 'Project';
-  routerlink: string = '/add';
+  @Input() item: string = '';
+  @Input() link: string = '';
 }

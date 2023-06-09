@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first, switchMap } from 'rxjs/operators';
 
-import { ProjectModel, ProjectService, ApiResponseModel } from '@app/core';
-import { Observable, of } from 'rxjs';
+import { ProjectModel, ProjectService, ApiResponseProjectModel } from '@app/core';
 
 @Component({
   selector: 'app-project-form',
@@ -42,17 +40,15 @@ export class ProjectFormComponent implements OnInit {
 
     if (!this.isAddMode) {
       this.projectApi.getProject(this.id)
-            .pipe(first())
-            .subscribe(data => this.projectForm.patchValue(data));
+        .subscribe((res: ApiResponseProjectModel) => {
+          this.projectForm.patchValue(res.data);
+        });
     }
   }
     
     handleSubmit () {
       this.submitted = true;
       const project = this.projectForm.value;
-      // for (let [key, value] in Object.entries(project)) {
-      //   if (value === '') value = null;
-      // }
       
       if (this.projectForm.invalid) {
         return;
@@ -60,7 +56,7 @@ export class ProjectFormComponent implements OnInit {
         if (this.isAddMode) {
             this.addProject(this.projectForm.value);
         } else {
-            this.editProject(this.projectForm.value);
+            this.editProject(this.id, this.projectForm.value);
         }
         this.projectForm.reset();
         this.submitted = false;
@@ -68,47 +64,19 @@ export class ProjectFormComponent implements OnInit {
     }
 
     addProject(data: ProjectModel) {
-
-      this.projectApi.addProject(data).pipe(
-        switchMap((res: ApiResponseModel) => {
-          console.log('Project added.')
+      this.projectApi.addProject(data).
+        subscribe((res: ApiResponseProjectModel) => {
+          console.log('Project edited.');
           this.router.navigate(['/projects']);
-          return of(res.data ? true : false);
-        })).subscribe();
-      }
-      
-      editProject(data: ProjectModel) {
-        this.projectApi.editProject(this.id, data).pipe(
-          switchMap((res: ApiResponseModel) => {
-            console.log('Project edited.');
-            console.log(res.data);
-            this.router.navigate(['/projects']);
-            return of(res.data);
-      }));
+      });
     }
 
-      // private createUser() {
-      //     this.projectApi.create(this.projectForm.value)
-      //         .pipe(first())
-      //         .subscribe({
-      //             next: () => {
-      //                 this.alertService.success('User added', { keepAfterRouteChange: true });
-      //                 this.router.navigate(['../'], { relativeTo: this.route });
-
-      // }
-  
-      // private updateUser() {
-      //     this.projectApi.update(this.id, this.projectForm.value)
-      //         .pipe(first())
-      //         .subscribe({
-      //             next: () => {
-      //                 this.alertService.success('User updated', { keepAfterRouteChange: true });
-      //                 this.router.navigate(['../../'], { relativeTo: this.route });
-      //             },
-      //             error: error => {
-      //                 this.alertService.error(error);
-      //                 this.loading = false;
-      //             }
-      //         });
-      // }
+    editProject(id: number, data: ProjectModel) {
+      console.log(id)
+      this.projectApi.editProject(id, data).
+        subscribe((res: ApiResponseProjectModel) => {
+          console.log('Project edited.');
+          this.router.navigate(['/projects']);
+      });
+    }
   }

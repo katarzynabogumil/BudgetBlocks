@@ -20,3 +20,10 @@ export interface ProjectModel {
   description?: string;
   expenses?: ExpenseModel[];
 }
+
+export const EmptyProject = {
+  name: '',
+  type: '',
+  budget: 0,
+  currency: 'EUR',
+}

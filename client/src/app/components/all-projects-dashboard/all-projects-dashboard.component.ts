@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, AuthClientConfig, User } from '@auth0/auth0-angular';
-import { map, switchMap } from 'rxjs/operators';
-import { ApiResponseModel, UserModel, ProjectModel, UserService } from '@app/core';
+import { AuthService, User } from '@auth0/auth0-angular';
+import { switchMap } from 'rxjs/operators';
+import { ApiResponseModel, UserModel, UserService } from '@app/core';
 import { of, Observable } from 'rxjs';
 
 @Component({
@@ -13,24 +13,20 @@ export class AllProjectsDashboardComponent implements OnInit {
   user$ = this.auth.user$;
   // code$ = this.user$.pipe(map((user) => JSON.stringify(user, null, 2)));
 
-  projects: ProjectModel[] = [];
-
   constructor(
     private auth: AuthService, 
-    private configFactory: AuthClientConfig,
-    public userService: UserService
+    public userApi: UserService,
   ) {}
 
   ngOnInit() {
     this.checkIfNewUser();
-    this.getProjects();
   }
 
   checkIfNewUser() {
-    if (!this.userService.userSub) {
+    if (!this.userApi.userSub) {
       this.auth.user$.subscribe(user => {
 
-        if (user) this.userService.userSub =  user?.sub || '';
+        if (user) this.userApi.userSub =  user?.sub || '';
         
         this.checkIfInDb().subscribe((isInDb => {
           if (!isInDb) this.saveToDb(user);
@@ -40,7 +36,7 @@ export class AllProjectsDashboardComponent implements OnInit {
   }
 
   checkIfInDb ():Observable<boolean> {
-    return this.userService.getUser().pipe(
+    return this.userApi.getUser().pipe(
       switchMap((res: ApiResponseModel) => {
       return of(res.data ? true : false);
     }));
@@ -55,13 +51,7 @@ export class AllProjectsDashboardComponent implements OnInit {
         nickname: userData.nickname || '',
         email: userData.email || '',
       }
-      this.userService.saveUser(user).subscribe();
+      this.userApi.saveUser(user).subscribe();
     }
-  }
-
-  getProjects() {
-    // input: this.userService.userSub
-    // TODO
-    return [];
   }
 }

@@ -43,7 +43,7 @@ async function getAllProjects (req: express.Request, res: express.Response) {
 
 async function getProject (req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const project = await getProjectFromDB(id);
     res.status(200);
     res.send(project);

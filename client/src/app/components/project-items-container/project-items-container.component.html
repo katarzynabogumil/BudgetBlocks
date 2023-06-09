@@ -1,4 +1,11 @@
 <div id="poject-items-container">
-  <app-all-projects-item></app-all-projects-item>
-  <app-add-item></app-add-item>
+
+  <div *ngIf="projects.length > 0">
+    <div *ngFor="let project of projects">
+        <app-all-projects-item [project]="project">
+        </app-all-projects-item>
+    </div>
+  </div>
+
+  <app-add-item [item]="'Project'" [link]="'./add'"></app-add-item>
 </div>

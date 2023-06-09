@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, UserModel, RequestConfigModel } from '../models';
+import { ApiResponseUserModel, UserModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(public api: ApiService) {}
 
-  getUser = (): Observable<ApiResponseModel> => {
+  getUser = (): Observable<ApiResponseUserModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/user`,
       method: 'GET',
@@ -24,19 +24,15 @@ export class UserService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
-        const userData = data ? (data as UserModel) : null;
-
-        this.userSub = userData?.sub || '';
-
         return of({
-          data: userData,
+          data: data as UserModel,
           error,
         });
       }))
     ;
   };
 
-  saveUser = (userData: UserModel): Observable<ApiResponseModel> => {
+  saveUser = (userData: UserModel): Observable<ApiResponseUserModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/user`,
       method: 'POST',
@@ -49,9 +45,8 @@ export class UserService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
-        
         return of({
-          data: data ? (data as UserModel) : null,
+          data: data as UserModel,
           error,
         });
       })
