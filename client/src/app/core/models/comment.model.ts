@@ -3,8 +3,8 @@ import { UserModel } from "./user.model";
 
 export interface CommentModel {
   id?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   text: string;
   expense?: ExpenseModel;
   expenseId?: number;

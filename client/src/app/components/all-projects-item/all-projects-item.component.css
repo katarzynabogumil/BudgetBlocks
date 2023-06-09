@@ -1,0 +1,10 @@
+.project-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: -1;
+}
+
+.links {
+  margin-top: 20px;
+}

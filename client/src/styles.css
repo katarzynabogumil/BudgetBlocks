@@ -6,8 +6,8 @@
   --yellow: #F5AD00;
   --midpoint1: #f3546e;
   --midpoint2: #EC5A3A;
-  
-  --small: 14px;
+
+  --small: 16px;
   --medium: 18px;
   --large: 46px;
   --larger: 62px;
@@ -111,7 +111,7 @@ a:active {
   z-index: -2;
   background: var(--pink); /* fallback*/
   background: -webkit-linear-gradient(90deg, var(--pink), var(--orange));  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, var(--pink), var(--midpoint1) 10%,  var(--midpoint2) 50%, var(--orange) 100%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+  background: linear-gradient(to right, var(--pink), var(--midpoint1) 10%,  var(--midpoint2) 50%, var(--orange) 100%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .card {
@@ -121,9 +121,9 @@ a:active {
   margin-bottom: 15px;
   padding: 10px 20px 20px;
   width: 300px;
-  min-height: 100px;
+  min-height: 120px;
   box-shadow: 0 0 10px rgb(160, 160, 160);
- } 
+ }
 
 .main-card {
  padding: 10px 20px 20px;
@@ -177,8 +177,6 @@ a:active {
   }
 }
 
-
-
 /* FORMS */
 
 form {
@@ -195,11 +193,7 @@ form {
 }
 
 .grid-single {
-  grid-template-columns: 100px 1fr;
-}
-
-.grid-double {
-  grid-template-columns: 100px 1fr 100px 1fr;
+  grid-template-columns: 150px minmax(150px, calc(100% - 150px));
 }
 
 input, input:focus,
@@ -218,11 +212,27 @@ select, select:focus {
 
 .invalid-feedback {
   text-align: left;
-  margin-left: 115px;
+  margin-left: 165px;
 }
 
 .sup {
   position: relative;
-  bottom: 1ex; 
+  bottom: 1ex;
   font-size: 70%;
+}
+
+.form-card-container {
+  width: 100%;
+}
+
+@media screen and (min-width: 1150px) {
+  .grid-double {
+    grid-template-columns: 150px minmax(150px, calc(100% - 150px)) 150px minmax(150px, calc(100% - 150px));
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .grid-double {
+    grid-template-columns:  repeat(auto-fill, 150px minmax(150px, calc(100% - 150px)));
+  }
 }

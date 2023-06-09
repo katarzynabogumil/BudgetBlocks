@@ -1,11 +1,12 @@
 <div id="poject-items-container">
 
-  <div *ngIf="projects.length > 0">
-    <div *ngFor="let project of projects">
+  <span *ngIf="projects.length > 0" id="poject-items-inner-container">
+      <span *ngFor="let project of projects; last as last" >
         <app-all-projects-item [project]="project">
         </app-all-projects-item>
-    </div>
-  </div>
+          
+      </span>
+        <app-add-item [item]="'a project'" [link]="'./add'"></app-add-item>
+      </span>
 
-  <app-add-item [item]="'Project'" [link]="'./add'"></app-add-item>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { ProjectModel, EmptyProject } from '@app/core';
+import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
 
 @Component({
   selector: 'app-all-projects-item',
@@ -8,20 +8,15 @@ import { ProjectModel, EmptyProject } from '@app/core';
   styleUrls: ['./all-projects-item.component.css']
 })
 export class AllProjectsItemComponent {
-  @Input()
-  project: ProjectModel = EmptyProject;
+  @Input() project: ProjectModel = EmptyProject;
 
-  constructor(private auth: AuthService) { }
+  constructor(
+    private auth: AuthService,
+    public projectApi: ProjectService
+  ) { }
 
-  // remove() {
-  //   this.apiService.deleteTopic(this.topic._id);
-  // }
-  
-  // voteUp() {
-  //   this.apiService.voteUp(this.topic._id);
-  // }
-  
-  // voteDown() {
-  //   this.apiService.voteDown(this.topic._id);
-  // }
+  remove() {
+    this.projectApi.deleteProject(this.project.id as number)
+      .subscribe();
+  }
 }

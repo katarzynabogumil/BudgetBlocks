@@ -55,11 +55,11 @@ async function getProject (req: express.Request, res: express.Response) {
 
 async function editProject 
   (
-    req: express.Request<{}, {}, Prisma.ProjectUpdateInput>, 
+    req: express.Request<{id: string}, {}, Prisma.ProjectUpdateInput>, 
     res: express.Response
   ) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const data = req.body;
     const project = await updateProjectinDb(id, data);
     res.status(200);
@@ -72,7 +72,7 @@ async function editProject
 
 async function deleteProject (req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const project = await deleteProjectsFromDB(id);
     res.status(204);
     res.send(project);

@@ -9,7 +9,7 @@ export interface UserModel {
   lastName?: string;
   nickname?: string;
   email?: string;
-  createdAt?: string;
+  createdAt?: Date;
   projects?: ProjectModel[];
   projectInvitations?: ProjectModel[];
   upvotedExpenses?: ExpenseModel[];

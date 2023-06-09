@@ -3,16 +3,16 @@ import { UserModel } from "./user.model";
 
 export interface ProjectModel {
   id?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   owners?: UserModel[];
   invitedUsers?: UserModel[];
   name: string;
   type: string;
   budget: number;
   currency: string;
-  dateFrom?: string;
-  dateTo?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
   area?: number;
   noOfGuests?: number;
   destination?: string;

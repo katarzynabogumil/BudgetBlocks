@@ -23,7 +23,12 @@ export class ProjectItemsContainerComponent implements OnInit{
     this.projectApi.getAllProjects().subscribe();
     this.projectApi.projects$.
       subscribe(res => {
-        this.projects = res;
+        this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
+          if (a.updatedAt && b.updatedAt 
+            && b.updatedAt > a.updatedAt) {
+              return 1;
+          } else return -1;
+        });
       });
   }
 }

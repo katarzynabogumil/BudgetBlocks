@@ -4,8 +4,8 @@ import { ProjectModel } from './project.model';
 
 export interface ExpenseModel {
   id?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   project?: ProjectModel;
   projectId?: number;
   name: string;

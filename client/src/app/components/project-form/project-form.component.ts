@@ -25,7 +25,8 @@ export class ProjectFormComponent implements OnInit {
   })
   id: number = -1;
   isAddMode: boolean = false;
-  submitted = false;
+  submitted: boolean = false;
+  dateIsValid: boolean = true;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -49,8 +50,10 @@ export class ProjectFormComponent implements OnInit {
     handleSubmit () {
       this.submitted = true;
       const project = this.projectForm.value;
-      
-      if (this.projectForm.invalid) {
+      if (project.dateFrom) project.dateFrom = new Date(project.dateFrom);
+      if (project.dateTo) project.dateTo = new Date(project.dateTo);
+
+      if (this.projectForm.invalid || !this.dateIsValid) {
         return;
       } else {
         if (this.isAddMode) {
@@ -60,7 +63,15 @@ export class ProjectFormComponent implements OnInit {
         }
         this.projectForm.reset();
         this.submitted = false;
+        this.dateIsValid = true;
       }
+    }
+
+    onDateChange(event: Event) {
+      const dateTo = new Date(this.projectForm.value.dateTo).toISOString();
+      const dateFrom = new Date(this.projectForm.value.dateFrom).toISOString();
+      if (dateTo < dateFrom) this.dateIsValid = false;
+      else this.dateIsValid = true;
     }
 
     addProject(data: ProjectModel) {

@@ -1,5 +1,6 @@
+<div class="form-card-container">
 <div class="card form-card">
-    <div class="form-row grid-double">
+    <div class="form-row grid-single">
         <div></div>
         <h2 *ngIf="isAddMode">Add Project</h2>
         <h2 *ngIf="!isAddMode">Edit Project</h2>
@@ -45,7 +46,7 @@
             <span *ngIf="projectForm.value['type'] === 'trip' || projectForm.value['type'] === 'event'">
                 <div class="form-row grid-double">
                     <label>GUESTS</label>
-                    <input type="number" formControlName="noOfGuests" class="form-control"/>
+                    <input type="number" formControlName="noOfGuests" min="0" class="form-control"/>
                 </div>
             </span>
             
@@ -70,11 +71,15 @@
                 </div>
             </span>
             
+                        
+            <div *ngIf="this.submitted && !this.dateIsValid" class="invalid-feedback">
+                Date to can't be before date from.
+            </div>
             <div class="form-row grid-double">
                 <label>DATE FROM</label>
                 <input type="datetime-local" formControlName="dateFrom" class="form-control"/>
                 <label>DATE TO</label>
-                <input type="datetime-local" formControlName="dateTo" class="form-control"/>
+                <input type="datetime-local" formControlName="dateTo" min="projectForm.value['dateFrom']" (change)= "onDateChange($event)" class="form-control"/>
             </div>
             
             <div class="form-row grid-single">
@@ -92,4 +97,5 @@
             </div>
         </form> 
     </div>
+</div>
 </div>
