@@ -3,7 +3,10 @@
 <div id="all-projects-dashboard">
   <div class="card main-card">
     <div>
-      <h1>BudgetBlocks</h1>
+      <h1>
+        <span class="avoidwrap">Budget</span>
+        <span class="avoidwrap">Blocks</span>
+      </h1>
       <ng-container *ngIf="user$ | async as user">
         <h2 >Hi, {{ user.nickname }}! Here are your projects.</h2>
       </ng-container>
