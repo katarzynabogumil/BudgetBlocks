@@ -41,6 +41,7 @@ model Project {
   area         Int? 
   noOfGuests   Int?
   occasion     String?
+  destination  String?
   description  String?
   expenses     Expense[]
 }

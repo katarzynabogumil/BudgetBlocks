@@ -117,7 +117,7 @@ h2 {
   background-color: var(--pink);
   border-radius: 5px;
   border: none;
-  margin: 20px 0 0 0;
+  margin: 5px 0 0 0;
   padding: 5px;
   min-width: 100px;
   font-weight: var(--bold);
@@ -191,4 +191,10 @@ select, select:focus {
 .invalid-feedback {
   text-align: left;
   margin-left: 115px;
+}
+
+.sup {
+  position: relative;
+  bottom: 1ex; 
+  font-size: 70%;
 }

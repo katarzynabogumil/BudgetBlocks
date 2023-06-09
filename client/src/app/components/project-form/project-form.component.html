@@ -1,14 +1,3 @@
-<!-- <div class="form-container">
-  <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-    <input id="title" formControlName="title"/>
-    
-    <button type="submit">Save project</button>
-    <div *ngIf="addForm.get('title')?.errors && thisForm.submitted">
-      This field is required.
-    </div>
-  </form>
-</div> -->
-
 <div class="card form-card">
     <div class="form-row grid-double">
         <div></div>
@@ -16,21 +5,21 @@
         <h2 *ngIf="!isAddMode">Edit Project</h2>
     </div>
     <div class="form-container">
-    
+
         <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-            <div *ngIf="submitted && this.projectForm.controls['name'].errors" class="invalid-feedback">
-                <div *ngIf="this.projectForm.controls['name'].errors">Name is required.</div>
+            <div *ngIf="this.submitted && projectForm.get('name')?.errors" class="invalid-feedback">
+                Name is required.
             </div>
             <div class="form-row grid-single">
-                <label>NAME</label>
+                <label>NAME*</label>
                 <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['name'].errors }"/>
             </div>
 
-            <div *ngIf="submitted && this.projectForm.controls['budget'].errors" class="invalid-feedback">
-                <div *ngIf="this.projectForm.controls['budget'].errors">Budget is required.</div>
+            <div *ngIf="this.submitted && projectForm.get('budget')?.errors" class="invalid-feedback">
+                Budget is required.
             </div>
             <div class="form-row grid-double">
-                <label>BUDGET</label>
+                <label>BUDGET*</label>
                 <input type="number" formControlName="budget" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['budget'].errors }"/>
                 
                 <label>CURRENCY</label>
@@ -38,28 +27,66 @@
                     <option value="EUR" >EUR</option>
                 </select>
             </div>
-        
-            <div class="form-row grid-double">
-                <label>TYPE</label>
-                <select formControlName="type" class="form-control">
-                    <option value="" disabled="[true]"></option>
-                    <option value="trip" >trip</option>
-                    <option value="event" >event</option>
-                    <option value="construction" >construction</option>
-                    <option value="other">other</option>
-                </select>
-
-        <!--     IF OTHER
-                <label>CURRENCY</label>
-                <select formControlName="currency" class="form-control">
-                    <option value="EUR" >EUR</option>
-                </select> -->
+            
+            <div *ngIf="this.submitted && projectForm.get('type')?.errors" class="invalid-feedback">
+                Type is required.
             </div>
+            <div class="form-row grid-double">
+                    <label>TYPE*</label>
+                    <select formControlName="type" class="form-control">
+                        <option value="" disabled="[true]"></option>
+                        <option value="trip" >trip</option>
+                        <option value="event" >event</option>
+                        <option value="construction" >construction</option>
+                        <option value="other">other</option>
+                    </select>
+                </div>
+            
+            <span *ngIf="projectForm.value['type'] === 'trip' || projectForm.value['type'] === 'event'">
+                <div class="form-row grid-double">
+                    <label>GUESTS</label>
+                    <input type="number" formControlName="noOfGuests" class="form-control"/>
+                </div>
+            </span>
+            
+            <span *ngIf="projectForm.value['type'] === 'trip'">
+                <div class="form-row grid-single">
+                    <label>DESTINATION</label>
+                    <input type="text" formControlName="destination" class="form-control"/>
+                </div>
+            </span>
 
+            <span *ngIf="projectForm.value['type'] === 'event'">
+                <div class="form-row grid-single">
+                    <label>OCCASION</label>
+                    <input type="text" formControlName="occasion" class="form-control"/>
+                </div>
+            </span>
 
+            <span *ngIf="projectForm.value['type'] === 'construction'">
+                <div class="form-row grid-single">
+                    <label>AREA (m<span class="sup">2</span>)</label>
+                    <input type="number" formControlName="area" class="form-control"/>
+                </div>
+            </span>
+            
+            <div class="form-row grid-double">
+                <label>DATE FROM</label>
+                <input type="datetime-local" formControlName="dateFrom" class="form-control"/>
+                <label>DATE TO</label>
+                <input type="datetime-local" formControlName="dateTo" class="form-control"/>
+            </div>
+            
+            <div class="form-row grid-single">
+                <label>DESCRIPTION</label>
+                <textarea formControlName="description" class="form-control"></textarea>
+            </div>
+            
+            <div class="invalid-feedback">* Required fields.</div>
+            
             <div class="form-row grid-double">
                 <div></div>
-                <button [disabled]="loading" class="btn form-btn">
+                <button type="submit" class="btn">
                     Save
                 </button> 
             </div>

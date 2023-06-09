@@ -15,6 +15,7 @@ export interface ProjectModel {
   dateTo?: string;
   area?: number;
   noOfGuests?: number;
+  destination?: string;
   occasion?: string;
   description?: string;
   expenses?: ExpenseModel[];
