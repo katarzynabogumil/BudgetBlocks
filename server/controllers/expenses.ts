@@ -8,9 +8,10 @@ import {
   deleteExpenseFromDB,
 } from '../models/expenses';
 
-async function saveExpense (req: express.Request<{}, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
+async function saveExpense (req: express.Request<{id: string}, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
   try {
-    const projectId = Number(req.query.id);
+    console.log(req.params);
+    const projectId = Number(req.params.id);
     const data = req.body;
 
     const newExpense = await saveExpenseToDb(projectId, data);
@@ -25,7 +26,7 @@ async function saveExpense (req: express.Request<{}, {}, Prisma.ExpenseCreateInp
 
 async function getExpense (req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const expense = await getExpenseFromDB(id);
     res.status(200);
     res.send(expense);
@@ -37,11 +38,11 @@ async function getExpense (req: express.Request, res: express.Response) {
 
 async function editExpense 
   (
-    req: express.Request<{}, {}, Prisma.ExpenseUpdateInput>, 
+    req: express.Request<{id: string}, {}, Prisma.ExpenseUpdateInput>, 
     res: express.Response
   ) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const data = req.body;
     const expense = await updateExpenseinDb(id, data);
     res.status(200);
@@ -54,7 +55,7 @@ async function editExpense
 
 async function deleteExpense (req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const expense = await deleteExpenseFromDB(id);
     res.status(204);
     res.send(expense);

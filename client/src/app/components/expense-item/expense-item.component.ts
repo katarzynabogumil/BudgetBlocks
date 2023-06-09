@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ExpenseModel, EmptyExpense } from '@app/core';
 
 @Component({
   selector: 'app-expense-item',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./expense-item.component.css']
 })
 export class ExpenseItemComponent {
-
+  @Input() expense: ExpenseModel = EmptyExpense;
 }

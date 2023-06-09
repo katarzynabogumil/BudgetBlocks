@@ -6,3 +6,4 @@ export * from './user.model';
 export * from './project.model';
 export * from './expense.model';
 export * from './comment.model';
+export * from './expCategory.model';

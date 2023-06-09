@@ -1,5 +1,6 @@
 import { ExpenseModel } from "./expense.model";
 import { UserModel } from "./user.model";
+import { ExpCategoryModel } from './expCategory.model';
 
 export interface ProjectModel {
   id?: number;
@@ -18,7 +19,8 @@ export interface ProjectModel {
   destination?: string;
   occasion?: string;
   description?: string;
-  expenses?: ExpenseModel[];
+  expenses: ExpenseModel[];
+  categories?: ExpCategoryModel[];
 }
 
 export const EmptyProject = {
@@ -26,4 +28,5 @@ export const EmptyProject = {
   type: '',
   budget: 0,
   currency: 'EUR',
+  expenses: [],
 }

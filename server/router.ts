@@ -37,7 +37,7 @@ router.get('/project/:id', validateAccessToken, getProject);
 router.put('/project/:id', validateAccessToken, editProject);
 router.delete('/project/:id', validateAccessToken, deleteProject);
 
-router.post('/expense', validateAccessToken, saveExpense);
+router.post('/project/:id/expense', validateAccessToken, saveExpense);
 router.get('/expense/:id', validateAccessToken, getExpense);
 router.put('/expense/:id', validateAccessToken, editExpense);
 router.delete('/expense/:id', validateAccessToken, deleteExpense);

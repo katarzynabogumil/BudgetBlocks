@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpenseModel } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-project-dashboard',
-  templateUrl: './project-dashboard.component.html',
-  styleUrls: ['./project-dashboard.component.css']
+  selector: 'app-expense-items-container',
+  templateUrl: './expense-items-container.component.html',
+  styleUrls: ['./expense-items-container.component.css']
 })
-export class ProjectDashboardComponent implements OnInit {
+export class ExpenseItemsContainerComponent implements OnInit {
   id: number = -1;
   project: ProjectModel = EmptyProject;
+  expenses: ExpenseModel[] = [];
 
   constructor(
     private auth: AuthService, 
@@ -21,13 +22,14 @@ export class ProjectDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.id = Number(this.route.snapshot.params['id']);
-    this.getProject(this.id);
+    this.getProject();
   }
 
-  getProject(id: number) {
-    this.projectApi.getProject(id).subscribe();
+  getProject() {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
+      this.expenses = p.expenses;
+      console.log(p)
     });
   }
 }

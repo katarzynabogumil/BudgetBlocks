@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseProjectModel, ApiResponseProjectModelArr, ProjectModel, RequestConfigModel } from '../models';
+import { ApiResponseProjectModel, ApiResponseProjectModelArr, EmptyProject, ProjectModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -10,6 +10,8 @@ import { ApiService } from './api.service';
 export class ProjectService {
   projects$ = new BehaviorSubject<ProjectModel[]>([]);
   private projects: ProjectModel[] = [];
+
+  project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
 
   constructor(public api: ApiService) {}
 
@@ -49,9 +51,12 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        return of({
-          data: data as ProjectModel,
+        const data = response.data as ProjectModel;
+        const error = response.error;
+
+        this.project$.next(data);
+                return of({
+          data: data,
           error,
         });
       }))

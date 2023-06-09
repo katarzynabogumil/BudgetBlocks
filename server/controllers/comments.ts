@@ -20,9 +20,9 @@ import { getUserFromDB } from '../models/users';
 //   }
 // }; 
 
-async function saveComment (req: express.Request<{}, {}, Prisma.CommentCreateInput>, res: express.Response) {
+async function saveComment (req: express.Request<{id: string}, {}, Prisma.CommentCreateInput>, res: express.Response) {
   try {
-    const expenseId = Number(req.query.id);
+    const expenseId = Number(req.params.id);
     const data = req.body;
     const userSub = req.auth?.payload.sub || '';
     const user = await getUserFromDB(userSub);
@@ -40,7 +40,7 @@ async function saveComment (req: express.Request<{}, {}, Prisma.CommentCreateInp
 
 async function deleteComment (req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.query.id);
+    const id = Number(req.params.id);
     const comment = await deleteCommentFromDB(id);
     res.status(204);
     res.send(comment);

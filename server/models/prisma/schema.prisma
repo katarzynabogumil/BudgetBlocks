@@ -44,24 +44,36 @@ model Project {
   destination  String?
   description  String?
   expenses     Expense[]
+  categories   ExpCategory[]
 }
 
 model Expense {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  project   Project   @relation(fields: [projectId], references: [id])
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  project    Project   @relation(fields: [projectId], references: [id])
+  projectId  Int
+  name       String    @db.VarChar(255)
+  cost       Int
+  currency   String
+  link       String?
+  photo      String?
+  notes      String?
+  optional   Boolean   @default(false)
+  category   ExpCategory   @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  upvotes    User[]    @relation(name: "upvotes")
+  downvotes  User[]    @relation(name: "downvotes")
+  comments   Comment[]
+}
+
+model ExpCategory {
+  id        Int      @id @default(autoincrement())
+  project   Project  @relation(fields: [projectId], references: [id])
   projectId Int
-  name      String    @db.VarChar(255)
-  category  String    @db.VarChar(255)
-  cost      Int
-  currency  String
-  photo     String?
-  notes     String?
-  optional  Boolean   @default(false)
-  upvotes   User[]    @relation(name: "upvotes")
-  downvotes User[]    @relation(name: "downvotes")
-  comments  Comment[]
+  expenses  Expense[]
+  orderId   Int
+  category  String
 }
 
 model Comment {

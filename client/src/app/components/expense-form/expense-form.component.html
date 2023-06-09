@@ -1,1 +1,83 @@
-<p>expense-form works!</p>
+<div class="form-card-container">
+  <div class="card form-card">
+      <div class="form-row grid-single">
+          <div></div>
+          <h2 *ngIf="isAddMode">Add an expense</h2>
+          <h2 *ngIf="!isAddMode">Edit an expense</h2>
+      </div>
+      <div class="form-container">
+  
+          <form [formGroup]="expenseForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
+              <div *ngIf="this.submitted && expenseForm.get('name')?.errors" class="invalid-feedback">
+                  Name is required.
+              </div>
+              <div class="form-row grid-single">
+                  <label>NAME*</label>
+                  <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['name'].errors }"/>
+              </div>
+  
+              <div *ngIf="this.submitted && expenseForm.get('cost')?.errors" class="invalid-feedback">
+                  Cost is required.
+              </div>
+              <div class="form-row grid-double">
+                  <label>COST*</label>
+                  <input type="number" formControlName="cost" class="form-control" [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['cost'].errors }"/>
+                  
+                  <label>CURRENCY</label>
+                  <select formControlName="currency" class="form-control">
+                      <option value="EUR" >EUR</option>
+                  </select>
+              </div>
+              
+              <!-- CATEGORY -->
+              <!-- <div *ngIf="this.submitted && expenseForm.get('type')?.errors" class="invalid-feedback">
+                  Type is required.
+              </div>
+              <div class="form-row grid-double">
+                      <label>TYPE*</label>
+                      <select formControlName="type" class="form-control">
+                          <option value="" disabled="[true]"></option>
+                          <option value="trip" >trip</option>
+                          <option value="event" >event</option>
+                          <option value="construction" >construction</option>
+                          <option value="other">other</option>
+                      </select>
+                  </div> -->
+    
+            <div class="form-row grid-single">
+                <label>LINK (URL)</label>
+                <input type="text" formControlName="link" class="form-control"/>
+            </div>
+  
+            <div class="form-row grid-single">
+                <label>PHOTO (URL)</label>
+                <input type="text" formControlName="photo" class="form-control"/>
+            </div>
+              
+            <div class="form-row grid-single">
+                <label>NOTES</label>
+                <textarea formControlName="notes" class="form-control"></textarea>
+            </div>
+              
+            <div class="form-row grid-single">
+                <label>IS OPTIONAL?</label>
+                <div id="checkbox-options">
+                    <input type="checkbox" id="true" name="true" value="true">
+                    <label for="true"> YES</label><br>
+                    <input type="checkbox" id="false" name="false" value="false">
+                    <label for="false"> NO</label>      
+                </div>
+            </div>
+            
+            <div class="invalid-feedback">* Required fields.</div>
+            
+            <div class="form-row grid-double">
+                <div></div>
+                <button type="submit" class="btn">
+                    Save
+                </button> 
+            </div>
+          </form> 
+      </div>
+  </div>
+  </div>

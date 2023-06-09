@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import { mergeMap, Observable, of } from 'rxjs';
+import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, ExpenseModel, RequestConfigModel } from '../models';
+import { ApiResponseModel, ExpenseModel, ApiResponseExpenseModel, RequestConfigModel, EmptyExpense } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpenseService {
-  // TODO: behavioural subject!!!!!!
+  expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
+  private expenses: ExpenseModel[] = [];
+
+  expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
 
   constructor(public api: ApiService) {}
 
-  getExpense = (id: number): Observable<ApiResponseModel> => {
+  getExpense = (id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/expense/${id}`,
       method: 'GET',
@@ -23,20 +26,21 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        const projectData = data ? (data as ExpenseModel) : null;
+        const data = response.data as ExpenseModel;
+        const error = response.error;
 
+        this.expense$.next(data);        
         return of({
-          data: projectData,
+          data: data,
           error,
         });
       }))
     ;
   };
 
-  addExpense = (data: ExpenseModel): Observable<ApiResponseModel> => {
+  addExpense = (projectId: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/expense`,
+      url: `${env.api.serverUrl}/project/${projectId}/expense`,
       method: 'POST',
       body: data,
       headers: {
@@ -46,17 +50,20 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ExpenseModel;
+        const error = response.error;
+        this.expenses.push(data);
+        this.expenses$.next(this.expenses);
+
         return of({
-          data: data ? (data as ExpenseModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
+      }))
+    ;
+  }
 
-  editExpense = (id: number, data: ExpenseModel): Observable<ApiResponseModel> => {
+  editExpense = (id: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/expense/${id}`,
       method: 'PUT',
@@ -68,16 +75,20 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ExpenseModel;
+        const error = response.error;
+        this.expenses = this.expenses.map(expense => {
+          if (expense.id === id) expense = data;
+          return expense;
+        });
+        this.expenses$.next(this.expenses);
         return of({
-          data: data ? (data as ExpenseModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
-
+      }))
+    ;
+  }
   deleteExpense = (id: number): Observable<ApiResponseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/expense/${id}`,
@@ -89,13 +100,15 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const { data, error } = response;
-        
+        const data = response.data as ExpenseModel;
+        const error = response.error;
+        this.expenses = this.expenses.filter(expense => expense.id !== id);
+        this.expenses$.next(this.expenses);
         return of({
-          data: data ? (data as ExpenseModel) : null,
+          data: data,
           error,
         });
-      })
-    );
-  };
+      }))
+    ;
+  }
 }

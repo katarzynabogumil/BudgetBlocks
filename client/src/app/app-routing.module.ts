@@ -7,6 +7,8 @@ import { AllProjectsDashboardComponent } from './components/all-projects-dashboa
 import { ProjectDashboardComponent } from './components/project-dashboard/project-dashboard.component';
 import { ProjectItemsContainerComponent } from './components/project-items-container/project-items-container.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
+import { ExpenseItemsContainerComponent } from './components/expense-items-container/expense-items-container.component';
+import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
 
 const routes: Routes = [
   { 
@@ -36,7 +38,21 @@ const routes: Routes = [
   { 
     path: 'project/:id', 
     component: ProjectDashboardComponent, 
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: "", 
+        component: ExpenseItemsContainerComponent, 
+      },
+      { 
+        path: "add", 
+        component: ExpenseFormComponent, 
+      },
+      { 
+        path: "edit/:expenseId", 
+        component: ExpenseFormComponent, 
+      },
+    ]
   },
   { 
     path: '**', 

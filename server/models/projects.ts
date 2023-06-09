@@ -34,13 +34,6 @@ async function getProjectsFromDB (userSub: string) {
     include: {
       owners: true,
       invitedUsers: true,
-      expenses: {
-        include: {
-          upvotes: true,
-          downvotes: true,
-          comments: true,
-        }
-      }
     },
   });
   console.log(projects)
@@ -55,6 +48,19 @@ async function getProjectFromDB (id: number) {
     include: {
       owners: true,
       invitedUsers: true,
+      expenses: {
+        include: {
+          upvotes: true,
+          downvotes: true,
+          comments: true,
+          category: true,
+        }
+      },
+      categories: {
+        include: {
+          expenses: true,
+        }
+      },
     },
   });
   return project;

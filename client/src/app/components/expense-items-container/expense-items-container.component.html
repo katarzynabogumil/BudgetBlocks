@@ -1,0 +1,12 @@
+<div class="items-container">
+
+  <span *ngIf="expenses" class="items-inner-container">
+    <span *ngFor="let expense of expenses" >
+      <app-expense-item [expense]="expense">
+      </app-expense-item>
+        
+    </span>
+    <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
+  </span>
+
+</div>

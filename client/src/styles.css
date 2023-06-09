@@ -59,7 +59,7 @@ h1 {
 h2 {
   font-family: var(--main-font);
   font-size: var(--medium);
-  font-weight: var(--bold);
+  font-weight: var(--black);
 }
 
 a {
@@ -133,8 +133,8 @@ a:active {
  justify-content: space-between;
 }
 
-.main-card > h1 {
-  margin-bottom: 5px;
+.main-card > h1, h2 {
+  margin-bottom: 10px;
 }
 
 .form-card {
@@ -177,6 +177,25 @@ a:active {
   }
 }
 
+
+/* DASHBOARDS */
+
+.items-container {
+  position: absolute;
+  left: 30px;
+  padding: 30px 30px 30px 370px;
+  width: calc(100% - 90px);
+  height: calc(100% - 60px);
+}
+
+.items-inner-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+
 /* FORMS */
 
 form {
@@ -201,7 +220,6 @@ textarea, textarea:focus,
 select, select:focus {
   border: 1px solid, grey;
   padding: 5px;
-  width: 100%;
   outline: none;
 }
 
@@ -223,6 +241,10 @@ select, select:focus {
 
 .form-card-container {
   width: 100%;
+}
+
+#checkbox-options {
+  text-align: left;
 }
 
 @media screen and (min-width: 1150px) {
