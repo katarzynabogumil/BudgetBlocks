@@ -23,6 +23,7 @@ import { ExpenseFormComponent } from './components/expense-form/expense-form.com
 import { AddItemComponent } from './components/add-item/add-item.component';
 import { ProjectItemsContainerComponent } from './components/project-items-container/project-items-container.component';
 import { ExpenseItemsContainerComponent } from './components/expense-items-container/expense-items-container.component';
+import { ExpenseDetailsComponent } from './components/expense-details/expense-details.component';
 
 export function playerFactory() {
   return player;
@@ -42,7 +43,8 @@ export function playerFactory() {
     ExpenseFormComponent,
     AddItemComponent,
     ProjectItemsContainerComponent,
-    ExpenseItemsContainerComponent
+    ExpenseItemsContainerComponent,
+    ExpenseDetailsComponent
   ],
   imports: [
     BrowserModule,

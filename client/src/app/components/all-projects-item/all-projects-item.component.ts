@@ -9,6 +9,7 @@ import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
 })
 export class AllProjectsItemComponent {
   @Input() project: ProjectModel = EmptyProject;
+  linkDisabled: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -16,6 +17,7 @@ export class AllProjectsItemComponent {
   ) { }
 
   remove() {
+    this.linkDisabled = true;
     this.projectApi.deleteProject(this.project.id as number)
       .subscribe();
   }

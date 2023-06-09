@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { ExpenseModel, EmptyExpense } from '@app/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { ExpenseModel, EmptyExpense, ExpenseService } from '@app/core';
 
 @Component({
   selector: 'app-expense-item',
@@ -8,4 +9,16 @@ import { ExpenseModel, EmptyExpense } from '@app/core';
 })
 export class ExpenseItemComponent {
   @Input() expense: ExpenseModel = EmptyExpense;
+  linkDisabled: boolean = false;
+
+  constructor(
+    private auth: AuthService,
+    public expenseApi: ExpenseService
+  ) { }
+
+  remove() {
+    this.linkDisabled = true;
+    this.expenseApi.deleteExpense(this.expense.id as number)
+      .subscribe();
+  }
 }

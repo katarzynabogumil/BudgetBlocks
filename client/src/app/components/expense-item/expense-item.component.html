@@ -1,1 +1,16 @@
-<p>expense-item works!</p>
+<!-- <div class="card expense-item" [routerLink]="linkDisabled ? null : ['/expense/' + expense.id]" > -->
+<div class="card expense-item">
+
+  <div>
+    <h2>{{expense.name}}</h2>
+    <b>Cost:</b> {{expense.cost | currency: expense.currency }}
+  </div>
+  <div class="links">
+    <a class="pointer" [routerLink]="['./edit/' + expense.id]">
+      edit
+    </a> / 
+    <a class="pointer" (click)="remove()" >
+      remove
+    </a>
+  </div>
+</div>
