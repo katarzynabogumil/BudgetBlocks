@@ -71,7 +71,7 @@ export class ExpenseFormComponent implements OnInit {
       expense.category.category = expense.newCategory;
       expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
         return a.orderId > b.orderId ? a : b;
-      }, EmptyExpCategory) || 0;
+      }, EmptyExpCategory).orderId || 0;
     } else {      
       expense.category.category = expense.formCategory;
       expense.category.orderId = this.categories.find(cat => {

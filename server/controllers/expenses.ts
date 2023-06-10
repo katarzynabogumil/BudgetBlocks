@@ -10,12 +10,11 @@ import {
 
 async function saveExpense (req: express.Request<{id: string}, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
   try {
-    console.log(req.params);
     const projectId = Number(req.params.id);
     const data = req.body;
 
     const newExpense = await saveExpenseToDb(projectId, data);
-
+    
     res.status(201);
     res.send(newExpense);
   } catch (e) {

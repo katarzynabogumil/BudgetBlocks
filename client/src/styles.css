@@ -177,7 +177,7 @@ a:active {
     margin: 30px 30px 30px 30px;
   }
 
-    /* DASHBOARDS */
+  /* DASHBOARDS */
 
   .items-container {
     position: absolute;
@@ -197,7 +197,7 @@ a:active {
 @media screen and (max-width: 800px) {
   .main-card, .form-card, .card {
     width: calc(100% - 40px);
-    margin: 20px auto 20px;
+    margin: 20px auto 10px;
   }
 
   .items-container,

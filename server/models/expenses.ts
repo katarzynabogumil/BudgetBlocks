@@ -1,17 +1,48 @@
 import prisma from "./prisma";
 import { Prisma } from '@prisma/client'
 
-async function saveExpenseToDb (projectId: number, expenseData: Prisma.ExpenseCreateInput) {
+async function saveExpenseToDb (projectId: number, data: Prisma.ExpenseCreateInput) {
+  const categoryData = data.category as Prisma.ExpCategoryCreateInput;
+  let {category: _, ...expenseData} = data;
+
+  let category = await checkIfCategoryInDb(projectId, categoryData);
+  if (!category) category = await saveCategoryToDb(projectId, categoryData);
+
   const newExpense = await prisma.expense.create({ 
     data: {
-      ...expenseData,
+      ...expenseData as Prisma.ExpenseCreateInput,
       createdAt: new Date().toISOString(),
       project: {
         connect: {id: projectId}
-      }
+      },
+      category: {
+        connect: {id: category.id}
+      },
     }
   });
   return newExpense;
+}; 
+
+async function checkIfCategoryInDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
+  const category = await prisma.expCategory.findFirst({
+    where: {
+      category: data.category,
+      projectId: projectId,
+    },
+  });
+  return category;
+}; 
+
+async function saveCategoryToDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
+  const newCategory = await prisma.expCategory.create({ 
+    data: {
+      ... data,
+      project: {
+        connect: {id: projectId}
+      },
+    }
+  });
+  return newCategory;
 }; 
 
 async function updateExpenseinDb (expenseId: number, data: Prisma.ExpenseUpdateInput) {

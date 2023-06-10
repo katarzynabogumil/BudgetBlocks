@@ -39,7 +39,7 @@
           <label>CATEGORY*</label>
           <select formControlName="formCategory" class="form-control">
             <option value="" disabled="[true]"></option>
-            <option *ngFor="let category of categories" value="category"></option>
+            <option *ngFor="let category of categories" value="{{category.category}}">{{category.category}}</option>
             <option value="add">add new</option>
           </select>
 

@@ -28,6 +28,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   getProject() {
+    this.projectApi.getProject(this.id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.expenses = p.expenses;
@@ -41,7 +42,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
           this.expensesAtCatOrderId[orderId].push(expense);
         })
       }
-      console.log(p)
     });
   }
 }

@@ -29,6 +29,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
+      console.log(p)
     });
   }
 
