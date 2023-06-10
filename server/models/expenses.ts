@@ -28,7 +28,6 @@ async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInpu
       category: true,
     }
   });
-  console.log('saved expense', newExpense)
   return newExpense;
 };
 
@@ -73,6 +72,9 @@ async function getExpenseFromDB(id: number) {
     where: {
       id
     },
+    include: {
+      category: true
+    }
   });
   return expense;
 };
@@ -88,7 +90,7 @@ async function deleteExpenseFromDB(projectId: number, expenseId: number) {
   });
 
   let category = await getCategoryFromDb(projectId, expense.category.category);
-  if (!category?.expenses) deleteCategotyFromDb(expense.category.id);
+  if (!category?.expenses.length) deleteCategoryFromDb(expense.category.id);
 
   return expense;
 };
@@ -118,13 +120,13 @@ async function saveCategoryToDb(projectId: number, data: Prisma.ExpCategoryCreat
   return newCategory;
 };
 
-async function deleteCategotyFromDb(id: number) {
-  const project = await prisma.expCategory.delete({
+async function deleteCategoryFromDb(id: number) {
+  const category = await prisma.expCategory.delete({
     where: {
       id
     },
   });
-  return project;
+  return category;
 };
 
 

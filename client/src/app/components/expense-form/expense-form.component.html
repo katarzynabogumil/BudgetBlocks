@@ -5,6 +5,11 @@
       <h2 *ngIf="isAddMode">Add an expense</h2>
       <h2 *ngIf="!isAddMode">Edit an expense</h2>
     </div>
+
+    <span class="material-symbols-outlined close pointer" (click)="close()">
+      close
+    </span>
+
     <div class="form-container">
 
       <form [formGroup]="expenseForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
@@ -76,7 +81,7 @@
           <textarea formControlName="notes" class="form-control"></textarea>
         </div>
 
-        <div class="form-row grid-single">
+        <!-- <div class="form-row grid-single">
           <label>OPTIONAL</label>
           <div id="checkbox-options">
             <div>
@@ -88,7 +93,7 @@
               <label for="false"> NO</label>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="invalid-feedback">* Required fields.</div>
 

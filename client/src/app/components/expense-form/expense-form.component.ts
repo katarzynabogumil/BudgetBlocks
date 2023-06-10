@@ -17,7 +17,6 @@ export class ExpenseFormComponent implements OnInit {
     link: [],
     photo: [],
     notes: [],
-    optional: [],
     formCategory: [],
     newCategory: [],
   })
@@ -49,6 +48,7 @@ export class ExpenseFormComponent implements OnInit {
     if (!this.isAddMode) {
       this.expenseApi.getExpense(this.projectId, this.expenseId)
         .subscribe((res: ApiResponseExpenseModel) => {
+          res.data.formCategory = res.data.category.category;
           this.expenseForm.patchValue(res.data);
         });
     }
@@ -127,5 +127,9 @@ export class ExpenseFormComponent implements OnInit {
         else console.log(res.error);
         this.router.navigate([`/project/${this.projectId}`]);
       });
+  }
+
+  close() {
+    this.router.navigate([`/project/${this.projectId}`]);
   }
 }

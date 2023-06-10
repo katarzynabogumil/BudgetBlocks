@@ -60,7 +60,6 @@ model Expense {
   link       String?
   photo      String?
   notes      String?
-  optional   Boolean   @default(false)
   category   ExpCategory   @relation(fields: [categoryId], references: [id])
   categoryId Int
   upvotes    User[]    @relation(name: "upvotes")

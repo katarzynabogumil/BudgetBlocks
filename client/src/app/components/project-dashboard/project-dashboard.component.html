@@ -9,10 +9,9 @@
       </h1>
       <h2>{{project.name}}</h2>
 
-      CompareMode: {{ this.compareMode }}<br>
-      Sum: {{this.sum}}<br><br>
-
       <b>Budget:</b> {{project.budget | currency: project.currency }} <br>
+      <b>Sum:</b> {{this.sum | currency: project.currency }} <br>
+      <i>including one option from each category</i><br>
       <b>Type:</b> {{project.type }}
 
       <div *ngIf="project.destination">

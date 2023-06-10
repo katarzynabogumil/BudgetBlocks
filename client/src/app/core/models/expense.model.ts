@@ -21,6 +21,8 @@ export interface ExpenseModel {
   downvotes?: UserModel[];
   comments?: CommentModel[];
   selected?: boolean
+
+  formCategory?: string,
 }
 
 export const EmptyExpense = {

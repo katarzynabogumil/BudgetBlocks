@@ -1,5 +1,10 @@
-<div class="card">
+<div class="card" [ngClass]="{'compare-not-selected' : compareMode }">
   <a class="pointer" [routerLink]="[link]">
-    <h2>Add {{item}}</h2>
+    <h2>
+      <span class="material-symbols-outlined add">
+        add
+      </span>
+      Add {{item}}
+    </h2>
   </a>
 </div>

@@ -34,6 +34,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.id = Number(this.route.snapshot.params['id']);
     this.getProject();
     this.onChanges();
+    this.monitorSelected();
   }
 
   getProject() {
@@ -43,31 +44,74 @@ export class ExpenseItemsContainerComponent implements OnInit {
       console.log(p);
       this.project = p;
       this.expenses = p.expenses;
-      this.categories = p.categories?.sort((a, b) => b.orderId - a.orderId) || [];
+      this.categories = p.categories?.sort((a, b) => a.orderId - b.orderId) || [];
 
       this.categories.forEach((cat: ExpCategoryModel) => {
         this.expensesAtCatOrderId[cat.orderId] = this.expenses
           .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
       })
 
+      this.updateSum()
     });
   }
 
   onChanges() {
     this.checkboxForm.get("compareMode")?.valueChanges.subscribe(val => {
       if (val) {
-        for (let [category, expArr] of Object.entries(this.expensesAtCatOrderId)) {
-          expArr[0].selected = true;
-          this.sum += expArr[0].cost;
-          this.compareMode = true;
-        }
+        this.compareMode = true;
+        this.markSelectedInit(true)
+        this.updateSum()
       } else {
-        this.sum = 0;
         this.compareMode = false;
+        this.updateSum()
       }
-      this.expenseApi.expenseSum$.next(this.sum);
       this.expenseApi.compareMode$.next(val);
     });
   }
 
+  markSelectedInit(flag: boolean) {
+    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+      expArr[0].selected = flag;
+    }
+  }
+
+  updateSum() {
+    this.sum = 0;
+    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+      if (this.compareMode) {
+        expArr.forEach(exp => {
+          if (exp.selected) this.sum += exp.cost;
+        })
+      } else {
+        this.sum += expArr[0].cost;
+      }
+    }
+    this.expenseApi.expenseSum$.next(this.sum);
+  }
+
+  monitorSelected() {
+    this.expenseApi.expenseSumToggle$.subscribe((expense) => {
+      // change only if there are more options in a category
+      if (this.compareMode && expense.category.expenses?.length !== 1) {
+        for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+          for (let exp of expArr) {
+            if (exp.id === expense.id) {
+              if (exp.selected) {
+                exp.selected = false;
+                // select first - something has to be selected in a category
+                expArr[0].selected = true;
+              } else {
+                // iterate through all and set to false
+                expArr.forEach(e => e.selected = false);
+                // set chosen to true
+                exp.selected = true;
+              }
+              this.updateSum();
+              return;
+            }
+          }
+        }
+      }
+    });
+  }
 }

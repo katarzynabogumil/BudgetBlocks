@@ -49,7 +49,11 @@ async function getProjectFromDB(id: number) {
       invitedUsers: true,
       expenses: {
         include: {
-          category: true,
+          category: {
+            include: {
+              expenses: true,
+            }
+          }
         }
       },
       categories: {

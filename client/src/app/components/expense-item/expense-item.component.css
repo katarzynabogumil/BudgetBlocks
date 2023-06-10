@@ -6,7 +6,7 @@
 }
 
 .compare-selected {
-  border: 3px solid var(--pink);
+  outline: 3px solid var(--pink);
 }
 
 .compare-not-selected {

@@ -5,6 +5,11 @@
       <h2 *ngIf="isAddMode">Add Project</h2>
       <h2 *ngIf="!isAddMode">Edit Project</h2>
     </div>
+
+    <span class="material-symbols-outlined close pointer" (click)="close()">
+      close
+    </span>
+
     <div class="form-container">
 
       <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">

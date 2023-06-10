@@ -91,4 +91,8 @@ export class ProjectFormComponent implements OnInit {
         this.router.navigate([`/project/${id}`]);
       });
   }
+
+  close() {
+    this.router.navigate([`/projects/`]);
+  }
 }

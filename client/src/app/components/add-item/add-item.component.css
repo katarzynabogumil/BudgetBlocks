@@ -1,0 +1,12 @@
+.compare-not-selected {
+  opacity: 50%
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+.add {
+  position: relative;
+  top: 6px;
+}

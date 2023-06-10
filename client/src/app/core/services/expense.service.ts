@@ -13,6 +13,7 @@ export class ExpenseService {
   // expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
   // private expenses: ExpenseModel[] = [];
 
+  expenseSumToggle$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
   expenseSum$ = new BehaviorSubject<number>(0);
   compareMode$ = new BehaviorSubject<boolean>(false);
 
@@ -112,7 +113,7 @@ export class ExpenseService {
       ;
   }
 
-  deleteExpense = (projectId: number, id: number): Observable<ApiResponseModel> => {
+  deleteExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'DELETE',
@@ -128,6 +129,17 @@ export class ExpenseService {
 
         const project = this.projectApi.project$.getValue();
         project.expenses = project.expenses.filter(expense => expense.id !== id);
+
+        // console.log(response.data)
+        // console.log(data)
+        // console.log(error)
+        const deletedCategory = data.category;
+        // console.log('deletedCategory', deletedCategory)
+        // console.log('project.categories before', project.categories)
+        project.categories = project.categories?.filter(category => {
+          !category.expenses?.length && category.category === deletedCategory.category
+        });
+        // console.log('project.categories after', project.categories)
         this.projectApi.project$.next(project);
 
         return of({
