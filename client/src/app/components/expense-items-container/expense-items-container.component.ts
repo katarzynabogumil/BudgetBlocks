@@ -40,14 +40,16 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.projectApi.getProject(this.id).subscribe();
 
     this.projectApi.project$.subscribe((p: ProjectModel) => {
+      console.log(p);
       this.project = p;
       this.expenses = p.expenses;
-      this.categories = p.categories?.sort((a, b) => b.orderId = a.orderId) || [];
+      this.categories = p.categories?.sort((a, b) => b.orderId - a.orderId) || [];
 
       this.categories.forEach((cat: ExpCategoryModel) => {
         this.expensesAtCatOrderId[cat.orderId] = this.expenses
           .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
       })
+
     });
   }
 

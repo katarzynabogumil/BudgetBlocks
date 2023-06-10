@@ -8,8 +8,9 @@ type ExpCategoryInclExpenses = null | ExpCategory | (ExpCategory & {
 async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInput) {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
   let { category: _, ...expenseData } = data;
-  console.log(categoryData)
+
   let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
+
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
 
   const newExpense = await prisma.expense.create({
@@ -22,8 +23,12 @@ async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInpu
       category: {
         connect: { id: category.id }
       },
+    },
+    include: {
+      category: true,
     }
   });
+  console.log('saved expense', newExpense)
   return newExpense;
 };
 

@@ -11,18 +11,14 @@
 </div>
 
 <div class="items-container" id="expenses-items-container">
-  <div *ngIf="expenses else noExpenses" class="items-inner-container" id="expenses-items-inner-container">
-    <div *ngFor="let category of categories">
+  <div *ngIf="expenses" id="expenses-items-inner-container">
+    <div *ngFor="let category of categories" class="category-row">
       <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]">
         <app-expense-item [expense]="expense">
         </app-expense-item>
-
       </div>
     </div>
-    <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
   </div>
 
-  <ng-template #noExpenses>
-    <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
-  </ng-template>
+  <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
 </div>

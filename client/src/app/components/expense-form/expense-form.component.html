@@ -39,6 +39,12 @@
           " class="invalid-feedback">
           Category is required.
         </div>
+        <div *ngIf="
+            this.submitted && 
+            ((expenseForm.value['formCategory'] === 'add' && isDuplicate))
+          " class="invalid-feedback">
+          This category exists.
+        </div>
         <div class="form-row grid-double">
           <label>CATEGORY*</label>
           <select formControlName="formCategory" class="form-control">

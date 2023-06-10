@@ -23,9 +23,11 @@ export class ExpenseFormComponent implements OnInit {
   })
 
   categories: ExpCategoryModel[] = [];
+  allCategoryNames: string[] = [];
   projectId: number = -1;
   expenseId: number = -1;
   isAddMode: boolean = false;
+  isDuplicate: boolean = false;
   submitted: boolean = false;
 
   constructor(
@@ -41,6 +43,8 @@ export class ExpenseFormComponent implements OnInit {
     this.expenseId = Number(this.route.snapshot.params['expenseId']);
 
     this.isAddMode = !this.expenseId;
+
+    this.getCategories();
 
     if (!this.isAddMode) {
       this.expenseApi.getExpense(this.projectId, this.expenseId)
@@ -66,24 +70,33 @@ export class ExpenseFormComponent implements OnInit {
     if (expense.optional === 'true') expense.optional = true;
     else expense.optional = false;
 
+    for (let cat of this.categories) {
+      this.allCategoryNames.push(cat.category.toLowerCase());
+    }
+
     expense.category = EmptyExpCategory;
-    if (!expense.formCategory) return;
+    if (!expense.formCategory ||
+      (expense.formCategory === 'add' &&
+        this.allCategoryNames.includes(expense.newCategory.toLowerCase()))) {
+      this.isDuplicate = true;
+      return;
+    }
+
     if (expense.formCategory === 'add') {
       if (!expense.newCategory) return;
       expense.category.category = expense.newCategory;
       expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
         return a.orderId > b.orderId ? a : b;
       }, EmptyExpCategory).orderId + 1 || 0;
+
     } else {
-      expense.category.category = expense.formCatengory;
+      expense.category.category = expense.formCategory;
       expense.category.orderId = this.categories.find(cat => {
         return cat.category === expense.formCategory;
       })?.orderId || 0;
     }
     delete expense.formCategory;
     delete expense.newCategory;
-
-    console.log(this.categories)
 
     if (this.expenseForm.invalid) {
       return;
