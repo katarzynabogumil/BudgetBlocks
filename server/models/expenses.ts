@@ -3,33 +3,33 @@ import { ExpCategory, Expense, Prisma } from '@prisma/client'
 
 type ExpCategoryInclExpenses = null | ExpCategory | (ExpCategory & {
   expenses: Expense[];
-}) 
+})
 
-async function saveExpenseToDb (projectId: number, data: Prisma.ExpenseCreateInput) {
+async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInput) {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
-  let {category: _, ...expenseData} = data;
-
+  let { category: _, ...expenseData } = data;
+  console.log(categoryData)
   let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
 
-  const newExpense = await prisma.expense.create({ 
+  const newExpense = await prisma.expense.create({
     data: {
       ...expenseData as Prisma.ExpenseCreateInput,
       createdAt: new Date(),
       project: {
-        connect: {id: projectId}
+        connect: { id: projectId }
       },
       category: {
-        connect: {id: category.id}
+        connect: { id: category.id }
       },
     }
   });
   return newExpense;
-}; 
+};
 
-async function updateExpenseinDb (projectId: number, expenseId: number, data: Prisma.ExpenseUpdateInput) {
+async function updateExpenseinDb(projectId: number, expenseId: number, data: Prisma.ExpenseUpdateInput) {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
-  let {category: _, ...expenseData} = data;
+  let { category: _, ...expenseData } = data;
 
   let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
@@ -38,16 +38,16 @@ async function updateExpenseinDb (projectId: number, expenseId: number, data: Pr
     where: {
       id: expenseId,
     },
-    data: { 
+    data: {
       ...data,
       updatedAt: new Date(),
       category: {
-        connect: {id: category.id}
+        connect: { id: category.id }
       },
     }
   });
   return expense;
-}; 
+};
 
 // async function getExpensesFromDB (projectId: number) {
 //   const expenses = await prisma.expense.findMany({
@@ -63,16 +63,16 @@ async function updateExpenseinDb (projectId: number, expenseId: number, data: Pr
 //   return expenses;
 // }; 
 
-async function getExpenseFromDB (id: number) {
+async function getExpenseFromDB(id: number) {
   const expense = await prisma.expense.findUnique({
     where: {
       id
     },
   });
   return expense;
-}; 
+};
 
-async function deleteExpenseFromDB (projectId: number, expenseId: number) {
+async function deleteExpenseFromDB(projectId: number, expenseId: number) {
   const expense = await prisma.expense.delete({
     where: {
       id: expenseId
@@ -81,14 +81,14 @@ async function deleteExpenseFromDB (projectId: number, expenseId: number) {
       category: true
     }
   });
-  
+
   let category = await getCategoryFromDb(projectId, expense.category.category);
   if (!category?.expenses) deleteCategotyFromDb(expense.category.id);
 
   return expense;
-}; 
+};
 
-async function getCategoryFromDb (projectId: number, category: string) {
+async function getCategoryFromDb(projectId: number, category: string) {
   const foundCategory = await prisma.expCategory.findFirst({
     where: {
       category,
@@ -99,28 +99,28 @@ async function getCategoryFromDb (projectId: number, category: string) {
     }
   });
   return foundCategory;
-}; 
+};
 
-async function saveCategoryToDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
-  const newCategory = await prisma.expCategory.create({ 
+async function saveCategoryToDb(projectId: number, data: Prisma.ExpCategoryCreateInput) {
+  const newCategory = await prisma.expCategory.create({
     data: {
-      ... data,
+      ...data,
       project: {
-        connect: {id: projectId}
+        connect: { id: projectId }
       },
     }
   });
   return newCategory;
-}; 
+};
 
-async function deleteCategotyFromDb (id: number) {
+async function deleteCategotyFromDb(id: number) {
   const project = await prisma.expCategory.delete({
     where: {
       id
     },
   });
   return project;
-}; 
+};
 
 
 export {

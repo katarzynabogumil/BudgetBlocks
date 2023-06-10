@@ -11,15 +11,15 @@ import { ExpenseService, ProjectService, ApiResponseExpenseModel, ExpenseModel, 
 })
 export class ExpenseFormComponent implements OnInit {
   expenseForm: FormGroup = this.formBuilder.group({
-    name:["", [Validators.required, Validators.minLength(1)]],
-    cost:[, [Validators.required, Validators.minLength(1)]],
-    currency:["EUR"],
-    link:[],
-    photo:[],
-    notes:[],
-    optional:[],
-    formCategory:[],
-    newCategory:[],
+    name: ["", [Validators.required, Validators.minLength(1)]],
+    cost: [, [Validators.required, Validators.minLength(1)]],
+    currency: ["EUR"],
+    link: [],
+    photo: [],
+    notes: [],
+    optional: [],
+    formCategory: [],
+    newCategory: [],
   })
 
   categories: ExpCategoryModel[] = [];
@@ -27,19 +27,18 @@ export class ExpenseFormComponent implements OnInit {
   expenseId: number = -1;
   isAddMode: boolean = false;
   submitted: boolean = false;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    ) { }
-    
+  ) { }
+
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
     this.expenseId = Number(this.route.snapshot.params['expenseId']);
-    this.getCategories();
 
     this.isAddMode = !this.expenseId;
 
@@ -57,8 +56,10 @@ export class ExpenseFormComponent implements OnInit {
       this.categories = p.categories || [];
     });
   }
-    
-  handleSubmit () {
+
+  handleSubmit() {
+    this.getCategories();
+
     this.submitted = true;
     const expense = this.expenseForm.value;
 
@@ -72,8 +73,8 @@ export class ExpenseFormComponent implements OnInit {
       expense.category.category = expense.newCategory;
       expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
         return a.orderId > b.orderId ? a : b;
-      }, EmptyExpCategory).orderId || 0;
-    } else {      
+      }, EmptyExpCategory).orderId + 1 || 0;
+    } else {
       expense.category.category = expense.formCatengory;
       expense.category.orderId = this.categories.find(cat => {
         return cat.category === expense.formCategory;
@@ -82,13 +83,15 @@ export class ExpenseFormComponent implements OnInit {
     delete expense.formCategory;
     delete expense.newCategory;
 
+    console.log(this.categories)
+
     if (this.expenseForm.invalid) {
       return;
     } else {
       if (this.isAddMode) {
-          this.addExpense(this.projectId, expense);
+        this.addExpense(this.projectId, expense);
       } else {
-          this.editExpense(this.projectId, this.expenseId, expense);
+        this.editExpense(this.projectId, this.expenseId, expense);
       }
       this.expenseForm.reset();
       this.submitted = false;
@@ -101,7 +104,7 @@ export class ExpenseFormComponent implements OnInit {
         if (!res.error) console.log('Expense added.');
         else console.log(res.error);
         this.router.navigate([`/project/${projectId}`]);
-    });
+      });
   }
 
   editExpense(projectId: number, id: number, data: ExpenseModel) {
@@ -110,6 +113,6 @@ export class ExpenseFormComponent implements OnInit {
         if (!res.error) console.log('Expense edited.');
         else console.log(res.error);
         this.router.navigate([`/project/${this.projectId}`]);
-    });
+      });
   }
 }

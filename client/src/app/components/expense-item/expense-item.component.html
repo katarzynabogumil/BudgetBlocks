@@ -1,5 +1,5 @@
 <!-- <div class="card expense-item" [routerLink]="linkDisabled ? null : ['/expense/' + expense.id]" > -->
-<div class="card expense-item">
+<div class="card expense-item" [ngClass]="{'compare-selected' : expense.selected }">
 
   <div>
     <h2>{{expense.name}}</h2>

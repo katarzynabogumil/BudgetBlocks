@@ -1,15 +1,15 @@
 import express from 'express';
 import { Prisma } from '@prisma/client'
 
-import { 
-  saveProjectToDb, 
-  getProjectsFromDB, 
+import {
+  saveProjectToDb,
+  getProjectsFromDB,
   getProjectFromDB,
-  updateProjectinDb, 
+  updateProjectinDb,
   deleteProjectsFromDB
 } from '../models/projects';
 
-async function saveProject (req: express.Request<{}, {}, Prisma.ProjectCreateInput>, res: express.Response) {
+async function saveProject(req: express.Request<{}, {}, Prisma.ProjectCreateInput>, res: express.Response) {
   try {
     const projectData = req.body;
     const userSub = req.auth?.payload.sub || '';
@@ -22,9 +22,9 @@ async function saveProject (req: express.Request<{}, {}, Prisma.ProjectCreateInp
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-}; 
+};
 
-async function getAllProjects (req: express.Request, res: express.Response) {
+async function getAllProjects(req: express.Request, res: express.Response) {
   try {
     const userSub = req.auth?.payload.sub || '';
     if (userSub) {
@@ -39,9 +39,9 @@ async function getAllProjects (req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-}; 
+};
 
-async function getProject (req: express.Request, res: express.Response) {
+async function getProject(req: express.Request, res: express.Response) {
   try {
     const id = Number(req.params.id);
     const project = await getProjectFromDB(id);
@@ -51,11 +51,11 @@ async function getProject (req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-}; 
+};
 
-async function editProject 
+async function editProject
   (
-    req: express.Request<{id: string}, {}, Prisma.ProjectUpdateInput>, 
+    req: express.Request<{ id: string }, {}, Prisma.ProjectUpdateInput>,
     res: express.Response
   ) {
   try {
@@ -70,7 +70,7 @@ async function editProject
   }
 };
 
-async function deleteProject (req: express.Request, res: express.Response) {
+async function deleteProject(req: express.Request, res: express.Response) {
   try {
     const id = Number(req.params.id);
     const project = await deleteProjectsFromDB(id);

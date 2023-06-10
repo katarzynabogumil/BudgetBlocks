@@ -1,10 +1,23 @@
-<div class="items-container">
+<div id="expense-items-background" class="card"></div>
+<div id="expense-items-navbar">
+  <b id="switch-left">edit</b>
+  <form [formGroup]="checkboxForm">
+    <label class="switch">
+      <input type="checkbox" formControlName="compareMode" class="form-control" />
+      <span class="slider"></span>
+    </label>
+  </form>
+  <b id="switch-right">compare</b>
+</div>
 
-  <div *ngIf="expenses else noExpenses" class="items-inner-container">
-    <div *ngFor="let expense of expenses">
-      <app-expense-item [expense]="expense">
-      </app-expense-item>
+<div class="items-container" id="expenses-items-container">
+  <div *ngIf="expenses else noExpenses" class="items-inner-container" id="expenses-items-inner-container">
+    <div *ngFor="let category of categories">
+      <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]">
+        <app-expense-item [expense]="expense">
+        </app-expense-item>
 
+      </div>
     </div>
     <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
   </div>
@@ -12,5 +25,4 @@
   <ng-template #noExpenses>
     <app-add-item [item]="'an expense'" [link]="'./add'"></app-add-item>
   </ng-template>
-
 </div>

@@ -9,15 +9,17 @@ import { ProjectService } from './project.service';
   providedIn: 'root'
 })
 export class ExpenseService {
-  expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
-  private expenses: ExpenseModel[] = [];
-
   expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
-  
+  // expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
+  // private expenses: ExpenseModel[] = [];
+
+  expenseSum$ = new BehaviorSubject<number>(0);
+  compareMode$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     public api: ApiService,
     public projectApi: ProjectService,
-  ) {}
+  ) { }
 
   getExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
@@ -33,13 +35,13 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.expense$.next(data);        
+        this.expense$.next(data);
         return of({
           data: data,
           error,
         });
       }))
-    ;
+      ;
   };
 
   addExpense = (projectId: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
@@ -57,23 +59,19 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.expenses.push(data);
-        this.expenses$.next(this.expenses);
+        // this.expenses.push(data);
+        // this.expenses$.next(this.expenses);
 
-        const projects = this.projectApi.projects.map(project => {
-          if (project.id === projectId) {
-            project.expenses.push(data);
-          };
-          return project;
-        });
-        this.projectApi.projects$.next(projects);
+        const project = this.projectApi.project$.getValue();
+        project.expenses.push(data);
+        this.projectApi.project$.next(project);
 
         return of({
           data: data,
           error,
         });
       }))
-    ;
+      ;
   }
 
   editExpense = (projectId: number, id: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
@@ -91,30 +89,27 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.expenses = this.expenses.map(expense => {
-          if (expense.id === id) expense = data;
-          return expense;
-        });
-        this.expenses$.next(this.expenses);
+        // this.expenses = this.expenses.map(expense => {
+        //   if (expense.id === id) expense = data;
+        //   return expense;
+        // });
+        // this.expenses$.next(this.expenses);
 
-        const projects = this.projectApi.projects.map(project => {
-          if (project.id === projectId) {
-            project.expenses.map(expense => {
-              if (expense.id === id) {
-                expense = data;
-              }
-            });
-          };
-          return project;
+        const project = this.projectApi.project$.getValue();
+        project.expenses = project.expenses.map(expense => {
+          if (expense.id === id) {
+            expense = data;
+          }
+          return expense
         });
-        this.projectApi.projects$.next(projects);
+        this.projectApi.project$.next(project);
 
         return of({
           data: data,
           error,
         });
       }))
-    ;
+      ;
   }
 
   deleteExpense = (projectId: number, id: number): Observable<ApiResponseModel> => {
@@ -131,22 +126,14 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.expenses = this.expenses.filter(expense => expense.id !== id);
-        this.expenses$.next(this.expenses);
-
-        const projects = this.projectApi.projects.map(project => {
-          if (project.id === projectId) {
-            project.expenses.filter(expense => expense.id !== id);
-          };
-          return project;
-        });
-        this.projectApi.projects$.next(projects);
+        const project = this.projectApi.project$.getValue();
+        project.expenses = project.expenses.filter(expense => expense.id !== id);
+        this.projectApi.project$.next(project);
 
         return of({
           data: data,
           error,
         });
-      }))
-    ;
+      }));
   }
 }

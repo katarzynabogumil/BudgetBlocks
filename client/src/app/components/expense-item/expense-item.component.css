@@ -5,6 +5,10 @@
   z-index: -1;
 }
 
-.links {
-  margin-top: 20px;
+.compare-selected {
+  border: 3px solid var(--pink);
+}
+
+.compare-not-selected {
+  opacity: 50%
 }

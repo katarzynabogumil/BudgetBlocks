@@ -1,7 +1,7 @@
 import { UserModel } from './user.model';
 import { CommentModel } from './comment.model';
 import { ProjectModel } from './project.model';
-import { ExpCategoryModel } from './expCategory.model';
+import { EmptyExpCategory, ExpCategoryModel } from './expCategory.model';
 
 export interface ExpenseModel {
   id?: number;
@@ -10,7 +10,7 @@ export interface ExpenseModel {
   project?: ProjectModel;
   projectId?: number;
   name: string;
-  category?: ExpCategoryModel;
+  category: ExpCategoryModel;
   cost: number;
   calcCost?: number;
   currency: string;
@@ -20,10 +20,12 @@ export interface ExpenseModel {
   upvotes?: UserModel[];
   downvotes?: UserModel[];
   comments?: CommentModel[];
+  selected?: boolean
 }
 
 export const EmptyExpense = {
   name: '',
   cost: 0,
   currency: 'EUR',
+  category: EmptyExpCategory,
 }

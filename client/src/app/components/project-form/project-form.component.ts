@@ -11,30 +11,30 @@ import { ProjectModel, ProjectService, ApiResponseProjectModel } from '@app/core
 })
 export class ProjectFormComponent implements OnInit {
   projectForm: FormGroup = this.formBuilder.group({
-    name:["", [Validators.required, Validators.minLength(1)]],
-    type:["", [Validators.required, Validators.minLength(1)]],
-    budget:["", [Validators.required, Validators.minLength(1)]],
-    currency:["EUR"],
-    dateFrom:[],
-    dateTo:[],
-    area:[],
-    noOfGuests:[],
-    occasion:[],
-    destination:[],
-    description:[],
+    name: ["", [Validators.required, Validators.minLength(1)]],
+    type: ["", [Validators.required, Validators.minLength(1)]],
+    budget: ["", [Validators.required, Validators.minLength(1)]],
+    currency: ["EUR"],
+    dateFrom: [],
+    dateTo: [],
+    area: [],
+    noOfGuests: [],
+    occasion: [],
+    destination: [],
+    description: [],
   })
   id: number = -1;
   isAddMode: boolean = false;
   submitted: boolean = false;
   dateIsValid: boolean = true;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    ) { }
-    
+  ) { }
+
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
     this.isAddMode = !this.id;
@@ -46,49 +46,49 @@ export class ProjectFormComponent implements OnInit {
         });
     }
   }
-    
-    handleSubmit () {
-      this.submitted = true;
-      const project = this.projectForm.value;
-      if (project.dateFrom) project.dateFrom = new Date(project.dateFrom);
-      if (project.dateTo) project.dateTo = new Date(project.dateTo);
 
-      if (this.projectForm.invalid || !this.dateIsValid) {
-        return;
+  handleSubmit() {
+    this.submitted = true;
+    const project = this.projectForm.value;
+    if (project.dateFrom) project.dateFrom = new Date(project.dateFrom);
+    if (project.dateTo) project.dateTo = new Date(project.dateTo);
+
+    if (this.projectForm.invalid || !this.dateIsValid) {
+      return;
+    } else {
+      if (this.isAddMode) {
+        this.addProject(this.projectForm.value);
       } else {
-        if (this.isAddMode) {
-            this.addProject(this.id, this.projectForm.value);
-        } else {
-            this.editProject(this.id, this.projectForm.value);
-        }
-        this.projectForm.reset();
-        this.submitted = false;
-        this.dateIsValid = true;
+        this.editProject(this.id, this.projectForm.value);
       }
-    }
-
-    onDateChange(event: Event) {
-      const dateTo = new Date(this.projectForm.value.dateTo).toISOString();
-      const dateFrom = new Date(this.projectForm.value.dateFrom).toISOString();
-      if (dateTo < dateFrom) this.dateIsValid = false;
-      else this.dateIsValid = true;
-    }
-
-    addProject(id: number, data: ProjectModel) {
-      this.projectApi.addProject(data)
-        .subscribe((res: ApiResponseProjectModel) => {
-          if (!res.error) console.log('Project added.');
-          else console.log(res.error);
-          this.router.navigate([`/project/${id}`]);
-      });
-    }
-
-    editProject(id: number, data: ProjectModel) {
-      this.projectApi.editProject(id, data)
-        .subscribe((res: ApiResponseProjectModel) => {
-          if (!res.error) console.log('Project edited.');
-          else console.log(res.error);
-          this.router.navigate([`/project/${id}`]);
-      });
+      this.projectForm.reset();
+      this.submitted = false;
+      this.dateIsValid = true;
     }
   }
+
+  onDateChange(event: Event) {
+    const dateTo = new Date(this.projectForm.value.dateTo).toISOString();
+    const dateFrom = new Date(this.projectForm.value.dateFrom).toISOString();
+    if (dateTo < dateFrom) this.dateIsValid = false;
+    else this.dateIsValid = true;
+  }
+
+  addProject(data: ProjectModel) {
+    this.projectApi.addProject(data)
+      .subscribe((res: ApiResponseProjectModel) => {
+        if (!res.error) console.log('Project added.');
+        else console.log(res.error);
+        this.router.navigate([`/project/${res.data.id}`]);
+      });
+  }
+
+  editProject(id: number, data: ProjectModel) {
+    this.projectApi.editProject(id, data)
+      .subscribe((res: ApiResponseProjectModel) => {
+        if (!res.error) console.log('Project edited.');
+        else console.log(res.error);
+        this.router.navigate([`/project/${id}`]);
+      });
+  }
+}

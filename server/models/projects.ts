@@ -1,7 +1,7 @@
 import prisma from "./prisma";
 import { Prisma } from '@prisma/client'
 
-async function saveProjectToDb (userSub: string, data: Prisma.ProjectCreateInput) {
+async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput) {
   const user = await prisma.user.findUnique({
     where: {
       sub: userSub
@@ -10,21 +10,21 @@ async function saveProjectToDb (userSub: string, data: Prisma.ProjectCreateInput
 
   const addOwner = user ? {
     owners: {
-      connect: { id: user.id } 
+      connect: { id: user.id }
     }
   } : {}
 
   data.createdAt = new Date();
-  const newProject = await prisma.project.create({ 
+  const newProject = await prisma.project.create({
     data: {
       ...data,
       ...addOwner
     },
   });
   return newProject;
-}; 
+};
 
-async function getProjectsFromDB (userSub: string) {
+async function getProjectsFromDB(userSub: string) {
   const projects = await prisma.project.findMany({
     where: {
       owners: {
@@ -37,9 +37,9 @@ async function getProjectsFromDB (userSub: string) {
     },
   });
   return projects;
-}; 
+};
 
-async function getProjectFromDB (id: number) {
+async function getProjectFromDB(id: number) {
   const project = await prisma.project.findUnique({
     where: {
       id
@@ -47,7 +47,11 @@ async function getProjectFromDB (id: number) {
     include: {
       owners: true,
       invitedUsers: true,
-      expenses: true,
+      expenses: {
+        include: {
+          category: true,
+        }
+      },
       categories: {
         include: {
           expenses: {
@@ -63,30 +67,30 @@ async function getProjectFromDB (id: number) {
     },
   });
   return project;
-}; 
+};
 
-async function updateProjectinDb (projectId: number, data: Prisma.ProjectUpdateInput) {
+async function updateProjectinDb(projectId: number, data: Prisma.ProjectUpdateInput) {
   // TODO - seperate functions for adding-removing users?
   const project = await prisma.project.update({
     where: {
       id: projectId,
     },
-    data: { 
+    data: {
       ...data,
       updatedAt: new Date()
     }
   });
   return project;
-}; 
+};
 
-async function deleteProjectsFromDB (projectId: number) {
+async function deleteProjectsFromDB(projectId: number) {
   const project = await prisma.project.delete({
     where: {
       id: projectId
     },
   });
   return project;
-}; 
+};
 
 export {
   saveProjectToDb,

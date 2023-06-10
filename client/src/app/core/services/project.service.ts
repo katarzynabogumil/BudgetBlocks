@@ -9,11 +9,11 @@ import { ApiService } from './api.service';
 })
 export class ProjectService {
   projects$ = new BehaviorSubject<ProjectModel[]>([]);
-  projects: ProjectModel[] = [];
+  public projects: ProjectModel[] = [];
 
   project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService) { }
 
   getAllProjects = (): Observable<ApiResponseProjectModelArr> => {
     const config: RequestConfigModel = {
@@ -30,14 +30,16 @@ export class ProjectService {
         const error = response.error;
 
         this.projects = data;
+        console.log(this.projects);
+
         this.projects$.next(this.projects);
-        
+
         return of({
           data: data,
           error,
         });
       }))
-    ;
+      ;
   };
 
   getProject = (id: number): Observable<ApiResponseProjectModel> => {
@@ -55,12 +57,12 @@ export class ProjectService {
         const error = response.error;
 
         this.project$.next(data);
-                return of({
+        return of({
           data: data,
           error,
         });
       }))
-    ;
+      ;
   };
 
   addProject = (projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
@@ -85,7 +87,7 @@ export class ProjectService {
           error,
         });
       }))
-    ;
+      ;
   }
 
   editProject = (id: number, projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
@@ -112,7 +114,7 @@ export class ProjectService {
           error,
         });
       }))
-    ;
+      ;
   }
 
   deleteProject = (id: number): Observable<ApiResponseProjectModel> => {
@@ -135,6 +137,6 @@ export class ProjectService {
           error,
         });
       }))
-    ;
+      ;
   }
 }
