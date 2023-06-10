@@ -29,6 +29,11 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   getProject() {
     this.projectApi.getProject(this.id).subscribe();
+
+    this.expenseApi.expenses$.subscribe((e: ExpenseModel[]) => {
+      this.expenses = e;
+    });
+
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.expenses = p.expenses;

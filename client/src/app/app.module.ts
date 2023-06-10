@@ -24,6 +24,7 @@ import { AddItemComponent } from './components/add-item/add-item.component';
 import { ProjectItemsContainerComponent } from './components/project-items-container/project-items-container.component';
 import { ExpenseItemsContainerComponent } from './components/expense-items-container/expense-items-container.component';
 import { ExpenseDetailsComponent } from './components/expense-details/expense-details.component';
+import { CommonModule } from '@angular/common';
 
 export function playerFactory() {
   return player;
@@ -48,6 +49,7 @@ export function playerFactory() {
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,

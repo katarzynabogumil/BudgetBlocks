@@ -9,8 +9,8 @@ import { ProjectService } from './project.service';
   providedIn: 'root'
 })
 export class ExpenseService {
-  // expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
-  // private expenses: ExpenseModel[] = [];
+  expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
+  private expenses: ExpenseModel[] = [];
 
   expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
   
@@ -33,7 +33,7 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        // this.expense$.next(data);        
+        this.expense$.next(data);        
         return of({
           data: data,
           error,
@@ -57,8 +57,8 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        // this.expenses.push(data);
-        // this.expenses$.next(this.expenses);
+        this.expenses.push(data);
+        this.expenses$.next(this.expenses);
 
         const projects = this.projectApi.projects.map(project => {
           if (project.id === projectId) {
@@ -91,11 +91,11 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        // this.expenses = this.expenses.map(expense => {
-        //   if (expense.id === id) expense = data;
-        //   return expense;
-        // });
-        // this.expenses$.next(this.expenses);
+        this.expenses = this.expenses.map(expense => {
+          if (expense.id === id) expense = data;
+          return expense;
+        });
+        this.expenses$.next(this.expenses);
 
         const projects = this.projectApi.projects.map(project => {
           if (project.id === projectId) {
@@ -130,8 +130,9 @@ export class ExpenseService {
       mergeMap((response) => {
         const data = response.data as ExpenseModel;
         const error = response.error;
-        // this.expenses = this.expenses.filter(expense => expense.id !== id);
-        // this.expenses$.next(this.expenses);
+
+        this.expenses = this.expenses.filter(expense => expense.id !== id);
+        this.expenses$.next(this.expenses);
 
         const projects = this.projectApi.projects.map(project => {
           if (project.id === projectId) {

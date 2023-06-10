@@ -1,12 +1,12 @@
 <div class="items-container">
 
-  <span *ngIf="projects.length > 0 esle noProjects" class="items-inner-container">
-    <span *ngFor="let project of projects">
+  <div *ngIf="projects.length > 0 else noProjects" class="items-inner-container">
+    <div *ngFor="let project of projects">
       <app-project-item [project]="project">
       </app-project-item>
-    </span>
+    </div>
     <app-add-item [item]="'a project'" [link]="'./add'"></app-add-item>
-  </span>
+  </div>
 
   <ng-template #noProjects>
     <app-add-item [item]="'a project'" [link]="'./add'"></app-add-item>
