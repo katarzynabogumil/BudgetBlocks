@@ -1,0 +1,15 @@
+<div class="card project-item" [routerLink]="linkDisabled ? null : ['/project/' + project.id]">
+
+  <div>
+    <h2>{{project.name}}</h2>
+    <b>Budget:</b> {{project.budget | currency: project.currency }}
+  </div>
+  <div class="edit-remove-links">
+    <a class="pointer" [routerLink]="['./edit/' + project.id]">
+      edit
+    </a> /
+    <a class="pointer" (click)="removeProject()">
+      remove
+    </a>
+  </div>
+</div>

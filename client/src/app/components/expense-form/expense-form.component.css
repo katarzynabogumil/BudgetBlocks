@@ -1,0 +1,8 @@
+#checkbox-options {
+  display: flex;
+  flex-direction: row;
+}
+
+#checkbox-options > * {
+  margin-right: 20px;
+}

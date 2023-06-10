@@ -36,7 +36,6 @@ async function getProjectsFromDB (userSub: string) {
       invitedUsers: true,
     },
   });
-  console.log(projects)
   return projects;
 }; 
 
@@ -48,17 +47,17 @@ async function getProjectFromDB (id: number) {
     include: {
       owners: true,
       invitedUsers: true,
-      expenses: {
-        include: {
-          upvotes: true,
-          downvotes: true,
-          comments: true,
-          category: true,
-        }
-      },
+      expenses: true,
       categories: {
         include: {
-          expenses: true,
+          expenses: {
+            include: {
+              upvotes: true,
+              downvotes: true,
+              comments: true,
+              category: true,
+            }
+          },
         }
       },
     },

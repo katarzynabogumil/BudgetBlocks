@@ -8,10 +8,10 @@
         <span class="avoidwrap">Blocks</span>
       </h1>
       <ng-container *ngIf="user$ | async as user">
-        <h2 >Hi, {{ user.nickname }}! Here are your projects.</h2>
+        <h2>Hi, {{ user.nickname }}! Here are your projects.</h2>
       </ng-container>
     </div>
     <app-nav-bar></app-nav-bar>
   </div>
-  <router-outlet></router-outlet> 
+  <router-outlet></router-outlet>
 </div>

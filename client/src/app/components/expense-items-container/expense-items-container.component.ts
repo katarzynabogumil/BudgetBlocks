@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpenseModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpenseModel, ExpCategoryModel } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,6 +12,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
   id: number = -1;
   project: ProjectModel = EmptyProject;
   expenses: ExpenseModel[] = [];
+  expensesAtCatOrderId: {[key: string]: ExpenseModel[]} = {};
+  categories: ExpCategoryModel[] = [];
 
   constructor(
     private auth: AuthService, 
@@ -29,6 +31,16 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.expenses = p.expenses;
+      this.categories = p.categories || [];
+      if (this.categories.length) {
+        this.expenses.forEach((expense: ExpenseModel) => {
+          const orderId = expense.category?.orderId || 0;
+          if (!this.expensesAtCatOrderId[orderId]) {
+            this.expensesAtCatOrderId[orderId] = [];
+          }
+          this.expensesAtCatOrderId[orderId].push(expense);
+        })
+      }
       console.log(p)
     });
   }

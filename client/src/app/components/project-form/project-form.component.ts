@@ -57,7 +57,7 @@ export class ProjectFormComponent implements OnInit {
         return;
       } else {
         if (this.isAddMode) {
-            this.addProject(this.projectForm.value);
+            this.addProject(this.id, this.projectForm.value);
         } else {
             this.editProject(this.id, this.projectForm.value);
         }
@@ -74,20 +74,21 @@ export class ProjectFormComponent implements OnInit {
       else this.dateIsValid = true;
     }
 
-    addProject(data: ProjectModel) {
-      this.projectApi.addProject(data).
-        subscribe((res: ApiResponseProjectModel) => {
-          console.log('Project edited.');
-          this.router.navigate(['/projects']);
+    addProject(id: number, data: ProjectModel) {
+      this.projectApi.addProject(data)
+        .subscribe((res: ApiResponseProjectModel) => {
+          if (!res.error) console.log('Project added.');
+          else console.log(res.error);
+          this.router.navigate([`/project/${id}`]);
       });
     }
 
     editProject(id: number, data: ProjectModel) {
-      console.log(id)
-      this.projectApi.editProject(id, data).
-        subscribe((res: ApiResponseProjectModel) => {
-          console.log('Project edited.');
-          this.router.navigate(['/projects']);
+      this.projectApi.editProject(id, data)
+        .subscribe((res: ApiResponseProjectModel) => {
+          if (!res.error) console.log('Project edited.');
+          else console.log(res.error);
+          this.router.navigate([`/project/${id}`]);
       });
     }
   }

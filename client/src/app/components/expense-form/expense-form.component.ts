@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ExpenseService, ApiResponseExpenseModel, ExpenseModel } from '@app/core';
+import { ExpenseService, ProjectService, ApiResponseExpenseModel, ExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
 
 @Component({
   selector: 'app-expense-form',
@@ -18,8 +18,11 @@ export class ExpenseFormComponent implements OnInit {
     photo:[],
     notes:[],
     optional:[],
-    category:[],
+    formCategory:[],
+    newCategory:[],
   })
+
+  categories: ExpCategoryModel[] = [];
   projectId: number = -1;
   expenseId: number = -1;
   isAddMode: boolean = false;
@@ -28,6 +31,7 @@ export class ExpenseFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private expenseApi: ExpenseService,
+    public projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
     ) { }
@@ -35,6 +39,7 @@ export class ExpenseFormComponent implements OnInit {
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
     this.expenseId = Number(this.route.snapshot.params['expenseId']);
+    this.getCategories();
 
     this.isAddMode = !this.expenseId;
 
@@ -45,41 +50,65 @@ export class ExpenseFormComponent implements OnInit {
         });
     }
   }
+
+  getCategories() {
+    // this.projectApi.getProject(id).subscribe();
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+      this.categories = p.categories || [];
+    });
+  }
     
-    handleSubmit () {
-      this.submitted = true;
-      const expense = this.expenseForm.value;
+  handleSubmit () {
+    this.submitted = true;
+    const expense = this.expenseForm.value;
 
-      if (expense.optional === 'true') expense.optional = true;
-      else expense.optional = false;
+    if (expense.optional === 'true') expense.optional = true;
+    else expense.optional = false;
 
-      if (this.expenseForm.invalid) {
-        return;
+    expense.category = EmptyExpCategory;
+    if (expense.formCategory === 'add') {
+      if (!expense.newCategory) return;
+      expense.category.category = expense.newCategory;
+      expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
+        return a.orderId > b.orderId ? a : b;
+      }, EmptyExpCategory) || 0;
+    } else {      
+      expense.category.category = expense.formCategory;
+      expense.category.orderId = this.categories.find(cat => {
+        return cat.category === expense.formCategory;
+      })?.orderId || 0;
+    }
+    delete expense.formCategory;
+    delete expense.newCategory;
+
+    if (this.expenseForm.invalid) {
+      return;
+    } else {
+      if (this.isAddMode) {
+          this.addExpense(this.projectId, expense);
       } else {
-        if (this.isAddMode) {
-            this.addExpense(this.projectId, expense);
-        } else {
-            this.editExpense(this.expenseId, expense);
-        }
-        this.expenseForm.reset();
-        this.submitted = false;
+          this.editExpense(this.projectId, this.expenseId, expense);
       }
-    }
-
-    addExpense(projectId: number, data: ExpenseModel) {
-      this.expenseApi.addExpense(projectId, data).
-        subscribe((res: ApiResponseExpenseModel) => {
-          console.log('Expense edited.');
-          this.router.navigate([`/project/${projectId}`]);
-      });
-    }
-
-    editExpense(id: number, data: ExpenseModel) {
-      console.log(id)
-      this.expenseApi.editExpense(id, data).
-        subscribe((res: ApiResponseExpenseModel) => {
-          console.log('Expense edited.');
-          this.router.navigate([`/project/${this.projectId}`]);
-      });
+      this.expenseForm.reset();
+      this.submitted = false;
     }
   }
+
+  addExpense(projectId: number, data: ExpenseModel) {
+    this.expenseApi.addExpense(projectId, data).
+      subscribe((res: ApiResponseExpenseModel) => {
+        if (!res.error) console.log('Expense added.');
+        else console.log(res.error);
+        this.router.navigate([`/project/${projectId}`]);
+    });
+  }
+
+  editExpense(projectId: number, id: number, data: ExpenseModel) {
+    this.expenseApi.editExpense(projectId, id, data).
+      subscribe((res: ApiResponseExpenseModel) => {
+        if (!res.error) console.log('Expense edited.');
+        else console.log(res.error);
+        this.router.navigate([`/project/${this.projectId}`]);
+    });
+  }
+}

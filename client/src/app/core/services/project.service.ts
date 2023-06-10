@@ -9,7 +9,7 @@ import { ApiService } from './api.service';
 })
 export class ProjectService {
   projects$ = new BehaviorSubject<ProjectModel[]>([]);
-  private projects: ProjectModel[] = [];
+  projects: ProjectModel[] = [];
 
   project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
 

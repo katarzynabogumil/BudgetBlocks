@@ -3,3 +3,7 @@
   font-size: var(--medium);
   font-weight: var(--bold);
 }
+
+#nav-bar {
+  margin-top: 20px;
+}

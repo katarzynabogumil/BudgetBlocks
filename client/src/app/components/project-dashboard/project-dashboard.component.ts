@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -17,6 +17,7 @@ export class ProjectDashboardComponent implements OnInit {
     public expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -29,5 +30,21 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
     });
+  }
+
+  editProject(id: number, data: ProjectModel) {
+    this.projectApi.editProject(id, data)
+      .subscribe((res: ApiResponseProjectModel) => {
+        console.log('Project edited.');
+        this.router.navigate([`/project/${id}`]);
+    });
+  }
+  
+  removeProject() {
+    this.projectApi.deleteProject(this.id as number)
+      .subscribe((res: ApiResponseProjectModel) => {
+        console.log('Project removed.');
+        this.router.navigate([`/projects/`]);
+      }); 
   }
 }

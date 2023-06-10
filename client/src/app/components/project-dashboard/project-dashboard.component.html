@@ -3,45 +3,54 @@
 <div id="project-dashboard">
   <div class="card main-card">
     <div>
-        <h1>
-          <span class="avoidwrap">Budget</span>
-          <span class="avoidwrap">Blocks</span>
-        </h1>
-        <h2 >{{project.name}}</h2>
+      <h1>
+        <span class="avoidwrap">Budget</span>
+        <span class="avoidwrap">Blocks</span>
+      </h1>
+      <h2>{{project.name}}</h2>
 
-        <b>Budget:</b> {{project.budget | currency: project.currency }} <br>
-        <b>Type:</b> {{project.type }}
+      <b>Budget:</b> {{project.budget | currency: project.currency }} <br>
+      <b>Type:</b> {{project.type }}
 
-        <div *ngIf="project.destination">
-          <b>Destination:</b> {{project.destination }}
-        </div>
-
-        <div *ngIf="project.dateFrom">
-          <b>Date from:</b> {{project.dateFrom | date}}
-        </div>
-
-        <div *ngIf="project.dateTo">
-          <b>Date to:</b> {{project.dateTo | date}}
-        </div>
-        
-        <div *ngIf="project.noOfGuests">
-          <b>No of guests:</b> {{project.noOfGuests }}
-        </div>
-        
-        <div *ngIf="project.occasion">
-          <b>Occasion:</b> {{project.occasion }}
-        </div>
-        
-        <div *ngIf="project.area">
-          <b>Area:</b> {{project.area }}
-        </div>
-
-        <div *ngIf="project.description">
-          <b>Description:</b> {{project.description }}
-        </div>
-
+      <div *ngIf="project.destination">
+        <b>Destination:</b> {{project.destination }}
       </div>
+
+      <div *ngIf="project.dateFrom">
+        <b>Date from:</b> {{project.dateFrom | date}}
+      </div>
+
+      <div *ngIf="project.dateTo">
+        <b>Date to:</b> {{project.dateTo | date}}
+      </div>
+
+      <div *ngIf="project.noOfGuests">
+        <b>No of guests:</b> {{project.noOfGuests }}
+      </div>
+
+      <div *ngIf="project.occasion">
+        <b>Occasion:</b> {{project.occasion }}
+      </div>
+
+      <div *ngIf="project.area">
+        <b>Area:</b> {{project.area }}
+      </div>
+
+      <div *ngIf="project.description">
+        <b>Description:</b> {{project.description }}
+      </div>
+
+      <div class="edit-remove-links">
+        <a class="pointer" [routerLink]="['./edit/' + id]">
+          edit
+        </a> /
+        <a class="pointer" (click)="removeProject()">
+          remove
+        </a>
+      </div>
+
+    </div>
     <app-nav-bar></app-nav-bar>
   </div>
-  <router-outlet></router-outlet> 
+  <router-outlet></router-outlet>
 </div>

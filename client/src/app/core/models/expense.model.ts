@@ -12,6 +12,7 @@ export interface ExpenseModel {
   name: string;
   category?: ExpCategoryModel;
   cost: number;
+  calcCost?: number;
   currency: string;
   photo?: string;
   notes?: string;

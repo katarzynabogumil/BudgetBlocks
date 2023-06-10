@@ -11,7 +11,6 @@ async function saveExpenseToDb (projectId: number, expenseData: Prisma.ExpenseCr
       }
     }
   });
-  
   return newExpense;
 }; 
 

@@ -16,7 +16,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { PageLoaderComponent } from './components/page-loader/page-loader.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AllProjectsItemComponent } from './components/all-projects-item/all-projects-item.component';
+import { ProjectItemComponent } from './components/project-item/project-item.component';
 import { ExpenseItemComponent } from './components/expense-item/expense-item.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
@@ -37,7 +37,7 @@ export function playerFactory() {
     LandingComponent,
     NavBarComponent,
     PageLoaderComponent,
-    AllProjectsItemComponent,
+    ProjectItemComponent,
     ExpenseItemComponent,
     ProjectFormComponent,
     ExpenseFormComponent,

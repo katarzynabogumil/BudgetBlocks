@@ -18,6 +18,8 @@
   --black: 900;
   --bold: 600;
   --regular: 400;
+
+  --form-label-width: 100px;
 }
 
 * {
@@ -126,7 +128,7 @@ a:active {
   padding: 10px 20px 20px;
   width: 300px;
   min-height: 135px;
-  box-shadow: 0 0 10px rgb(160, 160, 160);
+  box-shadow: 0 0 10px rgb(120, 120, 120);
  }
 
 .main-card {
@@ -155,7 +157,9 @@ a:active {
   font-weight: var(--bold);
 }
 
-
+.edit-remove-links {
+  margin-top: 20px;
+}
 
 @media screen and (min-width: 800px) {
   .main-card {
@@ -196,7 +200,12 @@ a:active {
     margin: 20px auto 20px;
   }
 
-  .items-container, .items-inner-container, app-project-items-container {
+  .items-container,
+  .items-inner-container, 
+  app-project-items-container,
+  app-expense-form, 
+  app-project-form 
+  {
     width: 100%;
     margin: 0;
     padding: 0;
@@ -219,10 +228,6 @@ form {
   margin-bottom: 10px;
 }
 
-.grid-single {
-  grid-template-columns: 150px minmax(150px, calc(100% - 150px));
-}
-
 input, input:focus,
 textarea, textarea:focus,
 select, select:focus {
@@ -238,7 +243,7 @@ select, select:focus {
 
 .invalid-feedback {
   text-align: left;
-  margin-left: 165px;
+  margin-left: calc(var(--form-label-width) + 15px);
 }
 
 .sup {
@@ -255,14 +260,18 @@ select, select:focus {
   text-align: left;
 }
 
+.grid-single {
+  grid-template-columns: var(--form-label-width) minmax(var(--form-label-width), calc(100% - var(--form-label-width)));
+}
+
 @media screen and (min-width: 1150px) {
   .grid-double {
-    grid-template-columns: 150px minmax(150px, calc(100% - 150px)) 150px minmax(150px, calc(100% - 150px));
+    grid-template-columns: var(--form-label-width) minmax(var(--form-label-width), calc(100% - var(--form-label-width))) var(--form-label-width) minmax(var(--form-label-width), calc(100% - var(--form-label-width)));
   }
 }
 
 @media screen and (max-width: 1150px) {
   .grid-double {
-    grid-template-columns:  repeat(auto-fill, 150px minmax(150px, calc(100% - 150px)));
+    grid-template-columns:  repeat(auto-fill, var(--form-label-width) minmax(var(--form-label-width), calc(100% - var(--form-label-width))));
   }
 }

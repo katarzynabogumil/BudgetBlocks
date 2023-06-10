@@ -9,3 +9,7 @@ export interface ExpCategoryModel {
   category: string;
 }
 
+export const EmptyExpCategory = {
+  category: '',
+  orderId: 0,
+}

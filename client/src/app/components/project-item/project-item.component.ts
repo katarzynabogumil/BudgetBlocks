@@ -3,11 +3,11 @@ import { AuthService } from '@auth0/auth0-angular';
 import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
 
 @Component({
-  selector: 'app-all-projects-item',
-  templateUrl: './all-projects-item.component.html',
-  styleUrls: ['./all-projects-item.component.css']
+  selector: 'app-project-item',
+  templateUrl: './project-item.component.html',
+  styleUrls: ['./project-item.component.css']
 })
-export class AllProjectsItemComponent {
+export class ProjectItemComponent {
   @Input() project: ProjectModel = EmptyProject;
   linkDisabled: boolean = false;
 
@@ -16,7 +16,7 @@ export class AllProjectsItemComponent {
     public projectApi: ProjectService
   ) { }
 
-  remove() {
+  removeProject() {
     this.linkDisabled = true;
     this.projectApi.deleteProject(this.project.id as number)
       .subscribe();
