@@ -60,8 +60,8 @@
     margin: 20px auto 10px;
     background-color: white;
     border-radius: 20px;
-    padding: 10px 20px 20px;
-    min-height: 50px;
+    padding: 10px 20px 10px;
+    min-height: 40px;
     box-shadow: 0 0 10px rgb(120, 120, 120);
   }
 }
