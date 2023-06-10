@@ -32,6 +32,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   ngOnInit() {
     this.id = Number(this.route.snapshot.params['id']);
+    this.expenseApi.compareMode$.next(false);
     this.getProject();
     this.onChanges();
     this.monitorSelected();
