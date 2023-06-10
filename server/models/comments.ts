@@ -15,7 +15,7 @@ async function saveCommentToDb (expenseId: number, userId: number, data: Prisma.
   const newComment = await prisma.comment.create({ 
     data: {
       text: data.text,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       expense: {
         connect: {id: expenseId}
       },

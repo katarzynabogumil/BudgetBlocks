@@ -203,6 +203,7 @@ a:active {
   .items-container,
   .items-inner-container, 
   app-project-items-container,
+  app-expense-items-container,
   app-expense-form, 
   app-project-form 
   {

@@ -5,7 +5,7 @@ async function saveUserToDb (data: Prisma.UserCreateInput) {
   const newUser = await prisma.user.create({
     data: {
       ...data,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
     }
   });
   return newUser;

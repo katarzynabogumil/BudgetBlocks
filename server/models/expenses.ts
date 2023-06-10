@@ -1,17 +1,21 @@
 import prisma from "./prisma";
-import { Prisma } from '@prisma/client'
+import { ExpCategory, Expense, Prisma } from '@prisma/client'
+
+type ExpCategoryInclExpenses = null | ExpCategory | (ExpCategory & {
+  expenses: Expense[];
+}) 
 
 async function saveExpenseToDb (projectId: number, data: Prisma.ExpenseCreateInput) {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
   let {category: _, ...expenseData} = data;
 
-  let category = await checkIfCategoryInDb(projectId, categoryData);
+  let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
 
   const newExpense = await prisma.expense.create({ 
     data: {
       ...expenseData as Prisma.ExpenseCreateInput,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       project: {
         connect: {id: projectId}
       },
@@ -23,33 +27,11 @@ async function saveExpenseToDb (projectId: number, data: Prisma.ExpenseCreateInp
   return newExpense;
 }; 
 
-async function checkIfCategoryInDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
-  const category = await prisma.expCategory.findFirst({
-    where: {
-      category: data.category,
-      projectId: projectId,
-    },
-  });
-  return category;
-}; 
-
-async function saveCategoryToDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
-  const newCategory = await prisma.expCategory.create({ 
-    data: {
-      ... data,
-      project: {
-        connect: {id: projectId}
-      },
-    }
-  });
-  return newCategory;
-}; 
-
 async function updateExpenseinDb (projectId: number, expenseId: number, data: Prisma.ExpenseUpdateInput) {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
   let {category: _, ...expenseData} = data;
 
-  let category = await checkIfCategoryInDb(projectId, categoryData);
+  let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
 
   const expense = await prisma.expense.update({
@@ -58,7 +40,7 @@ async function updateExpenseinDb (projectId: number, expenseId: number, data: Pr
     },
     data: { 
       ...data,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
       category: {
         connect: {id: category.id}
       },
@@ -91,15 +73,55 @@ async function getExpenseFromDB (id: number) {
 }; 
 
 async function deleteExpenseFromDB (projectId: number, expenseId: number) {
-  // TODO delete category if last?
-  
   const expense = await prisma.expense.delete({
     where: {
       id: expenseId
     },
+    include: {
+      category: true
+    }
   });
+  
+  let category = await getCategoryFromDb(projectId, expense.category.category);
+  if (!category?.expenses) deleteCategotyFromDb(expense.category.id);
+
   return expense;
 }; 
+
+async function getCategoryFromDb (projectId: number, category: string) {
+  const foundCategory = await prisma.expCategory.findFirst({
+    where: {
+      category,
+      projectId,
+    },
+    include: {
+      expenses: true,
+    }
+  });
+  return foundCategory;
+}; 
+
+async function saveCategoryToDb (projectId: number, data: Prisma.ExpCategoryCreateInput) {
+  const newCategory = await prisma.expCategory.create({ 
+    data: {
+      ... data,
+      project: {
+        connect: {id: projectId}
+      },
+    }
+  });
+  return newCategory;
+}; 
+
+async function deleteCategotyFromDb (id: number) {
+  const project = await prisma.expCategory.delete({
+    where: {
+      id
+    },
+  });
+  return project;
+}; 
+
 
 export {
   saveExpenseToDb,

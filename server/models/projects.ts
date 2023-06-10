@@ -14,7 +14,7 @@ async function saveProjectToDb (userSub: string, data: Prisma.ProjectCreateInput
     }
   } : {}
 
-  data.createdAt = new Date().toISOString();
+  data.createdAt = new Date();
   const newProject = await prisma.project.create({ 
     data: {
       ...data,
@@ -73,7 +73,7 @@ async function updateProjectinDb (projectId: number, data: Prisma.ProjectUpdateI
     },
     data: { 
       ...data,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date()
     }
   });
   return project;
