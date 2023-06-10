@@ -37,10 +37,10 @@ router.get('/project/:id', validateAccessToken, getProject);
 router.put('/project/:id', validateAccessToken, editProject);
 router.delete('/project/:id', validateAccessToken, deleteProject);
 
-router.post('/project/:id/expense', validateAccessToken, saveExpense);
-router.get('/expense/:id', validateAccessToken, getExpense);
-router.put('/expense/:id', validateAccessToken, editExpense);
-router.delete('/expense/:id', validateAccessToken, deleteExpense);
+router.post('/project/:projectId/expense', validateAccessToken, saveExpense);
+router.get('/project/:projectId/expense/:id', validateAccessToken, getExpense);
+router.put('/project/:projectId/expense/:id', validateAccessToken, editExpense);
+router.delete('/project/:projectId/expense/:id', validateAccessToken, deleteExpense);
 
 router.post('/comment/:id', validateAccessToken, saveComment);
 router.delete('/comment/:id', validateAccessToken, deleteComment);

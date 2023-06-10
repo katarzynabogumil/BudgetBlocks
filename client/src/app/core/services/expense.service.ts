@@ -19,9 +19,9 @@ export class ExpenseService {
     public projectApi: ProjectService,
   ) {}
 
-  getExpense = (id: number): Observable<ApiResponseExpenseModel> => {
+  getExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/expense/${id}`,
+      url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -78,7 +78,7 @@ export class ExpenseService {
 
   editExpense = (projectId: number, id: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/expense/${id}`,
+      url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'PUT',
       body: data,
       headers: {
@@ -119,7 +119,7 @@ export class ExpenseService {
 
   deleteExpense = (projectId: number, id: number): Observable<ApiResponseModel> => {
     const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/expense/${id}`,
+      url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

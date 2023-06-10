@@ -44,7 +44,7 @@ export class ExpenseFormComponent implements OnInit {
     this.isAddMode = !this.expenseId;
 
     if (!this.isAddMode) {
-      this.expenseApi.getExpense(this.expenseId)
+      this.expenseApi.getExpense(this.projectId, this.expenseId)
         .subscribe((res: ApiResponseExpenseModel) => {
           this.expenseForm.patchValue(res.data);
         });
@@ -66,6 +66,7 @@ export class ExpenseFormComponent implements OnInit {
     else expense.optional = false;
 
     expense.category = EmptyExpCategory;
+    if (!expense.formCategory) return;
     if (expense.formCategory === 'add') {
       if (!expense.newCategory) return;
       expense.category.category = expense.newCategory;
@@ -73,7 +74,7 @@ export class ExpenseFormComponent implements OnInit {
         return a.orderId > b.orderId ? a : b;
       }, EmptyExpCategory).orderId || 0;
     } else {      
-      expense.category.category = expense.formCategory;
+      expense.category.category = expense.formCatengory;
       expense.category.orderId = this.categories.find(cat => {
         return cat.category === expense.formCategory;
       })?.orderId || 0;

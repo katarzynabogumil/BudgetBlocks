@@ -31,8 +31,12 @@
           </select>
         </div>
 
-        <div *ngIf="this.submitted && expenseForm.value['formCategory'] === 'add' && !expenseForm.value['newCategory']"
-          class="invalid-feedback">
+        <div *ngIf="
+            this.submitted && 
+            ((expenseForm.value['formCategory'] === 'add' && 
+            !expenseForm.value['newCategory']) || 
+            !expenseForm.value['formCategory'])
+          " class="invalid-feedback">
           Category is required.
         </div>
         <div class="form-row grid-double">

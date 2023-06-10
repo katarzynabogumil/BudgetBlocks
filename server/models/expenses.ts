@@ -45,14 +45,23 @@ async function saveCategoryToDb (projectId: number, data: Prisma.ExpCategoryCrea
   return newCategory;
 }; 
 
-async function updateExpenseinDb (expenseId: number, data: Prisma.ExpenseUpdateInput) {
+async function updateExpenseinDb (projectId: number, expenseId: number, data: Prisma.ExpenseUpdateInput) {
+  const categoryData = data.category as Prisma.ExpCategoryCreateInput;
+  let {category: _, ...expenseData} = data;
+
+  let category = await checkIfCategoryInDb(projectId, categoryData);
+  if (!category) category = await saveCategoryToDb(projectId, categoryData);
+
   const expense = await prisma.expense.update({
     where: {
       id: expenseId,
     },
     data: { 
       ...data,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      category: {
+        connect: {id: category.id}
+      },
     }
   });
   return expense;
@@ -81,7 +90,9 @@ async function getExpenseFromDB (id: number) {
   return expense;
 }; 
 
-async function deleteExpenseFromDB (expenseId: number) {
+async function deleteExpenseFromDB (projectId: number, expenseId: number) {
+  // TODO delete category if last?
+  
   const expense = await prisma.expense.delete({
     where: {
       id: expenseId

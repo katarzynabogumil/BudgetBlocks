@@ -8,9 +8,9 @@ import {
   deleteExpenseFromDB,
 } from '../models/expenses';
 
-async function saveExpense (req: express.Request<{id: string}, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
+async function saveExpense (req: express.Request<{id: string, projectId: string}, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
   try {
-    const projectId = Number(req.params.id);
+    const projectId = Number(req.params.projectId);
     const data = req.body;
 
     const newExpense = await saveExpenseToDb(projectId, data);
@@ -37,13 +37,14 @@ async function getExpense (req: express.Request, res: express.Response) {
 
 async function editExpense 
   (
-    req: express.Request<{id: string}, {}, Prisma.ExpenseUpdateInput>, 
+    req: express.Request<{id: string, projectId: string}, {}, Prisma.ExpenseUpdateInput>, 
     res: express.Response
   ) {
   try {
+    const projectId = Number(req.params.projectId);
     const id = Number(req.params.id);
     const data = req.body;
-    const expense = await updateExpenseinDb(id, data);
+    const expense = await updateExpenseinDb(projectId, id, data);
     res.status(200);
     res.send(expense);
   } catch (e) {
@@ -54,8 +55,9 @@ async function editExpense
 
 async function deleteExpense (req: express.Request, res: express.Response) {
   try {
+    const projectId = Number(req.params.projectId);
     const id = Number(req.params.id);
-    const expense = await deleteExpenseFromDB(id);
+    const expense = await deleteExpenseFromDB(projectId, id);
     res.status(204);
     res.send(expense);
   } catch (e) {
