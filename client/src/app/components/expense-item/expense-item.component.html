@@ -6,7 +6,7 @@
     <b>Cost:</b> {{expense.cost | currency: expense.currency }}<br>
     <b>Category:</b> {{expense.category.category }}
   </div>
-  <div class="links">
+  <div class="edit-remove-links">
     <a class="pointer" [routerLink]="['./edit/' + expense.id]">
       edit
     </a> /

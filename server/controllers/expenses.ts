@@ -58,8 +58,7 @@ async function deleteExpense(req: express.Request, res: express.Response) {
     const projectId = Number(req.params.projectId);
     const id = Number(req.params.id);
     const expense = await deleteExpenseFromDB(projectId, id);
-    res.status(204);
-    console.log(expense)
+    res.status(200);
     res.send(expense);
   } catch (e) {
     console.log('Error: ', e);

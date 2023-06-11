@@ -130,16 +130,11 @@ export class ExpenseService {
         const project = this.projectApi.project$.getValue();
         project.expenses = project.expenses.filter(expense => expense.id !== id);
 
-        // console.log(response.data)
-        // console.log(data)
-        // console.log(error)
         const deletedCategory = data.category;
-        // console.log('deletedCategory', deletedCategory)
-        // console.log('project.categories before', project.categories)
+
         project.categories = project.categories?.filter(category => {
-          !category.expenses?.length && category.category === deletedCategory.category
+          return !((category.expenses?.length === 1) && category.category === deletedCategory.category)
         });
-        // console.log('project.categories after', project.categories)
         this.projectApi.project$.next(project);
 
         return of({
