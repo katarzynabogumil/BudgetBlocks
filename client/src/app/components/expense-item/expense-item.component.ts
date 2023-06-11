@@ -13,6 +13,7 @@ export class ExpenseItemComponent implements OnInit {
   projectId: number = -1;
   projects: ProjectModel[] = [];
   compareMode: boolean = false;
+  showDetails: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -24,7 +25,10 @@ export class ExpenseItemComponent implements OnInit {
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
     this.projectApi.projects$.subscribe(projects => this.projects = projects);
-    this.expenseApi.compareMode$.subscribe(isTrue => this.compareMode = isTrue);
+    this.expenseApi.compareMode$.subscribe(isTrue => {
+      this.compareMode = isTrue;
+      this.showDetails = false;
+    })
   }
 
   removeExpense() {
@@ -32,10 +36,14 @@ export class ExpenseItemComponent implements OnInit {
       .subscribe();
   }
 
-  handleClick() {
+  handleSelect() {
     if (this.compareMode) {
       this.expenseApi.expenseSumToggle$.next(this.expense);
     }
     // else details! & move edit and remove there!
+  }
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
   }
 }

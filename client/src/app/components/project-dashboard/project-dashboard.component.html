@@ -14,6 +14,10 @@
         <b>Sum:</b> {{ sum | currency: project.currency }} <br>
         <i class="smaller">including one option from each category</i><br>
 
+        <div *ngIf="project.noOfGuests" id="guest-sums">
+          <b>Sum per guest:</b> {{ sum/project.noOfGuests | currency: project.currency }}
+        </div>
+
         <div *ngIf="minSum !== maxSum" id="min-max-sums">
           <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency }}<br>
           <b>Minimal cost variant:</b> {{ minSum | currency: project.currency }}
@@ -31,12 +35,14 @@
           </div>
         </div>
 
-        <b>Catgeories:</b><br>
-        <div id="categories">
-          <div *ngFor="let category of categories">
-            <b>{{ category.category }}:</b>
-            {{ expenseSumsByCat[category.orderId] | currency: project.currency }}
-            <i> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-2' }}%</i>
+        <div *ngIf="project.expenses.length">
+          <b>Categories:</b><br>
+          <div id="categories">
+            <div *ngFor="let category of categories">
+              <b>{{ category.category }}:</b>
+              {{ expenseSumsByCat[category.orderId] | currency: project.currency }}
+              <i> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-2' }}%</i>
+            </div>
           </div>
         </div>
 
@@ -77,7 +83,9 @@
         <div *ngIf="project.description">
           <b>Description:</b> {{ project.description }}
         </div>
+      </div>
 
+      <div>
         <div class="edit-remove-links">
           <a class="pointer" [routerLink]="['/edit/' + id]">
             edit
@@ -86,9 +94,9 @@
             remove
           </a>
         </div>
+        <app-nav-bar></app-nav-bar>
 
       </div>
-      <app-nav-bar></app-nav-bar>
     </div>
   </div>
   <router-outlet></router-outlet>

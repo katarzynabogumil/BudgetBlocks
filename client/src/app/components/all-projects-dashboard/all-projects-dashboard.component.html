@@ -2,16 +2,18 @@
 
 <div id="all-projects-dashboard">
   <div class="card main-card">
-    <div>
-      <h1>
-        <span class="avoidwrap">Budget</span>
-        <span class="avoidwrap">Blocks</span>
-      </h1>
-      <ng-container *ngIf="user$ | async as user">
-        <h2>Hi, {{ user.nickname }}! Here are your projects.</h2>
-      </ng-container>
+    <div class="main-card-inner">
+      <div>
+        <h1>
+          <span class="avoidwrap">Budget</span>
+          <span class="avoidwrap">Blocks</span>
+        </h1>
+        <ng-container *ngIf="user$ | async as user">
+          <h2>Hi, {{ user.nickname }}! Here are your projects.</h2>
+        </ng-container>
+      </div>
+      <app-nav-bar></app-nav-bar>
     </div>
-    <app-nav-bar></app-nav-bar>
   </div>
   <router-outlet></router-outlet>
 </div>

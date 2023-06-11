@@ -2,6 +2,7 @@
 :root {
   --orange: #F18626;
   --pink: #E20262;
+  --lightpink: #f5e6ec;
   --red: #D3190F;
   --yellow: #F5AD00;
   --midpoint1: #f3546e;
@@ -10,7 +11,7 @@
   --smaller: 14px;
   --small: 16px;
   --medium: 18px;
-  --large: 46px;
+  --large: 43px;
   --larger: 62px;
 
   --main-font: Playfair Display;
@@ -144,8 +145,7 @@ a:active {
   border-radius: 20px;
   margin-right: 15px;
   margin-bottom: 15px;
-  padding: 10px 20px 20px;
-  width: 300px;
+  width: 350px;
   min-height: 40px;
   box-shadow: 0 0 10px rgb(120, 120, 120);
 }
@@ -153,9 +153,7 @@ a:active {
 .main-card {
   z-index: 1;
   padding-right: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 10px 10px 10px;
 }
 
 .main-card>h1,
@@ -165,6 +163,7 @@ h2 {
 
 .form-card {
   z-index: 0;
+  padding: 10px 20px 20px;
 }
 
 .btn {
@@ -198,8 +197,12 @@ h2 {
   }
 
   .main-card-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow-y: scroll;
-    padding: 5px 10px 10px 10px;
+    padding: 5px 10px 10px;
+    height: 100%;
   }
 
 }

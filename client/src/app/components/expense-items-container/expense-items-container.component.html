@@ -13,10 +13,8 @@
 <div id="expenses-items-container">
   <div *ngIf="expenses" id="expenses-items-inner-container">
     <div *ngFor="let category of categories" class="category-row">
-      <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]">
-        <app-expense-item [expense]="expense">
-        </app-expense-item>
-      </div>
+      <app-expense-item [expense]="expense" *ngFor="let expense of expensesAtCatOrderId[category.orderId]">
+      </app-expense-item>
     </div>
   </div>
 

@@ -3,4 +3,5 @@
   flex-direction: column;
   justify-content: space-between;
   z-index: -1;
+  padding: 10px 20px 20px;
 }

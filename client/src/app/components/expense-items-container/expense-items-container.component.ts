@@ -61,8 +61,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   onChanges() {
-    this.checkboxForm.get("compareMode")?.valueChanges.subscribe(val => {
-      if (val) {
+    this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
+      if (compareMode) {
         this.compareMode = true;
         this.markSelectedInit(true)
         this.updateSum()
@@ -70,7 +70,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
         this.compareMode = false;
         this.updateSum()
       }
-      this.expenseApi.compareMode$.next(val);
+      this.expenseApi.compareMode$.next(compareMode);
     });
   }
 

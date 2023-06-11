@@ -10,3 +10,7 @@ h2 {
   position: relative;
   top: 6px;
 }
+
+.add-card {
+  padding: 10px 20px 20px;
+}

@@ -27,6 +27,10 @@ mat-progress-bar {
   font-weight: var(--bold);
 }
 
+#guest-sums {
+  margin-top: 10px;
+}
+
 #min-max-sums {
   margin-top: 10px;
 }
