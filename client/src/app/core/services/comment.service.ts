@@ -8,9 +8,8 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class CommentService {
-  // TODO: behavioural subject!!!!!!
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService) { }
 
   addComment = (data: CommentModel): Observable<ApiResponseModel> => {
     const config: RequestConfigModel = {
@@ -25,7 +24,7 @@ export class CommentService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
-        
+
         return of({
           data: data ? (data as CommentModel) : null,
           error,
@@ -46,7 +45,7 @@ export class CommentService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
-        
+
         return of({
           data: data ? (data as CommentModel) : null,
           error,

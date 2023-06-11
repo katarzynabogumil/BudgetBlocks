@@ -122,6 +122,9 @@ a:active {
   background-color: transparent;
 }
 
+.main-card-inner::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+}
 
 .background {
   position: fixed;
@@ -148,8 +151,8 @@ a:active {
 }
 
 .main-card {
-  padding: 10px 20px 20px;
   z-index: 1;
+  padding-right: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -192,6 +195,11 @@ h2 {
     width: calc(100% - 90px);
     height: calc(100% - 60px);
     margin: 30px 30px 30px 30px;
+  }
+
+  .main-card-inner {
+    overflow-y: scroll;
+    padding: 5px 10px 10px 10px;
   }
 
 }

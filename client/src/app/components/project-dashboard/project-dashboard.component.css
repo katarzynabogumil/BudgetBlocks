@@ -10,7 +10,7 @@
   }
 }
 
-i {
+.smaller {
   font-size: var(--smaller);
 }
 
@@ -25,4 +25,13 @@ mat-progress-bar {
   margin: 20px auto;
   font-size: var(--smaller);
   font-weight: var(--bold);
+}
+
+#min-max-sums {
+  margin-top: 10px;
+}
+
+#categories {
+  margin-bottom: 15px;
+  margin-left: 15px;
 }

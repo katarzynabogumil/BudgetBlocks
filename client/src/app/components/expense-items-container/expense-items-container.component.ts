@@ -18,9 +18,12 @@ export class ExpenseItemsContainerComponent implements OnInit {
   compareMode: boolean = false;
   checkboxForm: FormGroup = this.formBuilder.group({
     compareMode: [],
-  })
+  });
 
   sum: number = 0;
+  minSum: number = 0;
+  maxSum: number = 0;
+  expenseSumsByCat: { [key: string]: number; } = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +48,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
       console.log(p);
       this.project = p;
       this.expenses = p.expenses;
-      this.categories = p.categories?.sort((a, b) => a.orderId - b.orderId) || [];
+      this.categories = p.categories || [];
 
       this.categories.forEach((cat: ExpCategoryModel) => {
         this.expensesAtCatOrderId[cat.orderId] = this.expenses
@@ -78,16 +81,35 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   updateSum() {
     this.sum = 0;
-    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+    this.minSum = 0;
+    this.maxSum = 0;
+    for (let [key, expArr] of Object.entries(this.expensesAtCatOrderId)) {
+      let catCost = 0;
       if (this.compareMode) {
         expArr.forEach(exp => {
-          if (exp.selected) this.sum += exp.cost;
+          if (exp.selected) {
+            this.sum += exp.cost;
+            catCost = exp.cost
+          }
         })
       } else {
         this.sum += expArr[0].cost;
+        catCost = expArr[0].cost
       }
+
+      this.expenseSumsByCat[key] = catCost
+
+      this.maxSum += expArr.reduce((a, b) => {
+        return a.cost > b.cost ? a : b;
+      }).cost;
+      this.minSum += expArr.reduce((a, b) => {
+        return a.cost < b.cost ? a : b;
+      }).cost;
     }
     this.expenseApi.expenseSum$.next(this.sum);
+    this.expenseApi.maxSum$.next(this.maxSum);
+    this.expenseApi.minSum$.next(this.minSum);
+    this.expenseApi.expenseSumsByCat$.next(this.expenseSumsByCat);
   }
 
   monitorSelected() {

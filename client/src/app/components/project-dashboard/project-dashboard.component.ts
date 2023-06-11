@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpCategoryModel } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,12 +11,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ProjectDashboardComponent implements OnInit {
   id: number = -1;
   project: ProjectModel = EmptyProject;
+  categories: ExpCategoryModel[] | undefined = [];
 
   compareMode: boolean = false;
 
   sum: number = 0;
-  progressBarValue: number = 0;
+  minSum: number = 0;
+  maxSum: number = 0;
+  expenseSumsByCat: { [key: string]: number; } = {};
   difference: number = 0;
+  progressBarValue: number = 0;
 
   constructor(
     private auth: AuthService,
@@ -36,6 +40,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
+      this.categories = p.categories;
     });
   }
 
@@ -60,6 +65,15 @@ export class ProjectDashboardComponent implements OnInit {
       this.sum = sum;
       this.difference = Math.abs(this.project.budget - this.sum);
       this.progressBarValue = this.sum / this.project.budget * 100;
+    })
+    this.expenseApi.expenseSumsByCat$.subscribe(expenseSumsByCat => {
+      this.expenseSumsByCat = expenseSumsByCat;
+    })
+    this.expenseApi.minSum$.subscribe(minSum => {
+      this.minSum = minSum;
+    })
+    this.expenseApi.maxSum$.subscribe(maxSum => {
+      this.maxSum = maxSum;
     })
     this.expenseApi.compareMode$.subscribe(isTrue => {
       this.compareMode = isTrue;

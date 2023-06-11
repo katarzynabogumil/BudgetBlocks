@@ -15,6 +15,9 @@ export class ExpenseService {
 
   expenseSumToggle$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
   expenseSum$ = new BehaviorSubject<number>(0);
+  expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
+  minSum$ = new BehaviorSubject<number>(0);
+  maxSum$ = new BehaviorSubject<number>(0);
   compareMode$ = new BehaviorSubject<boolean>(false);
 
   constructor(

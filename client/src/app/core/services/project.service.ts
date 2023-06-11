@@ -61,6 +61,8 @@ export class ProjectService {
         const data = response.data as ProjectModel;
         const error = response.error;
 
+        data.categories = data.categories?.sort((a, b) => a.orderId - b.orderId)
+
         this.project$.next(data);
         return of({
           data: data,
