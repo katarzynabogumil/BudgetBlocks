@@ -15,7 +15,7 @@
         <i class="smaller">including one option from each category</i><br>
 
         <div *ngIf="minSum !== maxSum" id="min-max-sums">
-          <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency }}
+          <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency }}<br>
           <b>Minimal cost variant:</b> {{ minSum | currency: project.currency }}
         </div>
 

@@ -50,12 +50,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
       this.expenses = p.expenses;
       this.categories = p.categories || [];
 
+      this.expensesAtCatOrderId = {}
       this.categories.forEach((cat: ExpCategoryModel) => {
         this.expensesAtCatOrderId[cat.orderId] = this.expenses
-          .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
+          .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId);
       })
 
-      this.updateSum()
+      this.updateSum();
     });
   }
 
@@ -83,6 +84,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.sum = 0;
     this.minSum = 0;
     this.maxSum = 0;
+
     for (let [key, expArr] of Object.entries(this.expensesAtCatOrderId)) {
       let catCost = 0;
       if (this.compareMode) {
@@ -106,6 +108,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
         return a.cost < b.cost ? a : b;
       }).cost;
     }
+
     this.expenseApi.expenseSum$.next(this.sum);
     this.expenseApi.maxSum$.next(this.maxSum);
     this.expenseApi.minSum$.next(this.minSum);

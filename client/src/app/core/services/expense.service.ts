@@ -134,10 +134,10 @@ export class ExpenseService {
         project.expenses = project.expenses.filter(expense => expense.id !== id);
 
         const deletedCategory = data.category;
-
         project.categories = project.categories?.filter(category => {
           return !((category.expenses?.length === 1) && category.category === deletedCategory.category)
         });
+
         this.projectApi.project$.next(project);
 
         return of({

@@ -72,7 +72,7 @@ export class ExpenseFormComponent implements OnInit {
     }
 
     expense.category = EmptyExpCategory;
-    if (!expense.formCategory ||
+    if ((!expense.formCategory && expense.newCategory) ||
       (expense.formCategory === 'add' &&
         this.allCategoryNames.includes(expense.newCategory.toLowerCase()))) {
       this.isDuplicate = true;
