@@ -1,10 +1,28 @@
 #project-dashboard {
-  height: 100%;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
+@media screen and (min-width: 800px) {
+  #project-dashboard {
+    height: 100%;
+  }
+}
+
 i {
   font-size: var(--smaller);
+}
+
+mat-progress-bar {
+  background-color: #cccccc;
+  color: var(--pink);
+  transform: scaleY(2);
+  transform-origin: bottom;
+}
+
+#bar {
+  margin: 20px auto;
+  font-size: var(--smaller);
+  font-weight: var(--bold);
 }

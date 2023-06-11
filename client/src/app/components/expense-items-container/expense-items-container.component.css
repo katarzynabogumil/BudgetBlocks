@@ -27,6 +27,8 @@
   }
 
   #expenses-items-container {
+    position: absolute;
+    left: 30px;
     overflow-y: scroll;
     top: 85px;
     bottom: 30px;
@@ -35,11 +37,12 @@
     margin: 0px 25px 0 350px;
     padding: 0 20px 0 20px;
     overflow-x: scroll;
-    overflow-y: hidden;
+    overflow-y: scroll;
   }
 
   #expenses-items-inner-container {
     padding-top: 30px;
+    display: flex;
     flex-direction: column;
   }
 
@@ -62,7 +65,15 @@
     border-radius: 20px;
     padding: 10px 20px 10px;
     min-height: 40px;
-    box-shadow: 0 0 10px rgb(120, 120, 120);
+    box-shadow: 0 0 10px #787878;
+  }
+
+  #expenses-items-container,
+  #expenses-items-inner-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: -1;
   }
 }
 
@@ -89,7 +100,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #cccccc;
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 12px;

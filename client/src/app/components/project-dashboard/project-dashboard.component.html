@@ -12,7 +12,31 @@
       <b>Budget:</b> {{project.budget | currency: project.currency }} <br>
       <b>Sum:</b> {{this.sum | currency: project.currency }} <br>
       <i>including one option from each category</i><br>
+
+
+
+      <div *ngIf="project.noOfGuests">
+        <b>Sum per guest:</b> {{this.sum/project.noOfGuests | currency: project.currency }}
+      </div>
+
+      <div id="bar">
+        <mat-progress-bar id="bar-height" mode="determinate" [value]="progressBarValue">
+          <!-- <span class="mat-progress-bar-buffer"></span> -->
+        </mat-progress-bar>
+
+        <div *ngIf="this.sum > project.budget">
+          You are {{this.difference | currency: project.currency }} over budget!
+        </div>
+        <div *ngIf="this.sum < project.budget">
+          You have {{this.difference | currency: project.currency }} remaining budget.
+        </div>
+      </div>
+
       <b>Type:</b> {{project.type }}
+
+      <div *ngIf="project.origin">
+        <b>Origin:</b> {{project.origin }}
+      </div>
 
       <div *ngIf="project.destination">
         <b>Destination:</b> {{project.destination }}
@@ -34,6 +58,10 @@
         <b>Occasion:</b> {{project.occasion }}
       </div>
 
+      <div *ngIf="project.location">
+        <b>Location:</b> {{project.location }}
+      </div>
+
       <div *ngIf="project.area">
         <b>Area:</b> {{project.area }}
       </div>
@@ -43,7 +71,7 @@
       </div>
 
       <div class="edit-remove-links">
-        <a class="pointer" [routerLink]="['./edit/' + id]">
+        <a class="pointer" [routerLink]="['/edit/' + id]">
           edit
         </a> /
         <a class="pointer" (click)="removeProject()">

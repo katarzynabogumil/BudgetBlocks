@@ -17,7 +17,7 @@ model User {
   firstName          String
   lastName           String?
   nickname           String?
-  email              String?
+  email              String    @unique
   createdAt          DateTime  @default(now())
   projects           Project[] @relation(name: "owners")
   projectInvitations Project[] @relation(name: "invites")
@@ -39,8 +39,10 @@ model Project {
   dateFrom     DateTime? 
   dateTo       DateTime?  
   area         Int? 
+  location     String?
   noOfGuests   Int?
   occasion     String?
+  origin       String?
   destination  String?
   description  String?
   expenses     Expense[]

@@ -6,14 +6,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-project-dashboard',
   templateUrl: './project-dashboard.component.html',
-  styleUrls: ['./project-dashboard.component.css']
+  styleUrls: ['./project-dashboard.component.css'],
 })
 export class ProjectDashboardComponent implements OnInit {
   id: number = -1;
   project: ProjectModel = EmptyProject;
 
-  sum: number = 0;
   compareMode: boolean = false;
+
+  sum: number = 0;
+  progressBarValue: number = 0;
+  difference: number = 0;
 
   constructor(
     private auth: AuthService,
@@ -55,6 +58,8 @@ export class ProjectDashboardComponent implements OnInit {
   getExpenseSum() {
     this.expenseApi.expenseSum$.subscribe(sum => {
       this.sum = sum;
+      this.difference = Math.abs(this.project.budget - this.sum);
+      this.progressBarValue = this.sum / this.project.budget * 100;
     })
     this.expenseApi.compareMode$.subscribe(isTrue => {
       this.compareMode = isTrue;

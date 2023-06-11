@@ -10,7 +10,7 @@
   <b id="switch-right">compare</b>
 </div>
 
-<div class="items-container" id="expenses-items-container">
+<div id="expenses-items-container">
   <div *ngIf="expenses" id="expenses-items-inner-container">
     <div *ngFor="let category of categories" class="category-row">
       <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]">

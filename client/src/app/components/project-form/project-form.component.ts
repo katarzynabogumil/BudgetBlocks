@@ -18,8 +18,10 @@ export class ProjectFormComponent implements OnInit {
     dateFrom: [],
     dateTo: [],
     area: [],
+    location: [],
     noOfGuests: [],
     occasion: [],
+    origin: [],
     destination: [],
     description: [],
   })

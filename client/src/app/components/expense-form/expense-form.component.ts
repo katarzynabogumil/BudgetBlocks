@@ -67,9 +67,6 @@ export class ExpenseFormComponent implements OnInit {
     this.submitted = true;
     const expense = this.expenseForm.value;
 
-    if (expense.optional === 'true') expense.optional = true;
-    else expense.optional = false;
-
     for (let cat of this.categories) {
       this.allCategoryNames.push(cat.category.toLowerCase());
     }

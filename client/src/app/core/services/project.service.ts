@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
 import { ApiResponseProjectModel, ApiResponseProjectModelArr, EmptyProject, ProjectModel, RequestConfigModel } from '../models';
@@ -13,7 +14,10 @@ export class ProjectService {
 
   project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
 
-  constructor(public api: ApiService) { }
+  constructor(
+    public api: ApiService,
+    private router: Router,
+  ) { }
 
   getAllProjects = (): Observable<ApiResponseProjectModelArr> => {
     const config: RequestConfigModel = {
@@ -28,6 +32,7 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel[];
         const error = response.error;
+        if (error) this.router.navigate([`/`]);
 
         this.projects = data;
         console.log(this.projects);

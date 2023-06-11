@@ -57,7 +57,19 @@
           </div>
         </span>
 
+        <span *ngIf="projectForm.value['type'] === 'construction' || projectForm.value['type'] === 'event'">
+          <div class="form-row grid-double">
+            <label>LOCATION</label>
+            <input type="text" formControlName="location" class="form-control" />
+          </div>
+        </span>
+
         <span *ngIf="projectForm.value['type'] === 'trip'">
+          <div class="form-row grid-single">
+            <label>ORIGIN</label>
+            <input type="text" formControlName="origin" class="form-control" />
+          </div>
+
           <div class="form-row grid-single">
             <label>DESTINATION</label>
             <input type="text" formControlName="destination" class="form-control" />

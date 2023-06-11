@@ -118,6 +118,11 @@ a:active {
   border-radius: 5px;
 }
 
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+
 .background {
   position: fixed;
   top: 0;
@@ -189,21 +194,6 @@ h2 {
     margin: 30px 30px 30px 30px;
   }
 
-  /* DASHBOARDS */
-
-  .items-container {
-    position: absolute;
-    left: 30px;
-    padding: 30px 30px 30px 370px;
-    width: calc(100% - 90px);
-    height: calc(100% - 60px);
-  }
-
-  .items-inner-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
 }
 
 @media screen and (max-width: 800px) {
@@ -213,11 +203,8 @@ h2 {
   .card {
     width: calc(100% - 40px);
     margin: 20px auto 10px;
-    position: relative;
   }
 
-  .items-container,
-  .items-inner-container,
   app-project-items-container,
   app-expense-items-container,
   app-expense-form,
@@ -225,6 +212,11 @@ h2 {
     width: 100%;
     margin: 0;
     padding: 0;
+  }
+
+  app-expense-form,
+  app-project-form {
+    position: relative;
   }
 
 }
@@ -305,6 +297,6 @@ select:focus {
 
 .close {
   position: absolute;
-  right: 15px;
-  top: 15px;
+  right: 30px;
+  top: 30px;
 }

@@ -1,6 +1,6 @@
-<div class="items-container">
+<div id="items-container">
 
-  <div *ngIf="projects.length > 0 else noProjects" class="items-inner-container">
+  <div *ngIf="projects.length > 0 else noProjects" id="items-inner-container">
     <div *ngFor="let project of projects">
       <app-project-item [project]="project">
       </app-project-item>
