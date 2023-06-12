@@ -1,24 +1,9 @@
-.expense-item {
-  display: flex;
-  flex-direction: row;
-  z-index: -1;
-  height: 150px;
-  position: relative;
-}
-
 .expense-text {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px 20px 10px 10px;
-}
-
-.compare-selected {
-  outline: 3px solid var(--pink);
-}
-
-.compare-not-selected {
-  opacity: 50%
+  width: calc(100% - 150px);
 }
 
 .img {
@@ -28,14 +13,19 @@
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   position: absolute;
+  z-index: 3
 }
 
 .img-container {
   width: 150px;
-  height: 100%;
-  position: relative;
+  min-height: 100%;
   background-color: var(--lightpink);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   position: relative;
+  z-index: 2;
+}
+
+.icons {
+  margin-top: 20px;
 }

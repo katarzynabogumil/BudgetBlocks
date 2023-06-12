@@ -11,6 +11,7 @@ import { of, Observable, map } from 'rxjs';
 })
 export class AllProjectsDashboardComponent implements OnInit {
   username$ = this.auth.user$.pipe(map((user) => user?.nickname?.replace(/\b./g, x => x.toUpperCase())));
+  // usersub$ = this.auth.user$.pipe(map((user) => user?.sub));
   // code$ = this.user$.pipe(map((user) => JSON.stringify(user, null, 2)));
 
   constructor(

@@ -10,7 +10,6 @@ async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInpu
   let { category: _, ...expenseData } = data;
 
   let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
-
   if (!category) category = await saveCategoryToDb(projectId, categoryData);
 
   const newExpense = await prisma.expense.create({

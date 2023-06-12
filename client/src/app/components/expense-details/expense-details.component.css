@@ -1,5 +1,7 @@
 .detail-card {
-  height: 100px;
-  position: absolute;
+  min-height: 100px;
   width: 350px;
+  margin-bottom: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }

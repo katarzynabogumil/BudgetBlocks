@@ -3,6 +3,38 @@
   flex-direction: row;
 }
 
+.expense-item {
+  display: flex;
+  flex-direction: row;
+  height: 180px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.whitespace {
+  position: absolute;
+  top: 30px;
+  height: 180px;
+  width: 350px;
+  z-index: 0;
+  margin: 0;
+  box-shadow: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+app-expense-details {
+  z-index: 1;
+}
+
+.compare-selected {
+  outline: 3px solid var(--pink);
+}
+
+.compare-not-selected {
+  opacity: 50%
+}
+
 @media screen and (min-width: 800px) {
   #expense-items-background {
     opacity: 30%;
@@ -23,7 +55,6 @@
     width: calc(100% - 90px);
     height: 50px;
     margin: 30px 30px 30px 30px;
-    /* box-shadow: 5px 10px 10px -10px rgb(120, 120, 120); */
   }
 
   #expenses-items-container {

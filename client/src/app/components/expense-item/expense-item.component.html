@@ -1,45 +1,32 @@
-<div class="card expense-item" [ngClass]="(compareMode && expense.selected) ? 'compare-selected' : 
-  compareMode ? 'compare-not-selected' : null" (click)="handleSelect()">
-
-  <div class="img-container">
-    <img class="img" *ngIf="expense.photo" [src]="expense.photo" alt="expense photo">
-  </div>
-
-  <div class="expense-text">
-    <div>
-      <h2>{{expense.name}}</h2>
-      <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
-      <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
-    </div>
-    <div class="icons">
-      <span class="material-symbols-outlined">
-        arrow_circle_up
-      </span>
-
-      <span class="material-symbols-outlined">
-        arrow_circle_down
-      </span>
-
-      <span *ngIf="showDetails else hide">
-        <span class="material-symbols-outlined" (click)="toggleDetails()">
-          expand_circle_up
-        </span>
-      </span>
-      <ng-template #hide>
-        <span class="material-symbols-outlined" (click)="toggleDetails()">
-          expand_circle_down
-        </span>
-      </ng-template>
-    </div>
-    <!-- <div class=" edit-remove-links">
-        <a class="pointer" [routerLink]="['./edit/' + expense.id]">
-          edit
-        </a> /
-        <a class="pointer" (click)="removeExpense()">
-          remove
-        </a>
-    </div> -->
-  </div>
+<div class="img-container">
+  <img class="img" *ngIf="expense.photo" [src]="expense.photo" alt="expense photo">
 </div>
 
-<app-expense-details [expense]="expense" [isHidden]="!showDetails"></app-expense-details>
+<div class="expense-text">
+  <div>
+    <h2>{{expense.name}}</h2>
+    <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
+    <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
+  </div>
+  <div class="icons">
+    <span class="material-symbols-outlined">
+      arrow_circle_up
+    </span>
+
+    <span class="material-symbols-outlined">
+      arrow_circle_down
+    </span>
+
+    <span *ngIf="showDetails else hide">
+      <span class="material-symbols-outlined" (click)="toggleDetails()">
+        expand_circle_up
+      </span>
+    </span>
+    <ng-template #hide>
+      <span class="material-symbols-outlined" (click)="toggleDetails()">
+        expand_circle_down
+      </span>
+    </ng-template>
+  </div>
+
+</div>

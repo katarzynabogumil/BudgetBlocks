@@ -15,6 +15,7 @@ async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput)
   } : {}
 
   data.createdAt = new Date();
+
   const newProject = await prisma.project.create({
     data: {
       ...data,
@@ -22,7 +23,7 @@ async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput)
     },
   });
   return newProject;
-};
+}
 
 async function getProjectsFromDB(userSub: string) {
   const projects = await prisma.project.findMany({

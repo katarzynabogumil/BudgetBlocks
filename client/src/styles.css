@@ -176,10 +176,6 @@ h2 {
   font-weight: var(--bold);
 }
 
-.edit-remove-links {
-  margin-top: 20px;
-}
-
 @media screen and (min-width: 800px) {
   .main-card {
     width: 340px;

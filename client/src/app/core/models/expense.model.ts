@@ -20,8 +20,8 @@ export interface ExpenseModel {
   upvotes?: UserModel[];
   downvotes?: UserModel[];
   comments?: CommentModel[];
-  selected?: boolean
-
+  selected?: boolean,
+  showDetails?: boolean,
   formCategory?: string,
 }
 

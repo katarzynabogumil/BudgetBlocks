@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -25,6 +25,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
   maxSum: number = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
 
+  showDetails: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -37,8 +39,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.id = Number(this.route.snapshot.params['id']);
     this.expenseApi.compareMode$.next(false);
     this.getProject();
-    this.onChanges();
-    this.monitorSelected();
+    this.onModeChanges();
   }
 
   getProject() {
@@ -53,14 +54,18 @@ export class ExpenseItemsContainerComponent implements OnInit {
       this.expensesAtCatOrderId = {}
       this.categories.forEach((cat: ExpCategoryModel) => {
         this.expensesAtCatOrderId[cat.orderId] = this.expenses
-          .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId);
+          .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
+          .map((exp: ExpenseModel) => {
+            exp.showDetails === false;
+            return exp;
+          });
       })
 
       this.updateSum();
     });
   }
 
-  onChanges() {
+  onModeChanges() {
     this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
       if (compareMode) {
         this.compareMode = true;
@@ -115,29 +120,34 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.expenseApi.expenseSumsByCat$.next(this.expenseSumsByCat);
   }
 
-  monitorSelected() {
-    this.expenseApi.expenseSumToggle$.subscribe((expense) => {
-      // change only if there are more options in a category
-      if (this.compareMode && expense.category.expenses?.length !== 1) {
-        for (let expArr of Object.values(this.expensesAtCatOrderId)) {
-          for (let exp of expArr) {
-            if (exp.id === expense.id) {
-              if (exp.selected) {
-                exp.selected = false;
-                // select first - something has to be selected in a category
-                expArr[0].selected = true;
-              } else {
-                // iterate through all and set to false
-                expArr.forEach(e => e.selected = false);
-                // set chosen to true
-                exp.selected = true;
-              }
-              this.updateSum();
-              return;
+  handleSelect(event: Event, expense: ExpenseModel) {
+    if (this.compareMode && expense.category.expenses?.length !== 1) {
+      for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+        for (let exp of expArr) {
+          if (exp.id === expense.id) {
+            if (exp.selected) {
+              exp.selected = false;
+              // select first - something has to be selected in a category
+              expArr[0].selected = true;
+            } else {
+              // iterate through all and set to false
+              expArr.forEach(e => e.selected = false);
+              // set chosen to true
+              exp.selected = true;
             }
+            this.updateSum();
+            return;
           }
         }
       }
-    });
+    }
+  }
+
+  toggleDetails([showDetails, expense]: [boolean, ExpenseModel]) {
+    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+      expArr.forEach(exp => {
+        if (exp.id === expense.id) exp.showDetails = showDetails;
+      });
+    }
   }
 }

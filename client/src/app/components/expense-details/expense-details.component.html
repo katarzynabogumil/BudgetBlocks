@@ -1,4 +1,11 @@
 <div [hidden]="isHidden" class="card detail-card">
-  <p>expense-details works!</p>
-  {{expense.category.category}}
+  <p>{{expense.notes}}</p>
+  <div class=" edit-remove-links">
+    <a class="pointer" [routerLink]="['./edit/' + expense.id]">
+      edit
+    </a> /
+    <a class="pointer" (click)="removeExpense()">
+      remove
+    </a>
+  </div>
 </div>

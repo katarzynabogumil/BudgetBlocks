@@ -12,9 +12,22 @@
 
 <div id="expenses-items-container">
   <div *ngIf="expenses" id="expenses-items-inner-container">
-    <div *ngFor="let category of categories" class="category-row">
-      <app-expense-item [expense]="expense" *ngFor="let expense of expensesAtCatOrderId[category.orderId]">
-      </app-expense-item>
+
+    <div *ngFor="let category of categories">
+      <div class="category-row">
+        <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]" class="category-row-item">
+          <div class="card whitespace" [hidden]="!expense.showDetails"></div>
+
+          <app-expense-item [ngClass]="(compareMode && expense.selected) ? 'compare-selected' : 
+      compareMode ? 'compare-not-selected' : null" class="card expense-item" [expense]="expense"
+            (click)="handleSelect($event, expense)" (toggleDetailsEvent)="toggleDetails($event)">
+          </app-expense-item>
+
+            <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails">
+            </app-expense-details>
+        </div>
+      </div>
+
     </div>
   </div>
 

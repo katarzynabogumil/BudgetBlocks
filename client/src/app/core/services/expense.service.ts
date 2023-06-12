@@ -13,7 +13,6 @@ export class ExpenseService {
   // expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
   // private expenses: ExpenseModel[] = [];
 
-  expenseSumToggle$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
   expenseSum$ = new BehaviorSubject<number>(0);
   expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
   minSum$ = new BehaviorSubject<number>(0);

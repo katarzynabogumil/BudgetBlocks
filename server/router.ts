@@ -4,7 +4,7 @@ import {
   validateAccessToken,
 } from "./middleware/auth0.middleware";
 
-import { 
+import {
   saveUser,
   getUser,
 } from './controllers/users';
@@ -17,17 +17,21 @@ import {
   deleteProject
 } from './controllers/projects';
 
-import { 
+import {
   getExpense,
   saveExpense,
   editExpense,
   deleteExpense,
 } from './controllers/expenses';
 
-import { 
+import {
   saveComment,
   deleteComment
 } from './controllers/comments';
+
+import {
+  getCurrencyRates
+} from './controllers/currencies';
 
 const router: express.Router = express.Router();
 
@@ -47,5 +51,7 @@ router.delete('/comment/:id', validateAccessToken, deleteComment);
 
 router.get('/user', validateAccessToken, getUser);
 router.post('/user', validateAccessToken, saveUser);
+
+router.get('/currencies/:base', validateAccessToken, getCurrencyRates);
 
 export default router;
