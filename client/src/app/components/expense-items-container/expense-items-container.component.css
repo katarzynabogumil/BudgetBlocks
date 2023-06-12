@@ -6,15 +6,14 @@
 .expense-item {
   display: flex;
   flex-direction: row;
-  height: 180px;
+  height: 200px;
   margin-bottom: 0;
   position: relative;
 }
 
 .whitespace {
   position: absolute;
-  top: 30px;
-  height: 180px;
+  height: 200px;
   width: 350px;
   z-index: 0;
   margin: 0;
@@ -61,7 +60,7 @@ app-expense-details {
     position: absolute;
     left: 30px;
     overflow-y: scroll;
-    top: 85px;
+    top: 80px;
     bottom: 30px;
     width: calc(100% - 410px);
     height: calc(100% - 120px);

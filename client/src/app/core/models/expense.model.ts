@@ -14,6 +14,7 @@ export interface ExpenseModel {
   cost: number;
   calcCost?: number;
   currency: string;
+  link?: string;
   photo?: string;
   notes?: string;
   optional?: boolean;

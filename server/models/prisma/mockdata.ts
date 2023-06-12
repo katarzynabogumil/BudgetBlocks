@@ -8,6 +8,7 @@ dotenv.config();
 type mockdata = {
   users: Prisma.UserCreateInput[],
   projects: [string, Prisma.ProjectCreateInput][],
+  categories: [number, Prisma.ExpCategoryCreateInput][],
   expenses: [number, ExpCreate][],
 }
 
@@ -54,6 +55,24 @@ export const mockdata: mockdata = {
         description: "Enjoy a summer vacation in the vibrant city of Barcelona.",
       },
     ]
+  ],
+  categories: [
+    [
+      1,
+      { category: 'Flights', orderId: 1 },
+    ],
+    [
+      1,
+      { category: 'Accommodation', orderId: 2 },
+    ],
+    [
+      1,
+      { category: 'Transportation', orderId: 3 },
+    ],
+    [
+      1,
+      { category: 'Activities', orderId: 4 },
+    ],
   ],
   expenses: [
     [
@@ -138,7 +157,7 @@ export const mockdata: mockdata = {
         link: null,
         photo: null,
         notes: "Freedom to travel at your own pace",
-        category: { category: 'Transportation', orderId: 2 }
+        category: { category: 'Transportation', orderId: 3 }
       },
     ],
     [
@@ -150,7 +169,7 @@ export const mockdata: mockdata = {
         link: null,
         photo: null,
         notes: "Explore the city like a local",
-        category: { category: 'Transportation', orderId: 2 }
+        category: { category: 'Transportation', orderId: 3 }
       },
     ],
     [
@@ -162,7 +181,7 @@ export const mockdata: mockdata = {
         link: null,
         photo: null,
         notes: "Guided tour of the main attractions",
-        category: { category: 'Activities', orderId: 3 }
+        category: { category: 'Activities', orderId: 4 }
       },
     ],
     [
@@ -174,7 +193,7 @@ export const mockdata: mockdata = {
         link: null,
         photo: null,
         notes: "Explore the city's rich cultural heritage",
-        category: { category: 'Activities', orderId: 3 }
+        category: { category: 'Activities', orderId: 4 }
       },
     ],
     [
@@ -186,7 +205,7 @@ export const mockdata: mockdata = {
         link: null,
         photo: null,
         notes: "Indulge in gourmet cuisine",
-        category: { category: 'Activities', orderId: 3 }
+        category: { category: 'Activities', orderId: 4 }
       },
     ],
   ]

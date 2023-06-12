@@ -1,11 +1,16 @@
 <div [hidden]="isHidden" class="card detail-card">
   <p>{{expense.notes}}</p>
   <div class=" edit-remove-links">
-    <a class="pointer" [routerLink]="['./edit/' + expense.id]">
-      edit
-    </a> /
-    <a class="pointer" (click)="removeExpense()">
-      remove
-    </a>
+    <b>
+      <span *ngIf="expense.link">
+        <a class="pointer" href="expense.link">more information </a>/
+      </span>
+      <a class="pointer" [routerLink]="['./edit/' + expense.id]">
+        edit
+      </a> /
+      <a class="pointer" (click)="removeExpense()">
+        remove
+      </a>
+    </b>
   </div>
 </div>

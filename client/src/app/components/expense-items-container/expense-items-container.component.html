@@ -20,11 +20,12 @@
 
           <app-expense-item [ngClass]="(compareMode && expense.selected) ? 'compare-selected' : 
       compareMode ? 'compare-not-selected' : null" class="card expense-item" [expense]="expense"
-            (click)="handleSelect($event, expense)" (toggleDetailsEvent)="toggleDetails($event)">
+            (click)="handleSelect($event, expense)" [compareMode]="this.compareMode"
+            (toggleDetailsEvent)="toggleDetails($event)">
           </app-expense-item>
 
-            <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails">
-            </app-expense-details>
+          <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails">
+          </app-expense-details>
         </div>
       </div>
 

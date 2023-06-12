@@ -10,9 +10,12 @@ export class ExpenseItemComponent {
   @Input() expense: ExpenseModel = EmptyExpense;
   showDetails: boolean = false;
   @Output() toggleDetailsEvent = new EventEmitter();
+  @Input() compareMode: boolean = false;
 
   toggleDetails() {
-    this.showDetails = !this.showDetails;
-    this.toggleDetailsEvent.emit([this.showDetails, this.expense]);
+    if (!this.compareMode) {
+      this.showDetails = !this.showDetails;
+      this.toggleDetailsEvent.emit([this.showDetails, this.expense]);
+    }
   }
 }

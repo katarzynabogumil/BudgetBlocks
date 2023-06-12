@@ -144,10 +144,12 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   toggleDetails([showDetails, expense]: [boolean, ExpenseModel]) {
-    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
-      expArr.forEach(exp => {
-        if (exp.id === expense.id) exp.showDetails = showDetails;
-      });
+    if (!this.compareMode) {
+      for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+        expArr.forEach(exp => {
+          if (exp.id === expense.id) exp.showDetails = showDetails;
+        });
+      }
     }
   }
 }

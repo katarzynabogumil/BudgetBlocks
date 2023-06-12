@@ -135,4 +135,5 @@ export {
   getExpenseFromDB,
   // getExpensesFromDB,
   deleteExpenseFromDB,
+  saveCategoryToDb
 };
