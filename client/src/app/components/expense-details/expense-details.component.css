@@ -1,3 +1,5 @@
 .detail-card {
   height: 100px;
+  position: absolute;
+  width: 350px;
 }

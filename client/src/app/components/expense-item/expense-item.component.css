@@ -3,6 +3,7 @@
   flex-direction: row;
   z-index: -1;
   height: 150px;
+  position: relative;
 }
 
 .expense-text {
