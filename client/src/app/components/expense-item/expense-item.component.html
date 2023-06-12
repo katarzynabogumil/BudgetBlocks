@@ -3,10 +3,13 @@
 </div>
 
 <div class="expense-text">
-  <div>
+  <div class="smaller">
     <h2>{{expense.name}}</h2>
     <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
     <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
+    <span *ngIf="expense.calcCost" class="smaller">
+      <b>Recalculated cost: </b>{{expense.calcCost | currency: projectCurrency }}<br>
+    </span>
   </div>
   <div class="icons">
     <span class="material-symbols-outlined" [ngClass]="upIsFilled ? 'filled' : 'not-filled'"

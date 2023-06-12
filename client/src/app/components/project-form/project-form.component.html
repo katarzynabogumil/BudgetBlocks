@@ -33,13 +33,18 @@
           <label>CURRENCY</label>
           <select formControlName="currency" class="form-control">
             <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="GBP">GBP</option>
+            <option value="--" disabled="[true]">--</option>
+            <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
           </select>
         </div>
 
         <div *ngIf="this.submitted && projectForm.get('type')?.errors" class="invalid-feedback">
           Type is required.
         </div>
-        <div class="form-row grid-double">
+        <div *ngIf="isAddMode" class="form-row grid-double">
           <label>TYPE*</label>
           <select formControlName="type" class="form-control">
             <option value="" disabled="[true]"></option>

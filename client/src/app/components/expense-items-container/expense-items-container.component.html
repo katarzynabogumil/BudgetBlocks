@@ -1,13 +1,17 @@
 <div id="expense-items-background" class="card"></div>
 <div id="expense-items-navbar">
-  <b id="switch-left">edit</b>
-  <form [formGroup]="checkboxForm">
-    <label class="switch">
-      <input type="checkbox" formControlName="compareMode" class="form-control" />
-      <span class="slider"></span>
-    </label>
-  </form>
-  <b id="switch-right">compare</b>
+  <div id="navbar-switch-container">
+    <b id="switch-left">edit</b>
+    <form [formGroup]="checkboxForm">
+      <label class="switch">
+        <input type="checkbox" formControlName="compareMode" class="form-control" />
+        <span class="slider"></span>
+      </label>
+    </form>
+    <b id="switch-right">compare</b>
+  </div>
+
+  <app-nav-bar></app-nav-bar>
 </div>
 
 <div id="expenses-items-container">
@@ -21,7 +25,7 @@
           <app-expense-item [ngClass]="(compareMode && expense.selected) ? 'compare-selected' : 
       compareMode ? 'compare-not-selected' : null" class="card expense-item" [expense]="expense"
             (click)="handleSelect($event, expense)" [compareMode]="this.compareMode"
-            (toggleDetailsEvent)="toggleDetails($event)">
+            (toggleDetailsEvent)="toggleDetails($event)" [projectCurrency]="this.project.currency">
           </app-expense-item>
 
           <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails">

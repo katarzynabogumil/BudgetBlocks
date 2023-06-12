@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ExpenseService, ProjectService, ApiResponseExpenseModel, ExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
+import { ExpenseService, ProjectService, CurrenciesService, ApiResponseExpenseModel, ExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
 
 @Component({
   selector: 'app-expense-form',
@@ -23,6 +23,7 @@ export class ExpenseFormComponent implements OnInit {
 
   categories: ExpCategoryModel[] = [];
   allCategoryNames: string[] = [];
+  currencies: string[] = [];
   projectId: number = -1;
   expenseId: number = -1;
   isAddMode: boolean = false;
@@ -32,6 +33,7 @@ export class ExpenseFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private expenseApi: ExpenseService,
+    private currenciesApi: CurrenciesService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
@@ -40,6 +42,7 @@ export class ExpenseFormComponent implements OnInit {
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
     this.expenseId = Number(this.route.snapshot.params['expenseId']);
+    this.currencies = this.currenciesApi.currencies;
 
     this.isAddMode = !this.expenseId;
 

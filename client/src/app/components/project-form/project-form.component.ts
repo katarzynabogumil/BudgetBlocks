@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ProjectModel, ProjectService, ApiResponseProjectModel } from '@app/core';
+import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel } from '@app/core';
 
 @Component({
   selector: 'app-project-form',
@@ -25,6 +25,7 @@ export class ProjectFormComponent implements OnInit {
     destination: [],
     description: [],
   })
+  currencies: string[] = [];
   id: number = -1;
   isAddMode: boolean = false;
   submitted: boolean = false;
@@ -35,11 +36,13 @@ export class ProjectFormComponent implements OnInit {
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
+    private currenciesApi: CurrenciesService,
   ) { }
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
     this.isAddMode = !this.id;
+    this.currencies = this.currenciesApi.currencies;
 
     if (!this.isAddMode) {
       this.projectApi.getProject(this.id)

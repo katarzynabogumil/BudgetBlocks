@@ -35,7 +35,6 @@ export class ProjectService {
         if (error) this.router.navigate([`/`]);
 
         this.projects = data;
-        console.log(this.projects);
 
         this.projects$.next(this.projects);
 

@@ -1,8 +1,16 @@
-.detail-card {
-  min-height: 50px;
-  width: 350px;
-  margin-bottom: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  padding: 15px;
+@media screen and (min-width: 800px) {
+  .detail-card {
+    min-height: 50px;
+    width: 350px;
+    margin-bottom: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .detail-card {
+    margin: 0 auto;
+  }
 }

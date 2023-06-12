@@ -2,7 +2,7 @@
 :root {
   --orange: #F18626;
   --pink: #E20262;
-  --lightpink: #f5e6ec;
+  --lightpink: #f0eaec;
   --red: #D3190F;
   --yellow: #F5AD00;
   --midpoint1: #f3546e;
@@ -78,6 +78,12 @@ h2 {
   font-family: var(--main-font);
   font-size: var(--medium);
   font-weight: var(--black);
+}
+
+.smaller,
+.smaller>*,
+.smaller>*>* {
+  font-size: var(--smaller);
 }
 
 a {
@@ -210,6 +216,7 @@ h2 {
   .card {
     width: calc(100% - 40px);
     margin: 20px auto 10px;
+    padding: 20px;
   }
 
   app-project-items-container,

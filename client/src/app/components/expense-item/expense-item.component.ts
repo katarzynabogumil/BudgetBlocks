@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExpenseModel, EmptyExpense, ExpenseService } from '@app/core';
+import { ExpenseModel, EmptyExpense, ExpenseService, ProjectService, ProjectModel } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { map } from 'rxjs';
 })
 export class ExpenseItemComponent {
   @Input() expense: ExpenseModel = EmptyExpense;
+  @Input() projectCurrency: string = '';
   @Input() compareMode: boolean = false;
   @Output() toggleDetailsEvent = new EventEmitter();
 
@@ -26,8 +27,13 @@ export class ExpenseItemComponent {
     private auth: AuthService,
     public expenseApi: ExpenseService,
     private route: ActivatedRoute,
+    public projectApi: ProjectService,
   ) {
     this.projectId = this.route.parent?.snapshot.params['id'];
+
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+
+    });
 
     this.usersub$.subscribe(sub => {
       this.usersub = sub || '';

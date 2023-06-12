@@ -1,8 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense } from '@app/core';
+import { EmptyProject, ProjectModel, CurrenciesService, EmptyCurrencyRates, CurrencyRatesModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-expense-items-container',
@@ -24,7 +25,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   minSum: number = 0;
   maxSum: number = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
-
+  currencyRates: CurrencyRatesModel = EmptyCurrencyRates;
   showDetails: boolean = false;
 
   constructor(
@@ -33,6 +34,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     public expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
+    private currenciesApi: CurrenciesService
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
       this.project = p;
       this.expenses = p.expenses;
       this.categories = p.categories || [];
+      this.checkCurrencyRates();
 
       this.expensesAtCatOrderId = {}
       this.categories.forEach((cat: ExpCategoryModel) => {
@@ -66,6 +69,36 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
       this.updateSum();
     });
+  }
+
+  checkCurrencyRates() {
+    const neededRates = this.expenses.filter(exp => exp.currency.toLowerCase() !== this.project.currency.toLowerCase());
+    if (neededRates.length) {
+
+      this.currenciesApi.currencyRates$.subscribe(rates => {
+        if (!rates.success) this.getNewCurrencyRates();
+      })
+
+      this.currenciesApi.currencyRates$.subscribe(rates => {
+        this.currencyRates = rates;
+
+        neededRates.forEach((expToRecalculate: ExpenseModel) => {
+          expToRecalculate.calcCost = expToRecalculate.cost * this.currencyRates.rates[expToRecalculate.currency];
+
+          this.expenses = this.expenses
+            .map((exp: ExpenseModel) => {
+              if (exp.id === expToRecalculate.id) {
+                exp.calcCost = expToRecalculate.calcCost;
+              }
+              return exp;
+            });
+        });
+      });
+    }
+  }
+
+  getNewCurrencyRates() {
+    this.currenciesApi.getRates(this.project.currency).subscribe();
   }
 
   onModeChanges() {
@@ -98,13 +131,23 @@ export class ExpenseItemsContainerComponent implements OnInit {
       if (this.compareMode) {
         expArr.forEach(exp => {
           if (exp.selected) {
-            this.sum += exp.cost;
-            catCost = exp.cost
+            if (exp.calcCost) {
+              this.sum += exp.calcCost;
+              catCost = exp.calcCost
+            } else {
+              this.sum += exp.cost;
+              catCost = exp.cost
+            }
           }
         })
       } else {
-        this.sum += expArr[0].cost;
-        catCost = expArr[0].cost
+        if (expArr[0].calcCost) {
+          this.sum += expArr[0].calcCost;
+          catCost = expArr[0].calcCost
+        } else {
+          this.sum += expArr[0].cost;
+          catCost = expArr[0].cost
+        }
       }
 
       this.expenseSumsByCat[key] = catCost

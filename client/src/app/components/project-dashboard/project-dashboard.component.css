@@ -10,12 +10,13 @@
   }
 }
 
-.smaller {
-  font-size: var(--smaller);
-}
-
 .edit-remove-links {
   margin-top: 20px;
+  font-weight: var(--bold);
+}
+
+.gray {
+  color: #8a8a8a;
 }
 
 mat-progress-bar {
@@ -31,12 +32,8 @@ mat-progress-bar {
   font-weight: var(--bold);
 }
 
-#guest-sums {
-  margin-top: 10px;
-}
-
-#min-max-sums {
-  margin-top: 10px;
+#main-budget {
+  margin-bottom: 10px;
 }
 
 #categories {

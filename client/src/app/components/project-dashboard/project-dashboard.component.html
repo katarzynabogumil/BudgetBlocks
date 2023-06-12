@@ -10,17 +10,19 @@
         </h1>
         <h2>{{ project.name }}</h2>
 
-        <b>Budget:</b> {{ project.budget | currency: project.currency }} <br>
-        <b>Sum:</b> {{ sum | currency: project.currency }} <br>
-        <i class="smaller">including one option from each category</i><br>
-
-        <div *ngIf="project.noOfGuests" id="guest-sums">
-          <b>Sum per guest:</b> {{ sum/project.noOfGuests | currency: project.currency }}
+        <div id="main-budget">
+          <b>Budget:</b> {{ project.budget | currency: project.currency : 'symbol' : '1.0-0' }} <br>
+          <b>Sum:</b> {{ sum | currency: project.currency : 'symbol' : '1.0-0' }} <br>
+          <i class="smaller">including one option from each category</i><br>
         </div>
 
-        <div *ngIf="minSum !== maxSum" id="min-max-sums">
-          <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency }}<br>
-          <b>Minimal cost variant:</b> {{ minSum | currency: project.currency }}
+        <div *ngIf="project.noOfGuests">
+          <b>Sum per guest:</b> {{ sum/project.noOfGuests | currency: project.currency : 'symbol' : '1.0-0' }}
+        </div>
+
+        <div *ngIf="minSum !== maxSum">
+          <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency : 'symbol' : '1.0-0' }}<br>
+          <b>Minimal cost variant:</b> {{ minSum | currency: project.currency : 'symbol' : '1.0-0' }}
         </div>
 
         <div id="bar">
@@ -28,73 +30,78 @@
           </mat-progress-bar>
 
           <div *ngIf="sum > project.budget">
-            You are {{ difference | currency: project.currency }} over budget!
+            You are {{ difference | currency: project.currency : 'symbol' : '1.0-0'}} over budget!
           </div>
           <div *ngIf="sum < project.budget">
-            You have {{ difference | currency: project.currency }} remaining budget.
+            You have {{ difference | currency: project.currency : 'symbol' : '1.0-0' }} remaining budget.
           </div>
         </div>
+        <br>
 
         <div *ngIf="project.expenses.length">
           <b>Categories:</b><br>
           <div id="categories">
-            <div *ngFor="let category of categories">
+            <div *ngFor="let category of categories" class="smaller">
               <b>{{ category.category }}:</b>
-              {{ expenseSumsByCat[category.orderId] | currency: project.currency }}
-              <i> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-2' }}%</i>
+              {{ expenseSumsByCat[category.orderId] | currency: project.currency : 'symbol' : '1.0-0' }}
+              <i> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-0' }}%</i>
             </div>
           </div>
         </div>
+        <br>
 
-        <b>Type:</b> {{ project.type }}
+        <b>Project information:</b><br>
+        <div class="smaller">
+          <b>Type:</b> {{ project.type }}
 
-        <div *ngIf="project.origin">
-          <b>Origin:</b> {{ project.origin }}
-        </div>
+          <div *ngIf="project.origin">
+            <b>Origin:</b> {{ project.origin }}
+          </div>
 
-        <div *ngIf="project.destination">
-          <b>Destination:</b> {{ project.destination }}
-        </div>
+          <div *ngIf="project.destination">
+            <b>Destination:</b> {{ project.destination }}
+          </div>
 
-        <div *ngIf="project.dateFrom">
-          <b>Date from:</b> {{ project.dateFrom | date}}
-        </div>
+          <div *ngIf="project.dateFrom">
+            <b>Date from:</b> {{ project.dateFrom | date}}
+          </div>
 
-        <div *ngIf="project.dateTo">
-          <b>Date to:</b> {{ project.dateTo | date}}
-        </div>
+          <div *ngIf="project.dateTo">
+            <b>Date to:</b> {{ project.dateTo | date}}
+          </div>
 
-        <div *ngIf="project.noOfGuests">
-          <b>No of guests:</b> {{ project.noOfGuests }}
-        </div>
+          <div *ngIf="project.noOfGuests">
+            <b>No of guests:</b> {{ project.noOfGuests }}
+          </div>
 
-        <div *ngIf="project.occasion">
-          <b>Occasion:</b> {{ project.occasion }}
-        </div>
+          <div *ngIf="project.occasion">
+            <b>Occasion:</b> {{ project.occasion }}
+          </div>
 
-        <div *ngIf="project.location">
-          <b>Location:</b> {{ project.location }}
-        </div>
+          <div *ngIf="project.location">
+            <b>Location:</b> {{ project.location }}
+          </div>
 
-        <div *ngIf="project.area">
-          <b>Area:</b> {{ project.area }}
-        </div>
+          <div *ngIf="project.area">
+            <b>Area:</b> {{ project.area }}
+          </div>
 
-        <div *ngIf="project.description">
-          <b>Description:</b> {{ project.description }}
+          <div *ngIf="project.description">
+            <b>Description:</b> {{ project.description }}
+          </div>
         </div>
       </div>
+      <br>
 
       <div>
         <div class="edit-remove-links">
-          <a class="pointer" [routerLink]="['/edit/' + id]">
+          <a class="pointer" [routerLink]="['/projects/edit/' + id]">
             edit
           </a> /
           <a class="pointer" (click)="removeProject()">
             remove
           </a>
         </div>
-        <app-nav-bar></app-nav-bar>
 
       </div>
     </div>
