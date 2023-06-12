@@ -6,7 +6,8 @@ import {
   getProjectsFromDB,
   getProjectFromDB,
   updateProjectinDb,
-  deleteProjectsFromDB
+  deleteProjectsFromDB,
+  addUserToProject
 } from '../models/projects';
 
 async function saveProject(req: express.Request<{}, {}, Prisma.ProjectCreateInput>, res: express.Response) {
@@ -82,10 +83,27 @@ async function deleteProject(req: express.Request, res: express.Response) {
   }
 };
 
+async function addUser(req: express.Request<{ projectId: string }, {}, { email: string }>, res: express.Response) {
+  try {
+    const projectId = Number(req.params.projectId);
+    const email = req.body.email;
+
+    const updatedProject = await addUserToProject(projectId, email);
+
+    res.status(201);
+    res.send(updatedProject);
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(404);
+  }
+};
+
+
 export {
   getAllProjects,
   getProject,
   saveProject,
   editProject,
-  deleteProject
+  deleteProject,
+  addUser
 };

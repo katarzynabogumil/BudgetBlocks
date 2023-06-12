@@ -70,7 +70,6 @@ async function getProjectFromDB(id: number) {
 };
 
 async function updateProjectinDb(projectId: number, data: Prisma.ProjectUpdateInput) {
-  // TODO - seperate functions for adding-removing users?
   const project = await prisma.project.update({
     where: {
       id: projectId,
@@ -79,6 +78,51 @@ async function updateProjectinDb(projectId: number, data: Prisma.ProjectUpdateIn
       ...data,
       updatedAt: new Date()
     }
+  });
+  return project;
+};
+
+async function addUserToProject(projectId: number, email: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email
+    },
+  });
+  if (!user) throw new Error('User not registered.');
+
+  const project = await prisma.project.update({
+    where: {
+      id: projectId,
+    },
+    data: {
+      updatedAt: new Date(),
+      invitedUsers: {
+        connect: { id: user.id }
+      },
+    },
+    include: {
+      owners: true,
+      invitedUsers: true,
+      expenses: {
+        include: {
+          category: {
+            include: {
+              expenses: true,
+            }
+          }
+        }
+      },
+      categories: {
+        include: {
+          expenses: {
+            include: {
+              comments: true,
+              category: true,
+            }
+          },
+        }
+      },
+    },
   });
   return project;
 };
@@ -98,4 +142,5 @@ export {
   getProjectsFromDB,
   getProjectFromDB,
   deleteProjectsFromDB,
+  addUserToProject
 };

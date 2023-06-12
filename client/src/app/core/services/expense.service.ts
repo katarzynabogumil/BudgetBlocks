@@ -10,9 +10,6 @@ import { ProjectService } from './project.service';
 })
 export class ExpenseService {
   expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
-  // expenses$ = new BehaviorSubject<ExpenseModel[]>([]);
-  // private expenses: ExpenseModel[] = [];
-
   expenseSum$ = new BehaviorSubject<number>(0);
   expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
   minSum$ = new BehaviorSubject<number>(0);
@@ -38,7 +35,8 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.expense$.next(data);
+        if (!error) this.expense$.next(data);
+
         return of({
           data: data,
           error,
@@ -62,12 +60,11 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        // this.expenses.push(data);
-        // this.expenses$.next(this.expenses);
-
-        const project = this.projectApi.project$.getValue();
-        project.expenses.push(data);
-        this.projectApi.project$.next(project);
+        if (!error) {
+          const project = this.projectApi.project$.getValue();
+          project.expenses.push(data);
+          this.projectApi.project$.next(project);
+        }
 
         return of({
           data: data,
@@ -92,20 +89,16 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        // this.expenses = this.expenses.map(expense => {
-        //   if (expense.id === id) expense = data;
-        //   return expense;
-        // });
-        // this.expenses$.next(this.expenses);
-
-        const project = this.projectApi.project$.getValue();
-        project.expenses = project.expenses.map(expense => {
-          if (expense.id === id) {
-            expense = data;
-          }
-          return expense
-        });
-        this.projectApi.project$.next(project);
+        if (!error) {
+          const project = this.projectApi.project$.getValue();
+          project.expenses = project.expenses.map(expense => {
+            if (expense.id === id) {
+              expense = data;
+            }
+            return expense
+          });
+          this.projectApi.project$.next(project);
+        }
 
         return of({
           data: data,

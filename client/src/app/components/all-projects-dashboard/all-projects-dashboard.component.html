@@ -4,13 +4,15 @@
   <div class="card main-card">
     <div class="main-card-inner">
       <div>
-        <h1 id="title">
+        <h1 id="title" class="pointer" [routerLink]="['/projects/']">
           <span class="avoidwrap">Budget</span>
           <span class="avoidwrap">Blocks</span>
         </h1>
-        <ng-container *ngIf="username$ | async as username">
-          <h2>Hi, {{ username }}! Here are your projects.</h2>
-        </ng-container>
+        <span *ngIf="id < 0">
+          <ng-container *ngIf="username$ | async as username">
+            <h2>Hi, {{ username }}! Here are your projects.</h2>
+          </ng-container>
+        </span>
       </div>
       <app-nav-bar></app-nav-bar>
     </div>

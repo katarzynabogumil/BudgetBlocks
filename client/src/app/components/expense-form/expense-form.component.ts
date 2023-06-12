@@ -40,7 +40,7 @@ export class ExpenseFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.projectId = this.route.parent?.snapshot.params['id'];
+    this.projectId = Number(this.route.parent?.snapshot.params['id']);
     this.expenseId = Number(this.route.snapshot.params['expenseId']);
     this.currencies = this.currenciesApi.currencies;
 

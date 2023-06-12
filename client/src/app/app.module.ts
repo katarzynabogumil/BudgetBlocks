@@ -26,6 +26,7 @@ import { ExpenseItemsContainerComponent } from './components/expense-items-conta
 import { ExpenseDetailsComponent } from './components/expense-details/expense-details.component';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { AddUsersFormComponent } from './components/add-users-form/add-users-form.component';
 
 export function playerFactory() {
   return player;
@@ -46,7 +47,8 @@ export function playerFactory() {
     AddItemComponent,
     ProjectItemsContainerComponent,
     ExpenseItemsContainerComponent,
-    ExpenseDetailsComponent
+    ExpenseDetailsComponent,
+    AddUsersFormComponent
   ],
   imports: [
     BrowserModule,

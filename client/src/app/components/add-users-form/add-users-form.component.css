@@ -1,0 +1,36 @@
+* {
+  --form-label-width: 170px;
+}
+
+p {
+  text-align: left;
+}
+
+#description {
+  margin-right: 50px;
+}
+
+.grid-single {
+  grid-template-columns: var(--form-label-width) minmax(var(--form-label-width), calc(100% - var(--form-label-width)));
+}
+
+.btn {
+  width: 150px;
+}
+
+.start {
+  align-items: flex-start;
+}
+
+.invalid-feedback {
+  text-align: left;
+  margin-left: calc(var(--form-label-width) + 15px);
+}
+
+.form-row {
+  margin-bottom: 25px;
+}
+
+.title-row {
+  margin-bottom: 0;
+}

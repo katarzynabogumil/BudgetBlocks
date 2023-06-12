@@ -14,7 +14,8 @@ import {
   getProject,
   saveProject,
   editProject,
-  deleteProject
+  deleteProject,
+  addUser
 } from './controllers/projects';
 
 import {
@@ -46,6 +47,7 @@ router.post('/project/:projectId/expense', validateAccessToken, saveExpense);
 router.get('/project/:projectId/expense/:id', validateAccessToken, getExpense);
 router.put('/project/:projectId/expense/:id', validateAccessToken, editExpense);
 router.delete('/project/:projectId/expense/:id', validateAccessToken, deleteExpense);
+router.post('/project/:projectId/adduser', validateAccessToken, addUser);
 
 router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vote);
 

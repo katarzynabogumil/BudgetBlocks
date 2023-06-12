@@ -32,11 +32,12 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel[];
         const error = response.error;
+
         if (error) this.router.navigate([`/`]);
-
-        this.projects = data;
-
-        this.projects$.next(this.projects);
+        else {
+          this.projects = data;
+          this.projects$.next(this.projects);
+        }
 
         return of({
           data: data,
@@ -61,10 +62,11 @@ export class ProjectService {
         const error = response.error;
 
         if (error) this.router.navigate([`projects/`]);
+        else {
+          data.categories = data.categories?.sort((a, b) => a.orderId - b.orderId)
+          this.project$.next(data);
+        }
 
-        data.categories = data.categories?.sort((a, b) => a.orderId - b.orderId)
-
-        this.project$.next(data);
         return of({
           data: data,
           error,
@@ -87,8 +89,11 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel;
         const error = response.error;
-        this.projects.push(data);
-        this.projects$.next(this.projects);
+
+        if (!error) {
+          this.projects.push(data);
+          this.projects$.next(this.projects);
+        }
 
         return of({
           data: data,
@@ -112,11 +117,15 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel;
         const error = response.error;
-        this.projects = this.projects.map(project => {
-          if (project.id === id) project = data;
-          return project;
-        });
-        this.projects$.next(this.projects);
+
+        if (!error) {
+          this.projects = this.projects.map(project => {
+            if (project.id === id) project = data;
+            return project;
+          });
+          this.projects$.next(this.projects);
+        }
+
         return of({
           data: data,
           error,
@@ -138,8 +147,41 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel;
         const error = response.error;
-        this.projects = this.projects.filter(project => project.id !== id);
-        this.projects$.next(this.projects);
+
+        if (!error) {
+          this.projects = this.projects.filter(project => project.id !== id);
+          this.projects$.next(this.projects);
+        }
+
+        return of({
+          data: data,
+          error,
+        });
+      }))
+      ;
+  }
+
+  addUser = (email: string, projectId: number): Observable<ApiResponseProjectModel> => {
+    const config: RequestConfigModel = {
+      url: `${env.api.serverUrl}/project/${projectId}/adduser`,
+      method: 'POST',
+      body: { email },
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+
+    return this.api.callApi(config).pipe(
+      mergeMap((response) => {
+        const data = response.data as ProjectModel;
+        const error = response.error;
+
+        if (error) this.router.navigate([`project/${projectId}`]);
+        else {
+          this.projects.push(data);
+          this.projects$.next(this.projects);
+        }
+
         return of({
           data: data,
           error,

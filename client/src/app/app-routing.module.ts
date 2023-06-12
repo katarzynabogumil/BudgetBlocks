@@ -9,55 +9,60 @@ import { ProjectItemsContainerComponent } from './components/project-items-conta
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ExpenseItemsContainerComponent } from './components/expense-items-container/expense-items-container.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { AddUsersFormComponent } from './components/add-users-form/add-users-form.component';
 
 const routes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     component: LandingComponent,
     pathMatch: 'full'
   },
-  { 
-    path: 'projects', 
-    component: AllProjectsDashboardComponent, 
+  {
+    path: 'projects',
+    component: AllProjectsDashboardComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: "", 
-        component: ProjectItemsContainerComponent, 
+        path: "",
+        component: ProjectItemsContainerComponent,
       },
-      { 
-        path: "add", 
-        component: ProjectFormComponent, 
+      {
+        path: "add",
+        component: ProjectFormComponent,
       },
-      { 
-        path: "edit/:id", 
-        component: ProjectFormComponent, 
+      {
+        path: "edit/:id",
+        component: ProjectFormComponent,
+      },
+      {
+        path: "addusers/:id",
+        component: AddUsersFormComponent,
       },
     ]
   },
-  { 
-    path: 'project/:id', 
-    component: ProjectDashboardComponent, 
+  {
+    path: 'project/:id',
+    component: ProjectDashboardComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: "", 
-        component: ExpenseItemsContainerComponent, 
+        path: "",
+        component: ExpenseItemsContainerComponent,
       },
-      { 
-        path: "add", 
-        component: ExpenseFormComponent, 
+      {
+        path: "add",
+        component: ExpenseFormComponent,
       },
-      { 
-        path: "edit/:expenseId", 
-        component: ExpenseFormComponent, 
+      {
+        path: "edit/:expenseId",
+        component: ExpenseFormComponent,
       },
     ]
   },
-  { 
-    path: '**', 
+  {
+    path: '**',
     redirectTo: '/projects'
-  },  
+  },
 ];
 
 @NgModule({

@@ -29,7 +29,7 @@ export class ApiService {
         catchError((err) => {
           if (err.error && err.status) {
 
-            this.router.navigate([`projects/`]);
+            if (err.message !== "User not registered.") this.router.navigate([`projects/`]);
 
             return of({
               data: null,

@@ -44,7 +44,7 @@ export class CurrenciesService {
         const data = response.data as CurrencyRatesModel;
         const error = response.error;
 
-        this.currencyRates$.next(data);
+        if (!error) this.currencyRates$.next(data);
 
         return of({
           data: data,

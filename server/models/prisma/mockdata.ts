@@ -34,6 +34,13 @@ export const mockdata: mockdata = {
       lastName: 'bart@example.com',
       nickname: 'bart',
       email: 'bart@example.com'
+    },
+    {
+      sub: process.env.MOCK_USER_3 || '',
+      firstName: 'anna@example.com',
+      lastName: 'anna@example.com',
+      nickname: 'anna',
+      email: 'anna@example.com'
     }
   ],
   projects: [

@@ -3,6 +3,7 @@ import { AuthService, User } from '@auth0/auth0-angular';
 import { switchMap } from 'rxjs/operators';
 import { ApiResponseModel, UserModel, UserService } from '@app/core';
 import { of, Observable, map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-projects-dashboard',
@@ -13,14 +14,17 @@ export class AllProjectsDashboardComponent implements OnInit {
   username$ = this.auth.user$.pipe(map((user) => user?.nickname?.replace(/\b./g, x => x.toUpperCase())));
   // usersub$ = this.auth.user$.pipe(map((user) => user?.sub));
   // code$ = this.user$.pipe(map((user) => JSON.stringify(user, null, 2)));
+  id: number = -1;
 
   constructor(
     private auth: AuthService,
     public userApi: UserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.checkIfNewUser();
+    this.id = Number(this.route.snapshot.params['id']);
   }
 
   checkIfNewUser() {
