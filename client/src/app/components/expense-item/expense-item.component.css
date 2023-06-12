@@ -29,3 +29,24 @@
 .icons {
   margin-top: 20px;
 }
+
+.material-symbols-outlined {
+  transform: scale(1.2);
+  margin-right: 5px;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+}
+
+.material-symbols-outlined.not-filled {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+}

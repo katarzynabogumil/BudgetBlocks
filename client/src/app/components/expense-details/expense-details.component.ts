@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmptyExpense, ExpenseModel, ExpenseService } from '@app/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-expense-details',
@@ -13,6 +15,7 @@ export class ExpenseDetailsComponent {
   projectId: number = -1;
 
   constructor(
+    private auth: AuthService,
     public expenseApi: ExpenseService,
     private route: ActivatedRoute,
   ) { }
@@ -20,8 +23,10 @@ export class ExpenseDetailsComponent {
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
   }
+
   removeExpense() {
     this.expenseApi.deleteExpense(this.projectId, this.expense.id as number)
       .subscribe();
   }
+
 }

@@ -111,8 +111,8 @@ export class ExpenseService {
           data: data,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
   deleteExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
@@ -144,5 +144,37 @@ export class ExpenseService {
           error,
         });
       }));
+  }
+
+  vote = (direction: string, projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
+    const config: RequestConfigModel = {
+      url: `${env.api.serverUrl}/project/${projectId}/expense/${id}/${direction}`,
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+
+    return this.api.callApi(config).pipe(
+      mergeMap((response) => {
+        const data = response.data as ExpenseModel;
+        const error = response.error;
+
+        const project = this.projectApi.project$.getValue();
+
+        project.expenses = project.expenses.map(expense => {
+          if (expense.id === id) {
+            expense = data;
+          }
+          return expense
+        });
+        this.projectApi.project$.next(project);
+
+        return of({
+          data: data,
+          error,
+        });
+      })
+    );
   }
 }

@@ -58,8 +58,6 @@ async function updateExpenseinDb(projectId: number, expenseId: number, data: Pri
 //       projectId: projectId
 //     },
 //     include: {
-//       upvotes: true,
-//       downvotes: true,
 //       comments: true,
 //     },
 //   });
@@ -126,7 +124,48 @@ async function deleteCategoryFromDb(id: number) {
     },
   });
   return category;
-};
+}
+
+async function addUserVoteToDb(direction: string, userSub: string, expenseId: number) {
+  const expense = await prisma.expense.findUnique({
+    where: {
+      id: expenseId,
+    }
+  });
+
+  let upvotes: string[] = [];
+  let downvotes: string[] = [];
+
+  if (direction === 'up') {
+    if (expense?.upvotes?.includes(userSub)) {
+      upvotes = upvotes.filter(sub => sub !== userSub);
+    } else {
+      upvotes = [...upvotes, userSub];
+      downvotes = downvotes.filter(sub => sub !== userSub);
+    }
+  } else if (direction === 'down') {
+    if (expense?.downvotes?.includes(userSub)) {
+      downvotes = downvotes.filter(sub => sub !== userSub);
+    } else {
+      downvotes = [...downvotes, userSub];
+      upvotes = upvotes.filter(sub => sub !== userSub);
+    }
+  }
+
+  const updatedExp = await prisma.expense.update({
+    where: {
+      id: expenseId,
+    },
+    data: {
+      upvotes: upvotes,
+      downvotes: downvotes,
+    },
+    include: {
+      category: true,
+    }
+  });
+  return updatedExp;
+}
 
 
 export {
@@ -135,5 +174,6 @@ export {
   getExpenseFromDB,
   // getExpensesFromDB,
   deleteExpenseFromDB,
-  saveCategoryToDb
-};
+  saveCategoryToDb,
+  addUserVoteToDb,
+}

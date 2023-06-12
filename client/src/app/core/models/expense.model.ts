@@ -18,8 +18,8 @@ export interface ExpenseModel {
   photo?: string;
   notes?: string;
   optional?: boolean;
-  upvotes?: UserModel[];
-  downvotes?: UserModel[];
+  upvotes?: string[];
+  downvotes?: string[];
   comments?: CommentModel[];
   selected?: boolean,
   showDetails?: boolean,

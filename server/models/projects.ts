@@ -7,19 +7,16 @@ async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput)
       sub: userSub
     },
   });
-
-  const addOwner = user ? {
-    owners: {
-      connect: { id: user.id }
-    }
-  } : {}
+  if (!user) throw new Error();
 
   data.createdAt = new Date();
 
   const newProject = await prisma.project.create({
     data: {
       ...data,
-      ...addOwner
+      owners: {
+        connect: { id: user.id }
+      }
     },
   });
   return newProject;
@@ -61,8 +58,6 @@ async function getProjectFromDB(id: number) {
         include: {
           expenses: {
             include: {
-              upvotes: true,
-              downvotes: true,
               comments: true,
               category: true,
             }

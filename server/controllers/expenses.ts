@@ -6,6 +6,7 @@ import {
   saveExpenseToDb,
   updateExpenseinDb,
   deleteExpenseFromDB,
+  addUserVoteToDb,
 } from '../models/expenses';
 
 async function saveExpense(req: express.Request<{ id: string, projectId: string }, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
@@ -66,9 +67,31 @@ async function deleteExpense(req: express.Request, res: express.Response) {
   }
 };
 
+async function vote(req: express.Request, res: express.Response) {
+  try {
+    const expenseId = Number(req.params.id);
+    const direction = req.params.direction;
+    const userSub = req.auth?.payload.sub || '';
+
+    if (userSub) {
+      const expense = await addUserVoteToDb(direction, userSub, expenseId);
+      res.status(200);
+      res.send(expense);
+    } else {
+      console.log('Error: Failed authentication.');
+      res.sendStatus(401);
+    }
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(500);
+  }
+};
+
+
 export {
   saveExpense,
   getExpense,
   editExpense,
   deleteExpense,
+  vote,
 };

@@ -21,8 +21,6 @@ model User {
   createdAt          DateTime  @default(now())
   projects           Project[] @relation(name: "owners")
   projectInvitations Project[] @relation(name: "invites")
-  upvotedExpenses    Expense[] @relation(name: "upvotes")
-  downvotedExpenses  Expense[] @relation(name: "downvotes")
   comments           Comment[] 
 }
 
@@ -64,8 +62,8 @@ model Expense {
   notes      String?
   category   ExpCategory   @relation(fields: [categoryId], references: [id])
   categoryId Int
-  upvotes    User[]    @relation(name: "upvotes")
-  downvotes  User[]    @relation(name: "downvotes")
+  upvotes    String[]
+  downvotes  String[]
   comments   Comment[]
 }
 

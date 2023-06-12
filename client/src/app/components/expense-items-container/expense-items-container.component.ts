@@ -58,6 +58,9 @@ export class ExpenseItemsContainerComponent implements OnInit {
           .map((exp: ExpenseModel) => {
             exp.showDetails === false;
             return exp;
+          })
+          .sort((a: ExpenseModel, b: ExpenseModel) => {
+            return ((b.upvotes || []).length - (b.downvotes || []).length) - ((a.upvotes || []).length - (a.downvotes || []).length)
           });
       })
 

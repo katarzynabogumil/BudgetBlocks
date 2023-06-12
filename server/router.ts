@@ -22,6 +22,7 @@ import {
   saveExpense,
   editExpense,
   deleteExpense,
+  vote
 } from './controllers/expenses';
 
 import {
@@ -45,6 +46,8 @@ router.post('/project/:projectId/expense', validateAccessToken, saveExpense);
 router.get('/project/:projectId/expense/:id', validateAccessToken, getExpense);
 router.put('/project/:projectId/expense/:id', validateAccessToken, editExpense);
 router.delete('/project/:projectId/expense/:id', validateAccessToken, deleteExpense);
+
+router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vote);
 
 router.post('/comment/:id', validateAccessToken, saveComment);
 router.delete('/comment/:id', validateAccessToken, deleteComment);

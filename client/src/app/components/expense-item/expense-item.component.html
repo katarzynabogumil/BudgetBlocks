@@ -9,11 +9,13 @@
     <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
   </div>
   <div class="icons">
-    <span class="material-symbols-outlined">
+    <span class="material-symbols-outlined" [ngClass]="upIsFilled ? 'filled' : 'not-filled'"
+      (click)="toggleVotes('up')">
       arrow_circle_up
     </span>
 
-    <span class="material-symbols-outlined">
+    <span class="material-symbols-outlined" [ngClass]="downIsFilled ? 'filled' : 'not-filled'"
+      (click)="toggleVotes('down')">
       arrow_circle_down
     </span>
 
