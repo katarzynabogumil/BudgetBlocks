@@ -38,6 +38,10 @@ import {
   getCurrencyRates
 } from './controllers/currencies';
 
+import {
+  getProjectRating
+} from './controllers/openai';
+
 const router: express.Router = express.Router();
 
 router.get('/projects', validateAccessToken, getAllProjects);
@@ -66,6 +70,6 @@ router.get('/user', validateAccessToken, getUser);
 router.post('/user', validateAccessToken, saveUser);
 
 router.get('/currencies/:base', validateAccessToken, getCurrencyRates);
-// router.get('/ai/:projectId', validateAccessToken, getProjectRating);
+router.get('/ai/:projectId', validateAccessToken, getProjectRating);
 
 export default router;

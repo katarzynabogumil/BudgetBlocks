@@ -84,6 +84,34 @@ async function getProjectFromDB(id: number) {
   return project;
 };
 
+async function getProjectPublicFromDB(id: number) {
+  const project = await prisma.project.findUnique({
+    where: {
+      id
+    },
+    select: {
+      name: true,
+      type: true,
+      budget: true,
+      currency: true,
+      dateFrom: true,
+      dateTo: true,
+      area: true,
+      location: true,
+      noOfGuests: true,
+      occasion: true,
+      destination: true,
+      description: true,
+      categories: {
+        select: {
+          category: true,
+        }
+      },
+    },
+  });
+  return project;
+};
+
 async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpdateInput) {
   let {
     categories: _1,
@@ -92,6 +120,7 @@ async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpd
     invitedUsers: _4,
     ...data
   } = inputData;
+  if (data.currencyRates === null) data.currencyRates = undefined;
 
   if (data.currencyRates) {
     data.currencyRates = data.currencyRates as Prisma.JsonObject;
@@ -219,5 +248,6 @@ export {
   deleteProjectsFromDB,
   addUserToProject,
   getProjectInvitationsFromDB,
-  acceptInvitationDb
+  acceptInvitationDb,
+  getProjectPublicFromDB
 };
