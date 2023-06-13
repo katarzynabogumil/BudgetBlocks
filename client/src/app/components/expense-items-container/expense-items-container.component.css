@@ -13,7 +13,7 @@
 .expense-item {
   display: flex;
   flex-direction: row;
-  height: 180px;
+  height: 200px;
   margin-bottom: 0;
   position: relative;
 }
@@ -21,7 +21,7 @@
 
 .whitespace {
   position: absolute;
-  height: 180px;
+  height: 200px;
   z-index: 0;
   box-shadow: none;
   border-bottom-left-radius: 0;

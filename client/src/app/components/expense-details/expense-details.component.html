@@ -18,7 +18,7 @@
             <i>
               {{ comment.createdAt | date }}
             </i>
-            <span (click)="removeComment(comment.id || -1)">
+            <span *ngIf="comment.isUser" (click)="removeComment(comment.id || -1)">
               / remove
             </span>
           </span>

@@ -3,6 +3,7 @@ import { mockdata } from './mockdata';
 import { saveUserToDb } from '../users';
 import { saveProjectToDb } from '../projects';
 import { saveExpenseToDb, saveCategoryToDb } from '../expenses';
+import { saveCommentToDb } from '../comments';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ async function main() {
       let [sub, project] = el;
       await saveProjectToDb(sub, project);
     });
-  }, 1000);
+  }, 10000);
 
   // otherwise transaction errors (added records not yet found)
   setTimeout(() => {
@@ -25,7 +26,7 @@ async function main() {
       let [id, category] = el;
       await saveCategoryToDb(id, category);
     });
-  }, 10000);
+  }, 40000);
 
   // otherwise transaction errors (added records not yet found)
   setTimeout(() => {
@@ -33,9 +34,14 @@ async function main() {
       let [id, expense] = el;
       setTimeout(async () => {
         await saveExpenseToDb(id, expense);
-      }, 10000)
+      }, 50000)
     });
-  }, 10000);
+  }, 20000);
+
+  // mockdata.comments.forEach(async (el) => {
+  //   let [expenseId, userId, data] = el;
+  //   await saveCommentToDb(expenseId, userId, data);
+  // });
 }
 
 main()

@@ -15,8 +15,11 @@ export class ExpenseDetailsComponent {
   projectId: number = -1;
   allComments: { [key: number]: CommentModel[] } = {};
   comments: CommentModel[] = [];
+  username$ = this.auth.user$
+    .pipe(map((user) => user?.nickname?.replace(/\b./g, x => x.toUpperCase())));
 
   constructor(
+    private auth: AuthService,
     public expenseApi: ExpenseService,
     private route: ActivatedRoute,
     private commentApi: CommentService
@@ -28,7 +31,14 @@ export class ExpenseDetailsComponent {
     this.commentApi.comments$.subscribe(comments => {
       this.allComments = comments;
       this.comments = comments[this.expense.id as number];
+      this.username$.subscribe((name: string | undefined) => {
+        this.comments && this.comments.forEach((comment: CommentModel) => {
+          if (comment.user?.nickname?.toLowerCase() === name?.toLowerCase())
+            comment.isUser = true;
+        });
+      });
     });
+
   }
 
   removeExpense() {

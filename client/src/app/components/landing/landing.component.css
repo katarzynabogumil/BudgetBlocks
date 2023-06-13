@@ -1,6 +1,6 @@
 #title {
- font-weight: var(--black);
- margin-bottom: 20px;
+  font-weight: var(--black);
+  margin-bottom: 20px;
 }
 
 #landing-container {
@@ -32,22 +32,27 @@
   #landing {
     width: 400px;
     margin-left: 5%;
-    margin-bottom: 15%;
+    margin-bottom: 10%;
   }
-  
+
   #animation-container {
     width: calc(100% - 5% - 400px);
-    height: 80%;
-    margin-bottom: 10%;
+    height: 100%;
+    margin-bottom: 5%;
     display: flex;
     flex-direction: column-reverse;
+  }
+
+  #animation {
+    max-height: 85%;
   }
 
   #title {
     font-size: var(--larger);
   }
 
-  #landing-desc, .auth-btn {
+  #landing-desc,
+  .auth-btn {
     font-size: var(--medium);
   }
 }
@@ -57,7 +62,7 @@
     width: 85%;
     margin: 20px auto;
   }
-  
+
   #animation-container {
     width: 70%;
     margin: 0 auto;
@@ -67,8 +72,8 @@
     font-size: 44px;
   }
 
-  #landing-desc, .auth-btn {
+  #landing-desc,
+  .auth-btn {
     font-size: var(--small);
   }
 }
-

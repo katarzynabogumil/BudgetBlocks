@@ -10,6 +10,7 @@ export interface CommentModel {
   expenseId?: number;
   user?: UserModel;
   userId?: number;
+  isUser?: true;
 }
 
 export interface CommentDictModel { [key: number]: CommentModel[] } 

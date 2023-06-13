@@ -125,7 +125,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.expensesAtCatOrderId = {}
     this.categories.forEach((cat: ExpCategoryModel) => {
       this.expensesAtCatOrderId[cat.orderId] = this.expenses
-        .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
+        .filter((exp: ExpenseModel) => exp.category && exp.category.orderId === cat.orderId)
         .map((exp: ExpenseModel) => {
           exp.showDetails === false;
           return exp;
