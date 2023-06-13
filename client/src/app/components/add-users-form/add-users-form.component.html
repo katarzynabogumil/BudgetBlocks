@@ -19,14 +19,21 @@
 
     <div class="form-container">
 
-      <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
+      <form [formGroup]="addUserForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
 
         <div *ngIf="owners" class="form-row grid-single start">
           <label>CURRENT USERS</label>
-          <p *ngFor="let user of owners">
-            <b>{{user.nickname}}</b><br>
-            <i>E-mail address: {{user.email}}</i><br>
-          </p>
+          <div>
+            <div *ngFor="let user of owners">
+              <p>
+                <span></span>
+                <span>
+                  <b>{{user.nickname}}</b><br>
+                  <i>E-mail address: {{user.email}}</i><br>
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="form-row grid-single start">
@@ -54,7 +61,7 @@
           <input type="text" formControlName="invite" class="form-control" />
         </div>
 
-        <div *ngIf="this.submitted && projectForm.get('invite')?.errors" class="invalid-feedback">
+        <div *ngIf="this.submitted && addUserForm.get('invite')?.errors" class="invalid-feedback">
           Not a valid e-mail.
         </div>
 

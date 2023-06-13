@@ -55,6 +55,7 @@
           </select>
         </div>
 
+        <!-- FOR TRIP AND EVENT TYPES -->
         <span *ngIf="projectForm.value['type'] === 'trip' || projectForm.value['type'] === 'event'">
           <div class="form-row grid-double">
             <label>GUESTS</label>
@@ -62,6 +63,7 @@
           </div>
         </span>
 
+        <!-- FOR EVENT AND CONSTRUCTION TYPES -->
         <span *ngIf="projectForm.value['type'] === 'construction' || projectForm.value['type'] === 'event'">
           <div class="form-row grid-double">
             <label>LOCATION</label>
@@ -69,6 +71,7 @@
           </div>
         </span>
 
+        <!-- FOR TRIP TYPE -->
         <span *ngIf="projectForm.value['type'] === 'trip'">
           <div class="form-row grid-single">
             <label>ORIGIN</label>
@@ -81,6 +84,7 @@
           </div>
         </span>
 
+        <!-- FOR EVENT TYPE -->
         <span *ngIf="projectForm.value['type'] === 'event'">
           <div class="form-row grid-single">
             <label>OCCASION</label>
@@ -88,6 +92,7 @@
           </div>
         </span>
 
+        <!-- FOR CONSTRUCTION TYPE -->
         <span *ngIf="projectForm.value['type'] === 'construction'">
           <div class="form-row grid-single">
             <label>AREA (m<span class="sup">2</span>)</label>

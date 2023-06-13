@@ -27,6 +27,8 @@ import { ExpenseDetailsComponent } from './components/expense-details/expense-de
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AddUsersFormComponent } from './components/add-users-form/add-users-form.component';
+import { InviteItemComponent } from './components/invite-item/invite-item.component';
+import { CommentFormComponent } from './components/comment-form/comment-form.component';
 
 export function playerFactory() {
   return player;
@@ -48,7 +50,9 @@ export function playerFactory() {
     ProjectItemsContainerComponent,
     ExpenseItemsContainerComponent,
     ExpenseDetailsComponent,
-    AddUsersFormComponent
+    AddUsersFormComponent,
+    InviteItemComponent,
+    CommentFormComponent
   ],
   imports: [
     BrowserModule,

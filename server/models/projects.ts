@@ -37,6 +37,21 @@ async function getProjectsFromDB(userSub: string) {
   return projects;
 };
 
+async function getProjectInvitationsFromDB(userSub: string) {
+  const projects = await prisma.project.findMany({
+    where: {
+      invitedUsers: {
+        some: { sub: userSub }
+      }
+    },
+    include: {
+      owners: true,
+      invitedUsers: true,
+    },
+  });
+  return projects;
+};
+
 async function getProjectFromDB(id: number) {
   const project = await prisma.project.findUnique({
     where: {
@@ -69,7 +84,19 @@ async function getProjectFromDB(id: number) {
   return project;
 };
 
-async function updateProjectinDb(projectId: number, data: Prisma.ProjectUpdateInput) {
+async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpdateInput) {
+  let {
+    categories: _1,
+    expenses: _2,
+    owners: _3,
+    invitedUsers: _4,
+    ...data
+  } = inputData;
+
+  if (data.currencyRates) {
+    data.currencyRates = data.currencyRates as Prisma.JsonObject;
+  }
+
   const project = await prisma.project.update({
     where: {
       id: projectId,
@@ -127,6 +154,54 @@ async function addUserToProject(projectId: number, email: string) {
   return project;
 };
 
+async function acceptInvitationDb(projectId: number, userSub: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      sub: userSub
+    },
+  });
+  if (!user) throw new Error('User not registered.');
+
+  const project = await prisma.project.update({
+    where: {
+      id: projectId,
+    },
+    data: {
+      updatedAt: new Date(),
+      owners: {
+        connect: { id: user.id }
+      },
+      invitedUsers: {
+        disconnect: { id: user.id }
+      },
+    },
+    include: {
+      owners: true,
+      invitedUsers: true,
+      expenses: {
+        include: {
+          category: {
+            include: {
+              expenses: true,
+            }
+          }
+        }
+      },
+      categories: {
+        include: {
+          expenses: {
+            include: {
+              comments: true,
+              category: true,
+            }
+          },
+        }
+      },
+    },
+  });
+  return project;
+};
+
 async function deleteProjectsFromDB(projectId: number) {
   const project = await prisma.project.delete({
     where: {
@@ -142,5 +217,7 @@ export {
   getProjectsFromDB,
   getProjectFromDB,
   deleteProjectsFromDB,
-  addUserToProject
+  addUserToProject,
+  getProjectInvitationsFromDB,
+  acceptInvitationDb
 };

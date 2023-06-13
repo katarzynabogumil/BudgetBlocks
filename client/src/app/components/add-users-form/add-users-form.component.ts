@@ -10,7 +10,7 @@ import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectMode
   styleUrls: ['./add-users-form.component.css']
 })
 export class AddUsersFormComponent implements OnInit {
-  projectForm: FormGroup = this.formBuilder.group({
+  addUserForm: FormGroup = this.formBuilder.group({
     invite: ["", [Validators.email]],
 
   })
@@ -33,7 +33,6 @@ export class AddUsersFormComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
     this.getProject(this.id);
-    console.log(this.id)
   }
 
   getProject(id: number) {
@@ -51,7 +50,7 @@ export class AddUsersFormComponent implements OnInit {
     this.isOwner = false;
     this.success = false;
 
-    const email = this.projectForm.value.invite;
+    const email = this.addUserForm.value.invite;
 
     this.owners.forEach((user: UserModel) => {
       console.log(user.email)
@@ -66,10 +65,10 @@ export class AddUsersFormComponent implements OnInit {
       }
     });
 
-    if (this.projectForm.invalid || this.isOwner || this.isInvited) return;
+    if (this.addUserForm.invalid || this.isOwner || this.isInvited) return;
 
     this.inviteUser(email);
-    this.projectForm.reset();
+    this.addUserForm.reset();
     this.success = true;
     this.submitted = false;
   }

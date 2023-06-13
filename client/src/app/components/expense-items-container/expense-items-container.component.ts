@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EmptyProject, ProjectModel, CurrenciesService, EmptyCurrencyRates, CurrencyRatesModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense } from '@app/core';
+import { EmptyProject, ProjectModel, CurrenciesService, EmptyCurrencyRates, CurrencyRatesModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -34,7 +34,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
     public expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
-    private currenciesApi: CurrenciesService
+    private currenciesApi: CurrenciesService,
+    private commentApi: CommentService
   ) { }
 
   ngOnInit() {
@@ -72,17 +73,27 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   checkCurrencyRates() {
-    const neededRates = this.expenses.filter(exp => exp.currency.toLowerCase() !== this.project.currency.toLowerCase());
-    if (neededRates.length) {
+    const expensesToRecalculate = this.expenses
+      .filter(exp => exp.currency.toLowerCase() !== this.project.currency.toLowerCase());
 
-      this.currenciesApi.currencyRates$.subscribe(rates => {
-        if (!rates.success) this.getNewCurrencyRates();
-      })
+    if (expensesToRecalculate.length) {
+      this.getNewCurrencyRates();
 
       this.currenciesApi.currencyRates$.subscribe(rates => {
         this.currencyRates = rates;
 
-        neededRates.forEach((expToRecalculate: ExpenseModel) => {
+        if (this.project.currencyRates?.timestamp !== rates.timestamp) {
+          this.project.currencyRates = rates;
+          // console.log(rates)
+
+          this.projectApi.editProject(this.id, this.project)
+            .subscribe((res: ApiResponseProjectModel) => {
+              if (!res.error) console.log('Project edited.');
+              else console.log(res.error);
+            });
+        }
+
+        expensesToRecalculate.forEach((expToRecalculate: ExpenseModel) => {
           expToRecalculate.calcCost = expToRecalculate.cost * this.currencyRates.rates[expToRecalculate.currency];
 
           this.expenses = this.expenses
@@ -98,7 +109,23 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   getNewCurrencyRates() {
-    this.currenciesApi.getRates(this.project.currency).subscribe();
+    let ratesAreOld: boolean = false;
+    if (this.project.currencyRates?.success) {
+      const now = new Date().getTime();
+      const timestamp = this.project.currencyRates.timestamp;
+      if (now - timestamp > 86400) ratesAreOld = true;
+    }
+
+    if (ratesAreOld ||
+      !this.project.currencyRates ||
+      this.project.currencyRates.base !== this.project.currency
+    ) {
+      this.currenciesApi.currencyRates$.subscribe(rates => {
+        if ((!rates.success && !rates.error?.code) || rates.base !== this.project.currency) {
+          this.currenciesApi.getRates(this.project.currency).subscribe()
+        };
+      })
+    }
   }
 
   onModeChanges() {

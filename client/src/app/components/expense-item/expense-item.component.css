@@ -54,3 +54,10 @@ h2 {
     'GRAD' 0,
     'opsz' 48
 }
+
+.votes {
+  font-size: var(--smallest);
+  font-weight: var(--bold);
+  position: relative;
+  bottom: 7px;
+}

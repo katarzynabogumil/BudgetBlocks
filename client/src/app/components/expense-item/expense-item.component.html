@@ -12,11 +12,13 @@
     </span>
   </div>
   <div class="icons">
+    <span class="votes">{{upvotes}} </span>
     <span class="material-symbols-outlined" [ngClass]="upIsFilled ? 'filled' : 'not-filled'"
       (click)="toggleVotes('up')">
       arrow_circle_up
     </span>
 
+    <span class="votes">{{downvotes}} </span>
     <span class="material-symbols-outlined" [ngClass]="downIsFilled ? 'filled' : 'not-filled'"
       (click)="toggleVotes('down')">
       arrow_circle_down

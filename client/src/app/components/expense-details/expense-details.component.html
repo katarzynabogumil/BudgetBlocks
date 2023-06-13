@@ -1,6 +1,38 @@
-<div [hidden]="isHidden" class="card detail-card">
-  <p>{{expense.notes}}</p>
-  <div class=" edit-remove-links">
+<div [hidden]="isHidden" class="card detail-card smaller">
+  <p>
+    <b>Notes:</b><br>
+    {{ expense.notes }}
+  </p>
+
+  <div class="comments-container">
+    <p><b>Comments:</b></p>
+    <!-- <div *ngIf="comments.length > 0 else noComments"> -->
+    <div *ngFor="let comment of comments" class="comment">
+      <p>
+        <span class="smaller">
+          <b *ngIf="comment.user">{{ comment.user.nickname }}: </b>
+          {{ comment.text }}<br>
+        </span>
+
+        <span class="smallest">
+          <i>
+            {{ comment.createdAt | date }}
+          </i>
+          <span (click)="removeComment(comment.id || -1)">
+            / remove
+          </span>
+        </span>
+      </p>
+    </div>
+    <!-- </div> -->
+
+    <!-- <ng-template #noComments>
+      <p>This expense doesn't have any comments yet.</p>
+    </ng-template> -->
+  </div>
+
+  <app-comment-form [expense]="expense"></app-comment-form>
+  <div class=" edit-remove-links smaller">
     <b>
       <span *ngIf="expense.link">
         <a class="pointer" href="expense.link">more information </a>/

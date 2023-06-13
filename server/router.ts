@@ -15,7 +15,9 @@ import {
   saveProject,
   editProject,
   deleteProject,
-  addUser
+  addUser,
+  acceptInvitation,
+  getProjectInvitations
 } from './controllers/projects';
 
 import {
@@ -27,6 +29,7 @@ import {
 } from './controllers/expenses';
 
 import {
+  getAllComments,
   saveComment,
   deleteComment
 } from './controllers/comments';
@@ -38,6 +41,8 @@ import {
 const router: express.Router = express.Router();
 
 router.get('/projects', validateAccessToken, getAllProjects);
+router.get('/projects/invitations', validateAccessToken, getProjectInvitations);
+
 router.post('/project', validateAccessToken, saveProject);
 router.get('/project/:id', validateAccessToken, getProject);
 router.put('/project/:id', validateAccessToken, editProject);
@@ -47,16 +52,20 @@ router.post('/project/:projectId/expense', validateAccessToken, saveExpense);
 router.get('/project/:projectId/expense/:id', validateAccessToken, getExpense);
 router.put('/project/:projectId/expense/:id', validateAccessToken, editExpense);
 router.delete('/project/:projectId/expense/:id', validateAccessToken, deleteExpense);
+
 router.post('/project/:projectId/adduser', validateAccessToken, addUser);
+router.put('/project/:projectId/accept', validateAccessToken, acceptInvitation);
 
 router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vote);
 
-router.post('/comment/:id', validateAccessToken, saveComment);
-router.delete('/comment/:id', validateAccessToken, deleteComment);
+router.get('/comments/:expenseId', validateAccessToken, getAllComments);
+router.post('/comment/:expenseId', validateAccessToken, saveComment);
+router.delete('/comment/:commentId', validateAccessToken, deleteComment);
 
 router.get('/user', validateAccessToken, getUser);
 router.post('/user', validateAccessToken, saveUser);
 
 router.get('/currencies/:base', validateAccessToken, getCurrencyRates);
+// router.get('/ai/:projectId', validateAccessToken, getProjectRating);
 
 export default router;

@@ -9,6 +9,8 @@ async function getCurrencyRates(req: express.Request, res: express.Response) {
   try {
     const base = req.params.base;
 
+    // note: once downgraded to a free plan, only 'EUR' base allowed;
+    console.log('Currencies API called.')
     const currencies = await fetch(URL + base + API_KEY)
       .then(res => res.status <= 400 ? res : Promise.reject(res))
       .then(res => res.json());

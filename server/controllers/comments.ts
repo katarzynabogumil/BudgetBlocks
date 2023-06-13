@@ -1,29 +1,30 @@
 import express from 'express';
 import { Prisma } from '@prisma/client'
 
-import { 
-  // getCommentFromDB,
+import {
+  getCommentsFromDB,
   saveCommentToDb,
   deleteCommentFromDB,
 } from '../models/comments';
 import { getUserFromDB } from '../models/users';
 
-// async function getComment (req: express.Request, res: express.Response) {
-//   try {
-//     const id = Number(req.query.id);
-//     const comment = await getCommentFromDB(id);
-//     res.status(200);
-//     res.send(comment);
-//   } catch (e) {
-//     console.log('Error: ', e);
-//     res.sendStatus(500);
-//   }
-// }; 
-
-async function saveComment (req: express.Request<{id: string}, {}, Prisma.CommentCreateInput>, res: express.Response) {
+async function getAllComments(req: express.Request, res: express.Response) {
   try {
-    const expenseId = Number(req.params.id);
+    const expenseId = Number(req.params.expenseId);
+    const comments = await getCommentsFromDB(expenseId);
+    res.status(200);
+    res.send(comments);
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(500);
+  }
+};
+
+async function saveComment(req: express.Request<{ expenseId: string }, {}, Prisma.CommentCreateInput>, res: express.Response) {
+  try {
+    const expenseId = Number(req.params.expenseId);
     const data = req.body;
+
     const userSub = req.auth?.payload.sub || '';
     const user = await getUserFromDB(userSub);
     const userId = user?.id || 0;
@@ -36,13 +37,13 @@ async function saveComment (req: express.Request<{id: string}, {}, Prisma.Commen
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-}; 
+};
 
-async function deleteComment (req: express.Request, res: express.Response) {
+async function deleteComment(req: express.Request, res: express.Response) {
   try {
-    const id = Number(req.params.id);
+    const id = Number(req.params.commentId);
     const comment = await deleteCommentFromDB(id);
-    res.status(204);
+    res.status(200);
     res.send(comment);
   } catch (e) {
     console.log('Error: ', e);
@@ -51,7 +52,7 @@ async function deleteComment (req: express.Request, res: express.Response) {
 };
 
 export {
-  // getComment,
+  getAllComments,
   saveComment,
   deleteComment,
 };

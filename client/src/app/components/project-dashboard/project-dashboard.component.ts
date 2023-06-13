@@ -32,7 +32,6 @@ export class ProjectDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.id = Number(this.route.snapshot.params['id']);
-    // this.route.params.subscribe(params => this.id = Number(params['id']));
 
     this.getProject(this.id);
     this.getExpenseSum();

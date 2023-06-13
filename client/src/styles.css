@@ -8,6 +8,7 @@
   --midpoint1: #f3546e;
   --midpoint2: #EC5A3A;
 
+  --smallest: 12px;
   --smaller: 14px;
   --small: 16px;
   --medium: 18px;
@@ -84,6 +85,12 @@ h2 {
 .smaller>*,
 .smaller>*>* {
   font-size: var(--smaller);
+}
+
+.smallest,
+.smallest>*,
+.smallest>*>* {
+  font-size: var(--smallest);
 }
 
 a {
@@ -174,8 +181,8 @@ h2 {
 
 .btn {
   background-color: var(--pink);
-  border-radius: 5px;
   border: none;
+  border-radius: 5px;
   margin: 5px 0 0 0;
   padding: 5px;
   min-width: 100px;

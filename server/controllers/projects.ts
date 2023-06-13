@@ -7,7 +7,9 @@ import {
   getProjectFromDB,
   updateProjectinDb,
   deleteProjectsFromDB,
-  addUserToProject
+  addUserToProject,
+  getProjectInvitationsFromDB,
+  acceptInvitationDb
 } from '../models/projects';
 
 async function saveProject(req: express.Request<{}, {}, Prisma.ProjectCreateInput>, res: express.Response) {
@@ -30,6 +32,23 @@ async function getAllProjects(req: express.Request, res: express.Response) {
     const userSub = req.auth?.payload.sub || '';
     if (userSub) {
       const projects = await getProjectsFromDB(userSub);
+      res.status(200);
+      res.send(projects);
+    } else {
+      console.log('Error: Failed authentication.');
+      res.sendStatus(401);
+    }
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(500);
+  }
+};
+
+async function getProjectInvitations(req: express.Request, res: express.Response) {
+  try {
+    const userSub = req.auth?.payload.sub || '';
+    if (userSub) {
+      const projects = await getProjectInvitationsFromDB(userSub);
       res.status(200);
       res.send(projects);
     } else {
@@ -98,6 +117,21 @@ async function addUser(req: express.Request<{ projectId: string }, {}, { email: 
   }
 };
 
+async function acceptInvitation(req: express.Request<{ projectId: string }, {}, { email: string }>, res: express.Response) {
+  try {
+    const projectId = Number(req.params.projectId);
+    const userSub = req.auth?.payload.sub || '';
+
+    const updatedProject = await acceptInvitationDb(projectId, userSub);
+
+    res.status(201);
+    res.send(updatedProject);
+  } catch (e) {
+    console.log('Error: ', e);
+    res.sendStatus(404);
+  }
+};
+
 
 export {
   getAllProjects,
@@ -105,5 +139,7 @@ export {
   saveProject,
   editProject,
   deleteProject,
-  addUser
+  addUser,
+  acceptInvitation,
+  getProjectInvitations
 };

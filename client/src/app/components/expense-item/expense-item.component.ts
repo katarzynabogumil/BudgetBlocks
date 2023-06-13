@@ -23,6 +23,9 @@ export class ExpenseItemComponent {
   upIsFilled: boolean = false;
   downIsFilled: boolean = false;
 
+  upvotes: number = 0;
+  downvotes: number = 0;
+
   constructor(
     private auth: AuthService,
     public expenseApi: ExpenseService,
@@ -64,5 +67,7 @@ export class ExpenseItemComponent {
     } else if (this.expense.downvotes?.includes(this.usersub)) {
       this.downIsFilled = true;
     }
+    this.upvotes = this.expense.upvotes?.length || 0;
+    this.downvotes = this.expense.downvotes?.length || 0;
   }
 }

@@ -1,0 +1,17 @@
+.not-accepted {
+  opacity: 50%
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+.add {
+  position: relative;
+  top: 6px;
+}
+
+.add-card {
+  padding: 10px 20px 20px;
+  margin-bottom: 20px;
+}

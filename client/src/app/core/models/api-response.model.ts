@@ -33,3 +33,15 @@ export interface ApiResponseCommentModel {
   data: CommentModel;
   error: AppErrorModel | null;
 }
+
+export interface ApiResponseCommentModelArr {
+  data: CommentModel[];
+  error: AppErrorModel | null;
+}
+
+
+export interface ApiResponseExpenseModelArr {
+  data: ExpenseModel[];
+  error: AppErrorModel | null;
+}
+

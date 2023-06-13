@@ -8,6 +8,12 @@
     <app-add-item [item]="'a project'" [link]="'./add'"></app-add-item>
   </div>
 
+  <div *ngIf="projectInvitations.length > 0" id="items-inner-container">
+    <div *ngFor="let project of projectInvitations">
+      <app-invite-item [project]="project"></app-invite-item>
+    </div>
+  </div>
+
   <ng-template #noProjects>
     <app-add-item [item]="'a project'" [link]="'./add'"></app-add-item>
   </ng-template>

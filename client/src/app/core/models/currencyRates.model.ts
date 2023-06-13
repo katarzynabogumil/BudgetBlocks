@@ -4,6 +4,7 @@ export interface CurrencyRatesModel {
   base: string;
   date: string;
   rates: { [key: string]: number };
+  error?: { code?: number, type?: string, info?: string };
 }
 
 export const EmptyCurrencyRates = {
