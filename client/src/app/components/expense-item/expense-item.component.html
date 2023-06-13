@@ -27,12 +27,12 @@
     </span>
 
     <span *ngIf="showDetails else hide">
-      <span class="material-symbols-outlined" (click)="toggleDetails()">
+      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()">
         expand_circle_up
       </span>
     </span>
     <ng-template #hide>
-      <span class="material-symbols-outlined" (click)="toggleDetails()">
+      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()">
         expand_circle_down
       </span>
     </ng-template>

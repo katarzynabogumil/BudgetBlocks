@@ -118,7 +118,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   getComments(id: number) {
-    console.log('get comments called')
     this.commentApi.getAllComments(id).subscribe();
   }
 
