@@ -11,7 +11,13 @@
         <h2>{{ project.name }}</h2>
 
         <div id="main-budget">
-          <b>Budget:</b> {{ project.budget | currency: project.currency : 'symbol' : '1.0-0' }} <br>
+          <div>
+            <span *ngIf="project.budgetRating && project.budgetRating > 0" class="budget-rating">
+              <span *ngFor="let number of [].constructor(project.budgetRating)"><b>$</b></span>
+              <span class="gray" *ngFor="let number of [].constructor(4-project.budgetRating)">$</span>
+            </span>
+            <b>Budget:</b> {{ project.budget | currency: project.currency : 'symbol' : '1.0-0' }} <br>
+          </div>
           <b>Sum:</b> {{ sum | currency: project.currency : 'symbol' : '1.0-0' }} <br>
           <i class="smaller">including one option from each category</i><br>
         </div>
@@ -44,7 +50,7 @@
             <div *ngFor="let category of categories" class="smaller">
               <b>{{ category.category }}:</b>
               {{ expenseSumsByCat[category.orderId] | currency: project.currency : 'symbol' : '1.0-0' }}
-              <i> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-0' }}%</i>
+              <i class="gray"> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-0' }}%</i>
             </div>
           </div>
         </div>

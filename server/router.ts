@@ -39,7 +39,8 @@ import {
 } from './controllers/currencies';
 
 import {
-  getProjectRating
+  getProjectRating,
+  getMissingCategories
 } from './controllers/openai';
 
 const router: express.Router = express.Router();
@@ -70,6 +71,8 @@ router.get('/user', validateAccessToken, getUser);
 router.post('/user', validateAccessToken, saveUser);
 
 router.get('/currencies/:base', validateAccessToken, getCurrencyRates);
-router.get('/ai/:projectId', validateAccessToken, getProjectRating);
+
+router.get('/rating/:projectId', validateAccessToken, getProjectRating);
+router.get('/missing-categories/:projectId', validateAccessToken, getMissingCategories);
 
 export default router;

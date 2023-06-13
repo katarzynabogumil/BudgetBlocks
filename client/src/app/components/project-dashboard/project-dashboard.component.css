@@ -40,3 +40,7 @@ mat-progress-bar {
   margin-bottom: 15px;
   margin-left: 15px;
 }
+
+.budget-rating {
+  float: right;
+}

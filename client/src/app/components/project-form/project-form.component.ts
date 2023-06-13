@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel } from '@app/core';
+import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel } from '@app/core';
+import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
   selector: 'app-project-form',
@@ -27,6 +28,7 @@ export class ProjectFormComponent implements OnInit {
   })
   currencies: string[] = [];
   id: number = -1;
+  rating: number = -1;
   isAddMode: boolean = false;
   submitted: boolean = false;
   dateIsValid: boolean = true;
@@ -37,6 +39,7 @@ export class ProjectFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private currenciesApi: CurrenciesService,
+    public aiApi: OpenAiService
   ) { }
 
   ngOnInit(): void {
@@ -61,11 +64,13 @@ export class ProjectFormComponent implements OnInit {
     if (this.projectForm.invalid || !this.dateIsValid) {
       return;
     } else {
+      let id = this.id || -1;
       if (this.isAddMode) {
         this.addProject(this.projectForm.value);
       } else {
         this.editProject(this.id, this.projectForm.value);
       }
+
       this.projectForm.reset();
       this.submitted = false;
       this.dateIsValid = true;
@@ -80,24 +85,45 @@ export class ProjectFormComponent implements OnInit {
   }
 
   addProject(data: ProjectModel) {
-    this.projectApi.addProject(data)
-      .subscribe((res: ApiResponseProjectModel) => {
-        if (!res.error) console.log('Project added.');
-        else console.log(res.error);
-        this.router.navigate([`/project/${res.data.id}`]);
-      });
+    this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
+      if (!res.error) {
+        console.log('Project added.');
+        this.id = res.data.id || this.id;
+        this.getRating(this.id);
+      }
+      else console.log(res.error);
+      this.router.navigate([`/project/${res.data.id}`]);
+    });
   }
 
   editProject(id: number, data: ProjectModel) {
     this.projectApi.editProject(id, data)
       .subscribe((res: ApiResponseProjectModel) => {
-        if (!res.error) console.log('Project edited.');
-        else console.log(res.error);
+        if (!res.error) {
+          console.log('Project edited.');
+          this.rating = res.data.budgetRating || this.rating;
+          this.getRating(this.id);
+        } else console.log(res.error);
         this.router.navigate([`/project/${id}`]);
       });
   }
 
   close() {
     this.router.navigate([`/projects/`]);
+  }
+
+  getRating(id: number) {
+    this.aiApi.getRating(id).subscribe();
+    this.aiApi.rating$.subscribe((res: RatingModel) => {
+      const rating = res.rating;
+
+      if (this.rating !== rating && rating > 0) {
+        this.projectApi.getProject(id)
+          .subscribe((res: ApiResponseProjectModel) => {
+            res.data.budgetRating = rating;
+            this.editProject(id, res.data);
+          });
+      }
+    });
   }
 }

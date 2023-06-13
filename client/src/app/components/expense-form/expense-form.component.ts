@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ExpenseService, ProjectService, CurrenciesService, ApiResponseExpenseModel, ExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
+import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
   selector: 'app-expense-form',
@@ -37,6 +38,7 @@ export class ExpenseFormComponent implements OnInit {
     public projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
+    public aiApi: OpenAiService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +60,6 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   getCategories() {
-    // this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.categories = p.categories || [];
     });
@@ -106,6 +107,8 @@ export class ExpenseFormComponent implements OnInit {
       } else {
         this.editExpense(this.projectId, this.expenseId, expense);
       }
+
+
       this.expenseForm.reset();
       this.submitted = false;
     }
@@ -114,8 +117,10 @@ export class ExpenseFormComponent implements OnInit {
   addExpense(projectId: number, data: ExpenseModel) {
     this.expenseApi.addExpense(projectId, data).
       subscribe((res: ApiResponseExpenseModel) => {
-        if (!res.error) console.log('Expense added.');
-        else console.log(res.error);
+        if (!res.error) {
+          console.log('Expense added.');
+          this.getMissingCategories(projectId);
+        } else console.log(res.error);
         this.router.navigate([`/project/${projectId}`]);
       });
   }
@@ -123,10 +128,16 @@ export class ExpenseFormComponent implements OnInit {
   editExpense(projectId: number, id: number, data: ExpenseModel) {
     this.expenseApi.editExpense(projectId, id, data).
       subscribe((res: ApiResponseExpenseModel) => {
-        if (!res.error) console.log('Expense edited.');
-        else console.log(res.error);
+        if (!res.error) {
+          console.log('Expense edited.');
+          this.getMissingCategories(projectId);
+        } else console.log(res.error);
         this.router.navigate([`/project/${this.projectId}`]);
       });
+  }
+
+  getMissingCategories(projectId: number) {
+    this.aiApi.getMissingCategories(projectId).subscribe();
   }
 
   close() {

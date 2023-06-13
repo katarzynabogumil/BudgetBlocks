@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseProjectModel, ApiResponseProjectModelArr, EmptyProject, ProjectModel, RequestConfigModel } from '../models';
+import { ApiResponseProjectModel, ApiResponseProjectModelArr, EmptyProject, ProjectModel, RatingModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -244,4 +244,6 @@ export class ProjectService {
       }))
       ;
   }
+
+
 }

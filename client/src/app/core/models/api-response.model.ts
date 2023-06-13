@@ -2,6 +2,7 @@ import { AppErrorModel } from './app-error.model';
 import { CommentDictModel, CommentModel } from './comment.model';
 import { ExpenseModel } from './expense.model';
 import { ProjectModel } from './project.model';
+import { RatingModel } from './rating.model';
 import { UserModel } from './user.model';
 
 export interface ApiResponseModel {
@@ -41,5 +42,9 @@ export interface ApiResponseCommentDictModel {
 
 export interface ApiResponseCommentModel {
   data: CommentModel;
+  error: AppErrorModel | null;
+}
+export interface ApiResponseRatingModel {
+  data: RatingModel;
   error: AppErrorModel | null;
 }
