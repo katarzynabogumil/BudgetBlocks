@@ -3,13 +3,15 @@
 </div>
 
 <div class="expense-text">
-  <div class="smaller">
+  <div>
     <h2>{{expense.name}}</h2>
-    <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
-    <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
-    <span *ngIf="expense.calcCost" class="smaller">
-      <b>Recalculated cost: </b>{{expense.calcCost | currency: projectCurrency }}<br>
-    </span>
+    <div class="smaller">
+      <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
+      <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
+      <span *ngIf="expense.calcCost" class="smaller">
+        <b>Recalculated cost: </b>{{expense.calcCost | currency: projectCurrency }}<br>
+      </span>
+    </div>
   </div>
   <div class="icons">
     <span class="votes">{{upvotes}} </span>

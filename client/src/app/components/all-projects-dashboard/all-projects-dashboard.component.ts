@@ -24,7 +24,7 @@ export class AllProjectsDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.checkIfNewUser();
-    this.id = Number(this.route.snapshot.params['id']);
+    this.id = Number(this.route.snapshot.params['id']) || -1;
   }
 
   checkIfNewUser() {

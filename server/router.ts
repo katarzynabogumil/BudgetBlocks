@@ -58,7 +58,7 @@ router.put('/project/:projectId/accept', validateAccessToken, acceptInvitation);
 
 router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vote);
 
-router.get('/comments/:expenseId', validateAccessToken, getAllComments);
+router.get('/comments/:projectId', validateAccessToken, getAllComments);
 router.post('/comment/:expenseId', validateAccessToken, saveComment);
 router.delete('/comment/:commentId', validateAccessToken, deleteComment);
 

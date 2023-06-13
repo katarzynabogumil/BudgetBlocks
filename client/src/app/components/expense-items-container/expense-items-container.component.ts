@@ -47,28 +47,18 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   getProject() {
     this.projectApi.getProject(this.id).subscribe();
-
     this.projectApi.project$.subscribe((p: ProjectModel) => {
-      console.log(p);
-      this.project = p;
-      this.expenses = p.expenses;
-      this.categories = p.categories || [];
-      this.checkCurrencyRates();
+      if (p.id) {
+        console.log(p);
+        this.project = p;
+        this.expenses = p.expenses;
+        this.categories = p.categories || [];
 
-      this.expensesAtCatOrderId = {}
-      this.categories.forEach((cat: ExpCategoryModel) => {
-        this.expensesAtCatOrderId[cat.orderId] = this.expenses
-          .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
-          .map((exp: ExpenseModel) => {
-            exp.showDetails === false;
-            return exp;
-          })
-          .sort((a: ExpenseModel, b: ExpenseModel) => {
-            return ((b.upvotes || []).length - (b.downvotes || []).length) - ((a.upvotes || []).length - (a.downvotes || []).length)
-          });
-      })
-
-      this.updateSum();
+        this.checkCurrencyRates();
+        this.getComments(p.id as number);
+        this.getExpensesToCategories();
+        this.updateSum();
+      }
     });
   }
 
@@ -84,7 +74,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
         if (this.project.currencyRates?.timestamp !== rates.timestamp) {
           this.project.currencyRates = rates;
-          // console.log(rates)
 
           this.projectApi.editProject(this.id, this.project)
             .subscribe((res: ApiResponseProjectModel) => {
@@ -126,6 +115,26 @@ export class ExpenseItemsContainerComponent implements OnInit {
         };
       })
     }
+  }
+
+  getComments(id: number) {
+    console.log('get comments called')
+    this.commentApi.getAllComments(id).subscribe();
+  }
+
+  getExpensesToCategories() {
+    this.expensesAtCatOrderId = {}
+    this.categories.forEach((cat: ExpCategoryModel) => {
+      this.expensesAtCatOrderId[cat.orderId] = this.expenses
+        .filter((exp: ExpenseModel) => exp.category.orderId === cat.orderId)
+        .map((exp: ExpenseModel) => {
+          exp.showDetails === false;
+          return exp;
+        })
+        .sort((a: ExpenseModel, b: ExpenseModel) => {
+          return ((b.upvotes || []).length - (b.downvotes || []).length) - ((a.upvotes || []).length - (a.downvotes || []).length)
+        });
+    })
   }
 
   onModeChanges() {

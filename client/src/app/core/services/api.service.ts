@@ -10,7 +10,6 @@ import { ApiResponseModel, RequestConfigModel } from '../models';
 export class ApiService {
   constructor(
     private http: HttpClient,
-    private router: Router,
   ) { }
 
   callApi = (config: RequestConfigModel): Observable<ApiResponseModel> => {
@@ -28,8 +27,6 @@ export class ApiService {
         }),
         catchError((err) => {
           if (err.error && err.status) {
-
-            if (err.message !== "User not registered.") this.router.navigate([`projects/`]);
 
             return of({
               data: null,

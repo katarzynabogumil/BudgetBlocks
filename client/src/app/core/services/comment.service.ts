@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseCommentModelArr, ApiResponseCommentModel, ApiResponseModel, CommentModel, RequestConfigModel } from '../models';
+import { ApiResponseModel, ApiResponseCommentModel, CommentModel, CommentDictModel, RequestConfigModel, ApiResponseCommentDictModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
-  comments$ = new BehaviorSubject<{ [key: number]: CommentModel[] }>({});
-  public comments: { [key: number]: CommentModel[] } = {};
+  comments$ = new BehaviorSubject<CommentDictModel>({});
+  public comments: CommentDictModel = {};
 
   constructor(
     public api: ApiService,
   ) { }
 
 
-  getAllComments = (expenseId: number): Observable<ApiResponseCommentModelArr> => {
+  getAllComments = (projectId: number): Observable<ApiResponseCommentDictModel> => {
     const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/comments/${expenseId}`,
+      url: `${env.api.serverUrl}/comments/${projectId}`,
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -27,14 +27,12 @@ export class CommentService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as CommentModel[];
+        const data = response.data as CommentDictModel;
         const error = response.error;
 
         if (!error) {
-          this.comments[expenseId] = data;
-          this.comments$.next(this.comments);
-        } else {
-          console.log(error)
+          this.comments = data;
+          this.comments$.next(data);
         }
 
         return of({
@@ -59,7 +57,7 @@ export class CommentService {
       mergeMap((response) => {
         const data = response.data as CommentModel;
         const error = response.error;
-
+        console.log('adding comments')
         if (!error) {
           this.comments[expenseId].push(data);
           this.comments$.next(this.comments);
@@ -86,6 +84,7 @@ export class CommentService {
       mergeMap((response) => {
         const data = response.data as CommentModel;
         const error = response.error;
+        console.log('delete comments')
 
         if (!error) {
           this.comments[expenseId] = this.comments[expenseId].filter(comment => comment.id !== data.id);

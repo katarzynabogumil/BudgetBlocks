@@ -1,21 +1,30 @@
 import prisma from "./prisma";
 import { Prisma } from '@prisma/client'
+import { CommentDictModel } from "../interfaces/comment.model";
 
-
-async function getCommentsFromDB(id: number) {
-  const expense = await prisma.expense.findUnique({
+async function getCommentsFromDB(projectId: number) {
+  const project = await prisma.project.findUnique({
     where: {
-      id
+      id: projectId
     },
     include: {
-      comments: {
+      expenses: {
         include: {
-          user: true
+          comments: {
+            include: {
+              user: true
+            }
+          }
         }
       }
     }
   });
-  return expense?.comments || [];
+
+  let commentDict: CommentDictModel = {};
+  project?.expenses.forEach((exp) => {
+    commentDict[exp.id] = exp.comments;
+  });
+  return commentDict;
 };
 
 async function saveCommentToDb(expenseId: number, userId: number, data: Prisma.CommentCreateInput) {
@@ -29,6 +38,9 @@ async function saveCommentToDb(expenseId: number, userId: number, data: Prisma.C
       user: {
         connect: { id: userId }
       },
+    },
+    include: {
+      user: true
     }
   });
 

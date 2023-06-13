@@ -13,9 +13,19 @@
 .expense-item {
   display: flex;
   flex-direction: row;
-  height: 200px;
+  height: 180px;
   margin-bottom: 0;
   position: relative;
+}
+
+
+.whitespace {
+  position: absolute;
+  height: 180px;
+  z-index: 0;
+  box-shadow: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 app-expense-details {
@@ -29,6 +39,7 @@ app-expense-details {
 .compare-not-selected {
   opacity: 50%
 }
+
 
 @media screen and (min-width: 800px) {
   #expense-items-background {
@@ -59,7 +70,7 @@ app-expense-details {
     top: 80px;
     bottom: 30px;
     width: calc(100% - 410px);
-    height: calc(100% - 120px);
+    height: calc(100% - 110px);
     margin: 0px 10px 0 350px;
     padding: 0 20px 0 20px;
     overflow-x: scroll;
@@ -80,14 +91,8 @@ app-expense-details {
   }
 
   .whitespace {
-    position: absolute;
-    height: 200px;
     width: 350px;
-    z-index: 0;
     margin: 0;
-    box-shadow: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
   }
 
 }
@@ -134,14 +139,8 @@ app-expense-details {
   }
 
   .whitespace {
-    position: absolute;
-    height: 200px;
-    z-index: 0;
     left: 20px;
     width: calc(100% - 40px);
-    box-shadow: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
   }
 
 }

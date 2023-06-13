@@ -25,10 +25,7 @@ export class ExpenseDetailsComponent {
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
 
-    console.log(`getting comments for ${this.expense.id}`)
-    this.commentApi.getAllComments(this.expense.id as number).subscribe();
     this.commentApi.comments$.subscribe(comments => {
-      console.log('comment subscription')
       this.allComments = comments;
       this.comments = comments[this.expense.id as number];
     });

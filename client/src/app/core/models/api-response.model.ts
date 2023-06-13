@@ -1,5 +1,5 @@
 import { AppErrorModel } from './app-error.model';
-import { CommentModel } from './comment.model';
+import { CommentDictModel, CommentModel } from './comment.model';
 import { ExpenseModel } from './expense.model';
 import { ProjectModel } from './project.model';
 import { UserModel } from './user.model';
@@ -29,19 +29,17 @@ export interface ApiResponseExpenseModel {
   error: AppErrorModel | null;
 }
 
-export interface ApiResponseCommentModel {
-  data: CommentModel;
-  error: AppErrorModel | null;
-}
-
-export interface ApiResponseCommentModelArr {
-  data: CommentModel[];
-  error: AppErrorModel | null;
-}
-
-
 export interface ApiResponseExpenseModelArr {
   data: ExpenseModel[];
   error: AppErrorModel | null;
 }
 
+export interface ApiResponseCommentDictModel {
+  data: CommentDictModel;
+  error: AppErrorModel | null;
+}
+
+export interface ApiResponseCommentModel {
+  data: CommentModel;
+  error: AppErrorModel | null;
+}

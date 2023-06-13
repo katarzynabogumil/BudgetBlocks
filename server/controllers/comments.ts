@@ -10,8 +10,8 @@ import { getUserFromDB } from '../models/users';
 
 async function getAllComments(req: express.Request, res: express.Response) {
   try {
-    const expenseId = Number(req.params.expenseId);
-    const comments = await getCommentsFromDB(expenseId);
+    const projectId = Number(req.params.projectId);
+    const comments = await getCommentsFromDB(projectId);
     res.status(200);
     res.send(comments);
   } catch (e) {

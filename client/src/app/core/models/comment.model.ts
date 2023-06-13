@@ -11,3 +11,5 @@ export interface CommentModel {
   user?: UserModel;
   userId?: number;
 }
+
+export interface CommentDictModel { [key: number]: CommentModel[] } 

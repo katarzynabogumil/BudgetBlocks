@@ -34,10 +34,6 @@ export class ExpenseItemComponent {
   ) {
     this.projectId = this.route.parent?.snapshot.params['id'];
 
-    this.projectApi.project$.subscribe((p: ProjectModel) => {
-
-    });
-
     this.usersub$.subscribe(sub => {
       this.usersub = sub || '';
       this.checkVotes();
