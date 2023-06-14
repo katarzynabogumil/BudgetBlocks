@@ -4,8 +4,22 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const RATING_PROMPT = process.env.RATING_PROMPT || '';
-const CATEGORY_PROMPT = process.env.CATEGORY_PROMPT || '';
+const CONTEXT = `
+  Context:
+  We are a budgeting app that helps you keep your budget for a specific goal in check, for example: a trip, an event or a home renovation. It allows you to set up new projects with a set budget goal with other users, add different expenses or even different options for each expense and compare their effect on the overall cost.
+`;
+
+const RATING_PROMPT = CONTEXT + `
+  Please answer with a number from 1 to 4 which should represent a rating for the budget for the project with the following information. Number 1 means that the budget for this project is small and number 4 means that it is big.  Return only a single number.
+  If you don't have enough information to provide a rating, answer with 0.
+  Project information: 
+`;
+
+const CATEGORY_PROMPT = CONTEXT + `
+  Please answer with 1-3 category names which might be missing in the budget for the project with the following information. Return only max. three words, separated with commas.
+  Project information: 
+`;
+
 const URL = 'https://api.openai.com/v1/chat/completions';
 const HEADERS = {
   'Content-Type': 'application/json',

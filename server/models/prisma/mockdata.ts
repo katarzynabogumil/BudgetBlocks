@@ -1,34 +1,18 @@
 // @ts-nocheck 
 'use strict';
 
-import { Prisma } from '@prisma/client';
 import * as dotenv from "dotenv";
 dotenv.config();
-
-// type mockdata = {
-//   users: Prisma.UserCreateManyInput[],
-//   projects: Prisma.ProjectCreateManyInput[],
-//   categories: Prisma.ExpCategoryCreateManyInput[],
-//   expenses: Prisma.ExpenseCreateManyInput[],
-//   comments: Prisma.CommentCreateManyInput[],
-// }
-
-// type ExpCreate = Prisma.ExpenseCreateInput & {
-//   category: {
-//     category: string,
-//     orderId: number
-//   }
-// }
 
 export const mockdata = {
   users: [
     {
       id: 1,
-      sub: process.env.MOCK_USER_1 || '',
-      firstName: 'katarzyna@example.com',
-      lastName: 'katarzyna@example.com',
-      nickname: 'katarzyna',
-      email: 'katarzyna@example.com',
+      sub: process.env.MOCK_USER_1_SUB || '',
+      firstName: process.env.MOCK_USER_1_FNAME || '',
+      lastName: process.env.MOCK_USER_1_LNAME || '',
+      nickname: process.env.MOCK_USER_1_NICKNAME || '',
+      email: process.env.MOCK_USER_1_EMAIL || '',
       projects: {
         create: [
           {
@@ -335,23 +319,5 @@ export const mockdata = {
         ]
       }
     },
-    {
-      id: 2,
-      sub: process.env.MOCK_USER_2 || '',
-      firstName: 'bart@example.com',
-      lastName: 'bart@example.com',
-      nickname: 'bart',
-      email: 'bart@example.com',
-      projects: { connect: { id: 2 } }
-    },
-    {
-      id: 3,
-      sub: process.env.MOCK_USER_3 || '',
-      firstName: 'anna@example.com',
-      lastName: 'anna@example.com',
-      nickname: 'anna',
-      email: 'anna@example.com',
-      projects: { connect: { id: 1 } }
-    }
   ],
 }

@@ -14,16 +14,6 @@ async function main() {
       update: {},
       create: mockdata.users[0]
     }),
-    prisma.user.upsert({
-      where: { id: 2 },
-      update: {},
-      create: mockdata.users[1]
-    }),
-    prisma.user.upsert({
-      where: { id: 3 },
-      update: {},
-      create: mockdata.users[2]
-    }),
   ]);
 }
 
