@@ -30,27 +30,27 @@ export const getProjectRating = async function (
 
     const prompt = RATING_PROMPT + JSON.stringify(projectData);
 
-    // const response = await fetch(URL, {
-    //   method: 'POST',
-    //   headers: HEADERS,
-    //   body: JSON.stringify({
-    //     messages: [
-    //       {
-    //         role: 'assistant',
-    //         content: prompt
-    //       }
-    //     ],
-    //     ...CONF
-    //   }),
-    // });
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'assistant',
+            content: prompt
+          }
+        ],
+        ...CONF
+      }),
+    });
 
-    // const responseData = await response.json();
-    // if (!responseData.error) {
-    //   const rating = Number(responseData.choices[0].message.content);
-    const rating = 3;
-    res.status(201);
-    res.send({ rating });
-    // } else res.sendStatus(400);
+    const responseData = await response.json();
+    if (!responseData.error) {
+      const rating = Number(responseData.choices[0].message.content);
+      // const rating = 3;
+      res.status(201);
+      res.send({ rating });
+    } else res.sendStatus(400);
 
   } catch (e) {
     console.log('Error: ', e);
@@ -69,28 +69,28 @@ export const getMissingCategories = async function (
 
     const prompt = CATEGORY_PROMPT + JSON.stringify(projectData);
 
-    // const response = await fetch(URL, {
-    //   method: 'POST',
-    //   headers: HEADERS,
-    //   body: JSON.stringify({
-    //     messages: [
-    //       {
-    //         role: 'assistant',
-    //         content: prompt
-    //       }
-    //     ],
-    //     ...CONF
-    //   }),
-    // });
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'assistant',
+            content: prompt
+          }
+        ],
+        ...CONF
+      }),
+    });
 
-    // const responseData = await response.json();
-    // if (!responseData.error) {
-    // const categories = responseData.choices[0].message.content;
-    const categories = 'Food, Souvenirs';
+    const responseData = await response.json();
+    if (!responseData.error) {
+      const categories = responseData.choices[0].message.content;
+      // const categories = 'Food, Souvenirs';
 
-    res.status(201);
-    res.send({ categories });
-    // } else res.sendStatus(400);
+      res.status(201);
+      res.send({ categories });
+    } else res.sendStatus(400);
 
   } catch (e) {
     console.log('Error: ', e);

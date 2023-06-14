@@ -18,7 +18,7 @@
             <i>
               {{ comment.createdAt | date }}
             </i>
-            <span *ngIf="comment.isUser" (click)="removeComment(comment.id || -1)">
+            <span *ngIf="comment.isUser" class="pointer" (click)="removeComment(comment.id || -1)">
               / remove
             </span>
           </span>
@@ -35,7 +35,7 @@
   <div class=" edit-remove-links smaller">
     <b>
       <span *ngIf="expense.link">
-        <a class="pointer" href="expense.link">more information </a>/
+        <a class="pointer smaller" href="{{expense.link}}">more information </a>/
       </span>
       <a class="pointer" [routerLink]="['./edit/' + expense.id]">
         edit

@@ -59,7 +59,7 @@ export const mockdata = {
                         cost: 724,
                         currency: "EUR",
                         link: null,
-                        photo: null,
+                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
                         notes: "Departure time: 6:00 AM. I'm too old for that.",
                         project: { connect: { id: 1 } }
                       },
@@ -68,7 +68,7 @@ export const mockdata = {
                         cost: 927,
                         currency: "EUR",
                         link: null,
-                        photo: null,
+                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
                         notes: "Departureat 10:00 AM",
                         project: { connect: { id: 1 } }
                       },
@@ -77,7 +77,7 @@ export const mockdata = {
                         cost: 525,
                         currency: "EUR",
                         link: null,
-                        photo: null,
+                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
                         notes: "Departure at 10:00 PM, not the worst",
                         project: { connect: { id: 1 } }
                       },
@@ -140,7 +140,7 @@ export const mockdata = {
                         cost: 40,
                         currency: "EUR",
                         link: null,
-                        photo: null,
+                        photo: "https://www.travelpins.at/wp-content/uploads/2014/02/201402-BARCELONA-CARD-IMG_9206_1018x460px.jpg",
                         notes: "Explore the city like a local",
                         project: { connect: { id: 1 } }
                       },
@@ -263,15 +263,6 @@ export const mockdata = {
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
-                      {
-                        name: "Colorful picture",
-                        cost: 89,
-                        currency: "EUR",
-                        link: null,
-                        photo: "https://www.bhg.com/thmb/jtizEvo0XmvalwcWw3ba1XG-zk4=/1244x0/filters:no_upscale():strip_icc()/colorful-painting-mantelpiece-d61bdfea-0bc87b9d67054574813b79e479b15fdc.jpg",
-                        notes: null,
-                        project: { connect: { id: 2 } }
-                      },
                     ]
                   }
                 },
@@ -281,6 +272,15 @@ export const mockdata = {
                   orderId: 3,
                   expenses: {
                     create: [
+                      {
+                        name: "Colorful picture",
+                        cost: 89,
+                        currency: "EUR",
+                        link: null,
+                        photo: "https://www.bhg.com/thmb/jtizEvo0XmvalwcWw3ba1XG-zk4=/1244x0/filters:no_upscale():strip_icc()/colorful-painting-mantelpiece-d61bdfea-0bc87b9d67054574813b79e479b15fdc.jpg",
+                        notes: null,
+                        project: { connect: { id: 2 } }
+                      },
                       {
                         name: "Abstract picture",
                         cost: 129,
@@ -341,7 +341,8 @@ export const mockdata = {
       firstName: 'bart@example.com',
       lastName: 'bart@example.com',
       nickname: 'bart',
-      email: 'bart@example.com'
+      email: 'bart@example.com',
+      projects: { connect: { id: 2 } }
     },
     {
       id: 3,
@@ -349,7 +350,8 @@ export const mockdata = {
       firstName: 'anna@example.com',
       lastName: 'anna@example.com',
       nickname: 'anna',
-      email: 'anna@example.com'
+      email: 'anna@example.com',
+      projects: { connect: { id: 1 } }
     }
   ],
 }

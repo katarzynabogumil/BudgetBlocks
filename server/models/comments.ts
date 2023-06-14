@@ -48,7 +48,7 @@ async function saveCommentToDb(expenseId: number, userId: number, data: Prisma.C
 };
 
 async function deleteCommentFromDB(commentId: number) {
-  const comment = await prisma.expense.delete({
+  const comment = await prisma.comment.delete({
     where: {
       id: commentId
     },

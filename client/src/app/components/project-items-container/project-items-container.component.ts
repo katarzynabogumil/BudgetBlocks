@@ -25,10 +25,10 @@ export class ProjectItemsContainerComponent implements OnInit {
     this.projectApi.projects$.
       subscribe(res => {
         this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
-          if (a.updatedAt && b.updatedAt
-            && b.updatedAt > a.updatedAt) {
+          if (a.createdAt && b.createdAt
+            && b.createdAt > a.createdAt) {
             return 1;
-          } else return -1;
+          } else return 0;
         });
         this.getProjectInvitations()
       });

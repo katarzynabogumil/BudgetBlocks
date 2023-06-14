@@ -106,11 +106,12 @@ export class ExpenseItemsContainerComponent implements OnInit {
     }
 
     if (ratesAreOld ||
-      !this.project.currencyRates ||
-      this.project.currencyRates.base !== this.project.currency
+      (this.project.id && !this.project.currencyRates) ||
+      this.project.currencyRates?.base !== this.project.currency
     ) {
       this.currenciesApi.currencyRates$.subscribe(rates => {
-        if ((!rates.success && !rates.error?.code) || rates.base !== this.project.currency) {
+        if (!rates.success && ((!rates.success && !rates.error?.code) || rates.base !== this.project.currency)) {
+
           this.currenciesApi.getRates(this.project.currency).subscribe()
         };
       })
@@ -131,7 +132,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
           return exp;
         })
         .sort((a: ExpenseModel, b: ExpenseModel) => {
-          return ((b.upvotes || []).length - (b.downvotes || []).length) - ((a.upvotes || []).length - (a.downvotes || []).length)
+          const aVotes = ((a.upvotes || []).length - (a.downvotes || []).length)
+          const bVotes = ((b.upvotes || []).length - (b.downvotes || []).length)
+          if (bVotes > aVotes) return 1;
+          if (bVotes < aVotes) return -1;
+          if ((b.calcCost || b.cost) > (a.calcCost || a.cost)) return -1;
+          if ((b.calcCost || b.cost) < (a.calcCost || a.cost)) return 1;
+          return 0;
         });
     })
   }

@@ -133,8 +133,8 @@ async function addUserVoteToDb(direction: string, userSub: string, expenseId: nu
     }
   });
 
-  let upvotes: string[] = [];
-  let downvotes: string[] = [];
+  let upvotes: string[] = expense?.upvotes || [];
+  let downvotes: string[] = expense?.downvotes || [];
 
   if (direction === 'up') {
     if (expense?.upvotes?.includes(userSub)) {
