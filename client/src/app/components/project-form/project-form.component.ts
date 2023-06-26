@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
-import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates } from '@app/core';
+import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates, ApiResponseModel, ApiResponseCurrenciesModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-project-form',
@@ -70,18 +71,29 @@ export class ProjectFormComponent implements OnInit {
       return;
     } else {
 
-      if (this.isAddMode || project.refreshRates) project.currencyRates = this.getCurrencyRates(project);
-      delete project.refreshRates;
+      this.getCurrencyRates(project).pipe(
+        switchMap((rates: CurrencyRatesModel | null | undefined) => {
+          if (rates) {
+            project.currencyRates = rates;
+            return of(rates);
+          } else {
+            return of(null);
+          }
+        })
+      ).subscribe((rates: CurrencyRatesModel | null) => {
+        if (rates) {
+          delete project.refreshRates;
+          if (this.isAddMode) {
+            this.addProject(project);
+          } else {
+            this.editProject(this.id, project);
+          }
 
-      if (this.isAddMode) {
-        this.addProject(project);
-      } else {
-        this.editProject(this.id, project);
-      }
-
-      this.projectForm.reset();
-      this.submitted = false;
-      this.dateIsValid = true;
+          this.projectForm.reset();
+          this.submitted = false;
+          this.dateIsValid = true;
+        }
+      });
     }
   }
 
@@ -116,18 +128,25 @@ export class ProjectFormComponent implements OnInit {
       });
   }
 
-  getCurrencyRates(project: ProjectModel): CurrencyRatesModel {
-    let newRates = EmptyCurrencyRates;
-    this.currenciesApi.currencyRates$.subscribe(rates => {
-      if (!rates.success && ((!rates.success && !rates.error?.code) || rates.base !== project.currency)) {
-        console.log('got new rates')
-        this.currenciesApi.getRates(project.currency).subscribe()
-      } else {
-        newRates = rates;
-        console.log('saved new rates', rates)
-      }
-    })
-    return newRates;
+  getCurrencyRates(project: CreateProjectModel) {
+    if (this.isAddMode || project.refreshRates) {
+      return this.currenciesApi.currencyRates$.pipe(
+        switchMap(rates => {
+          if (rates.success && rates.base === project.currency) {
+            return of(rates);
+          } else {
+            console.log('getting new rates')
+            return this.currenciesApi.getRates(project.currency).pipe(
+              switchMap((rates: ApiResponseCurrenciesModel) => {
+                return of(rates.data);
+              })
+            );
+          }
+        })
+      );
+    } else {
+      return of(project.currencyRates);
+    }
   }
 
   close() {

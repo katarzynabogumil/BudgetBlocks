@@ -37,8 +37,12 @@ mat-progress-bar {
 }
 
 #categories {
-  margin-bottom: 15px;
   margin-left: 15px;
+}
+
+.text-container {
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .budget-rating {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, RequestConfigModel, EmptyCurrencyRates, CurrencyRatesModel } from '../models';
+import { ApiResponseModel, RequestConfigModel, EmptyCurrencyRates, CurrencyRatesModel, ApiResponseCurrenciesModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -30,7 +30,7 @@ export class CurrenciesService {
 
   constructor(public api: ApiService) { }
 
-  getRates = (base: string): Observable<ApiResponseModel> => {
+  getRates = (base: string): Observable<ApiResponseCurrenciesModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/currencies/${base}`,
       method: 'GET',

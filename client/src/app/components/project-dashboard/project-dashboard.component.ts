@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpCategoryModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpCategoryModel, CurrenciesService } from '@app/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,6 +20,7 @@ export class ProjectDashboardComponent implements OnInit {
   expenseSumsByCat: { [key: string]: number; } = {};
   difference: number = 0;
   progressBarValue: number = 0;
+  backupRates: boolean = false;
 
   constructor(
     public expenseApi: ExpenseService,
@@ -40,6 +41,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.categories = p.categories;
+      this.backupRates = p.currencyRates?.backup ? true : false;
     });
   }
 

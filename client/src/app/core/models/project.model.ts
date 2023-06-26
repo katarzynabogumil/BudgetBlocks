@@ -19,6 +19,7 @@ export interface CreateProjectModel {
   destination?: string;
   occasion?: string;
   description?: string;
+  refreshRates?: boolean;
 }
 
 export interface ProjectModel {

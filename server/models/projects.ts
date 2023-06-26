@@ -113,7 +113,6 @@ async function getProjectPublicFromDB(id: number) {
 };
 
 async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpdateInput) {
-  console.log('input rates', inputData.currencyRates)
   let {
     categories: _1,
     expenses: _2,
@@ -133,7 +132,6 @@ async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpd
       updatedAt: new Date()
     }
   });
-  console.log(project)
   return project;
 };
 

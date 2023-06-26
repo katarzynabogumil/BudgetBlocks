@@ -1,5 +1,6 @@
 export interface CurrencyRatesModel {
   success: boolean;
+  backup?: boolean;
   timestamp: number;
   base: string;
   date: string;
