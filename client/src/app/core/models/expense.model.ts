@@ -16,7 +16,7 @@ export interface CreateExpenseModel {
 }
 
 export interface ExpenseModel {
-  id?: number;
+  id: number;
   createdAt?: Date;
   updatedAt?: Date;
   project?: ProjectModel;
@@ -38,6 +38,7 @@ export interface ExpenseModel {
 }
 
 export const EmptyExpense = {
+  id: -1,
   name: '',
   cost: 0,
   currency: 'EUR',

@@ -8,7 +8,7 @@
           <span class="avoidwrap">Budget</span>
           <span class="avoidwrap">Blocks</span>
         </h1>
-        <span *ngIf="id < 0">
+        <span *ngIf="id === -1">
           <ng-container *ngIf="username$ | async as username">
             <h2>Hi, {{ username }}! Here are your projects.</h2>
           </ng-container>

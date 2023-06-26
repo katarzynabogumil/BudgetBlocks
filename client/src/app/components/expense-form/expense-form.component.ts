@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, ExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
+import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
@@ -61,19 +61,19 @@ export class ExpenseFormComponent implements OnInit {
     }
   }
 
-  getCategories() {
+  getCategories(): void {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.categories = p.categories || [];
     });
   }
 
-  getCurrencyRates() {
+  getCurrencyRates(): void {
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.currencyRates = p.currencyRates || EmptyCurrencyRates;
     });
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     this.getCategories();
 
     this.submitted = true;
@@ -99,7 +99,7 @@ export class ExpenseFormComponent implements OnInit {
     }
   }
 
-  addExpense(projectId: number, data: CreateExpenseModel) {
+  addExpense(projectId: number, data: CreateExpenseModel): void {
     this.expenseApi.addExpense(projectId, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -110,7 +110,7 @@ export class ExpenseFormComponent implements OnInit {
       });
   }
 
-  editExpense(projectId: number, id: number, data: CreateExpenseModel) {
+  editExpense(projectId: number, id: number, data: CreateExpenseModel): void {
     this.expenseApi.editExpense(projectId, id, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -161,11 +161,11 @@ export class ExpenseFormComponent implements OnInit {
     return expense;
   }
 
-  getMissingCategories(projectId: number) {
+  getMissingCategories(projectId: number): void {
     this.aiApi.getMissingCategories(projectId).subscribe();
   }
 
-  close() {
+  close(): void {
     this.router.navigate([`/project/${this.projectId}`]);
   }
 }

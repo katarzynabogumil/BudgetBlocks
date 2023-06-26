@@ -29,14 +29,14 @@ export class ProjectDashboardComponent implements OnInit {
     private router: Router,
   ) { }
 
-  ngOnInit() {
-    this.id = Number(this.route.snapshot.params['id']);
+  ngOnInit(): void {
+    this.id = Number(this.route.snapshot.params['id']) || -1;
 
     this.getProject(this.id);
     this.getExpenseSum();
   }
 
-  getProject(id: number) {
+  getProject(id: number): void {
     this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
@@ -45,7 +45,7 @@ export class ProjectDashboardComponent implements OnInit {
     });
   }
 
-  editProject(id: number, data: ProjectModel) {
+  editProject(id: number, data: ProjectModel): void {
     this.projectApi.editProject(id, data)
       .subscribe((res: ApiResponseProjectModel) => {
         console.log('Project edited.');
@@ -53,8 +53,8 @@ export class ProjectDashboardComponent implements OnInit {
       });
   }
 
-  removeProject() {
-    this.projectApi.deleteProject(this.id as number)
+  removeProject(): void {
+    this.projectApi.deleteProject(this.id)
       .subscribe((res: ApiResponseProjectModel) => {
         console.log('Project removed.');
         this.router.navigate([`/projects/`]);

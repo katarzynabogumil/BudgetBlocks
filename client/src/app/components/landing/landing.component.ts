@@ -13,7 +13,7 @@ export class LandingComponent {
     path: '/assets/animation.json',
   };
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
   handleLogin(): void {
     this.auth.loginWithRedirect({

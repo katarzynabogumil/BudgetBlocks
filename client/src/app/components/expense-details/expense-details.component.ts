@@ -30,7 +30,7 @@ export class ExpenseDetailsComponent {
 
     this.commentApi.comments$.subscribe(comments => {
       this.allComments = comments;
-      this.comments = comments[this.expense.id as number];
+      this.comments = comments[this.expense.id];
       this.username$.subscribe((name: string | undefined) => {
         this.comments && this.comments.forEach((comment: CommentModel) => {
           if (comment.user?.nickname?.toLowerCase() === name?.toLowerCase())
@@ -41,12 +41,12 @@ export class ExpenseDetailsComponent {
 
   }
 
-  removeExpense() {
-    this.expenseApi.deleteExpense(this.projectId, this.expense.id as number)
+  removeExpense(): void {
+    this.expenseApi.deleteExpense(this.projectId, this.expense.id)
       .subscribe();
   }
 
-  removeComment(id: number) {
-    this.commentApi.deleteComment(this.expense.id as number, id).subscribe();
+  removeComment(id: number): void {
+    this.commentApi.deleteComment(this.expense.id, id).subscribe();
   }
 }

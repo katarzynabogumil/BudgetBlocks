@@ -3,7 +3,7 @@ import { AuthService, User } from '@auth0/auth0-angular';
 import { switchMap } from 'rxjs/operators';
 import { ApiResponseModel, UserModel, UserService } from '@app/core';
 import { of, Observable, map } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-projects-dashboard',
@@ -12,22 +12,23 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AllProjectsDashboardComponent implements OnInit {
   username$ = this.auth.user$.pipe(map((user) => user?.nickname?.replace(/\b./g, x => x.toUpperCase())));
-  // usersub$ = this.auth.user$.pipe(map((user) => user?.sub));
-  // code$ = this.user$.pipe(map((user) => JSON.stringify(user, null, 2)));
   id: number = -1;
 
   constructor(
     private auth: AuthService,
     public userApi: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkIfNewUser();
-    this.id = Number(this.route.snapshot.params['id']) || -1;
+    this.router.events.subscribe((event) => {
+      this.id = Number(this.route.firstChild?.snapshot.params['id']) || -1;
+    });
   }
 
-  checkIfNewUser() {
+  checkIfNewUser(): void {
     if (!this.userApi.userSub) {
       this.auth.user$.subscribe(user => {
 
@@ -47,7 +48,7 @@ export class AllProjectsDashboardComponent implements OnInit {
       }));
   }
 
-  saveToDb(userData: User | null | undefined) {
+  saveToDb(userData: User | null | undefined): void {
     if (userData) {
       const user: UserModel = {
         sub: userData.sub || '',

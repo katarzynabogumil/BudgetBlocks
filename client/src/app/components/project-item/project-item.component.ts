@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
 
 @Component({
@@ -12,13 +11,12 @@ export class ProjectItemComponent {
   linkDisabled: boolean = false;
 
   constructor(
-    private auth: AuthService,
     public projectApi: ProjectService
   ) { }
 
-  removeProject() {
+  removeProject(): void {
     this.linkDisabled = true;
-    this.projectApi.deleteProject(this.project.id as number)
+    this.projectApi.deleteProject(this.project.id)
       .subscribe();
   }
 }

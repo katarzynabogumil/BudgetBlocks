@@ -35,7 +35,7 @@ export class AddUsersFormComponent implements OnInit {
     this.getProject(this.id);
   }
 
-  getProject(id: number) {
+  getProject(id: number): void {
     this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
@@ -44,7 +44,7 @@ export class AddUsersFormComponent implements OnInit {
     });
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     this.submitted = true;
     this.isInvited = false;
     this.isOwner = false;
@@ -73,7 +73,7 @@ export class AddUsersFormComponent implements OnInit {
     this.submitted = false;
   }
 
-  inviteUser(email: string) {
+  inviteUser(email: string): void {
     this.projectApi.addUser(email, this.id)
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) console.log('Project edited.');
@@ -81,7 +81,7 @@ export class AddUsersFormComponent implements OnInit {
       });
   }
 
-  close() {
+  close(): void {
     this.router.navigate([`/project/` + this.id]);
   }
 }

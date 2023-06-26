@@ -23,7 +23,7 @@ export interface CreateProjectModel {
 }
 
 export interface ProjectModel {
-  id?: number;
+  id: number;
   createdAt?: Date;
   updatedAt?: Date;
   owners?: UserModel[];
@@ -48,6 +48,7 @@ export interface ProjectModel {
 }
 
 export const EmptyProject = {
+  id: -1,
   name: '',
   type: '',
   budget: 0,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
-import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates, ApiResponseModel, ApiResponseCurrenciesModel } from '@app/core';
+import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates, ApiResponseModel, ApiResponseCurrenciesModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 import { Observable, of, switchMap } from 'rxjs';
 
@@ -61,7 +61,7 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     this.submitted = true;
     const project = this.projectForm.value;
     if (project.dateFrom) project.dateFrom = new Date(project.dateFrom);
@@ -72,7 +72,7 @@ export class ProjectFormComponent implements OnInit {
     } else {
 
       this.getCurrencyRates(project).pipe(
-        switchMap((rates: CurrencyRatesModel | null | undefined) => {
+        switchMap((rates: CurrencyRatesModel | null) => {
           if (rates) {
             project.currencyRates = rates;
             return of(rates);
@@ -97,14 +97,14 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  onDateChange(event: Event) {
+  onDateChange(event: Event): void {
     const dateTo = new Date(this.projectForm.value.dateTo).toISOString();
     const dateFrom = new Date(this.projectForm.value.dateFrom).toISOString();
     if (dateTo < dateFrom) this.dateIsValid = false;
     else this.dateIsValid = true;
   }
 
-  addProject(data: CreateProjectModel) {
+  addProject(data: CreateProjectModel): void {
     this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
       if (!res.error) {
         console.log('Project added.');
@@ -116,7 +116,7 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  editProject(id: number, data: CreateProjectModel) {
+  editProject(id: number, data: CreateProjectModel): void {
     this.projectApi.editProject(id, data)
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) {
@@ -128,8 +128,8 @@ export class ProjectFormComponent implements OnInit {
       });
   }
 
-  getCurrencyRates(project: CreateProjectModel) {
-    if (this.isAddMode || project.refreshRates) {
+  getCurrencyRates(project: CreateProjectModel): Observable<CurrencyRatesModel> {
+    if (!project.currencyRates || project.refreshRates) {
       return this.currenciesApi.currencyRates$.pipe(
         switchMap(rates => {
           if (rates.success && rates.base === project.currency) {
@@ -149,11 +149,11 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  close() {
+  close(): void {
     this.router.navigate([`/projects/`]);
   }
 
-  getRating(id: number) {
+  getRating(id: number): void {
     this.aiApi.getRating(id).subscribe();
     this.aiApi.rating$.subscribe((res: RatingModel) => {
       const rating = res.rating;

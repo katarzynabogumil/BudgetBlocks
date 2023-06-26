@@ -20,7 +20,7 @@ export class CommentFormComponent {
     private commentApi: CommentService,
   ) { }
 
-  handleSubmit() {
+  handleSubmit(): void {
     this.submitted = true;
     const comment = this.commentForm.value.comment;
 
@@ -31,7 +31,7 @@ export class CommentFormComponent {
     this.submitted = false;
   }
 
-  postComment(text: string) {
+  postComment(text: string): void {
     this.commentApi.addComment(this.expense.id || -1, { text }).subscribe();
   }
 }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EmptyProject, ProjectModel, CurrenciesService, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
+import { Component, OnInit } from '@angular/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -33,14 +33,14 @@ export class ExpenseItemsContainerComponent implements OnInit {
     private commentApi: CommentService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
     this.expenseApi.compareMode$.next(false);
     this.getProject();
     this.onModeChanges();
   }
 
-  getProject() {
+  getProject(): void {
     this.projectApi.getProject(this.id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       if (p.id) {
@@ -49,18 +49,18 @@ export class ExpenseItemsContainerComponent implements OnInit {
         this.expenses = p.expenses;
         this.categories = p.categories || [];
 
-        this.getComments(p.id as number);
+        this.getComments(p.id);
         this.getExpensesToCategories();
         this.updateSum();
       }
     });
   }
 
-  getComments(id: number) {
+  getComments(id: number): void {
     this.commentApi.getAllComments(id).subscribe();
   }
 
-  getExpensesToCategories() {
+  getExpensesToCategories(): void {
     this.expensesAtCatOrderId = {}
     this.categories.forEach((cat: ExpCategoryModel) => {
       this.expensesAtCatOrderId[cat.orderId] = this.expenses
@@ -81,7 +81,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     })
   }
 
-  onModeChanges() {
+  onModeChanges(): void {
     this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
       if (compareMode) {
         this.compareMode = true;
@@ -95,13 +95,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
     });
   }
 
-  markSelectedInit(flag: boolean) {
+  markSelectedInit(flag: boolean): void {
     for (let expArr of Object.values(this.expensesAtCatOrderId)) {
       expArr[0].selected = flag;
     }
   }
 
-  updateSum() {
+  updateSum(): void {
     this.sum = 0;
     this.minSum = 0;
     this.maxSum = 0;
@@ -146,7 +146,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.expenseApi.expenseSumsByCat$.next(this.expenseSumsByCat);
   }
 
-  handleSelect(event: Event, expense: ExpenseModel) {
+  handleSelect(event: Event, expense: ExpenseModel): void {
     if (this.compareMode && expense.category.expenses?.length !== 1) {
       for (let expArr of Object.values(this.expensesAtCatOrderId)) {
         for (let exp of expArr) {
@@ -169,7 +169,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     }
   }
 
-  toggleDetails([showDetails, expense]: [boolean, ExpenseModel]) {
+  toggleDetails([showDetails, expense]: [boolean, ExpenseModel]): void {
     if (!this.compareMode) {
       for (let expArr of Object.values(this.expensesAtCatOrderId)) {
         expArr.forEach(exp => {

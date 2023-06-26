@@ -9,7 +9,7 @@ import { map } from 'rxjs';
   templateUrl: './expense-item.component.html',
   styleUrls: ['./expense-item.component.css']
 })
-export class ExpenseItemComponent {
+export class ExpenseItemComponent implements OnInit {
   @Input() expense: ExpenseModel = EmptyExpense;
   @Input() projectCurrency: string = '';
   @Input() compareMode: boolean = false;
@@ -32,6 +32,9 @@ export class ExpenseItemComponent {
     private route: ActivatedRoute,
     public projectApi: ProjectService,
   ) {
+  }
+
+  ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
 
     this.usersub$.subscribe(sub => {
@@ -45,19 +48,19 @@ export class ExpenseItemComponent {
     });
   }
 
-  toggleDetails() {
+  toggleDetails(): void {
     if (!this.compareMode) {
       this.showDetails = !this.showDetails;
       this.toggleDetailsEvent.emit([this.showDetails, this.expense]);
     }
   }
 
-  toggleVotes(direction: string) {
+  toggleVotes(direction: string): void {
     this.expenseApi.vote(direction, this.projectId, this.expense.id || 0).subscribe(res => {
     });
   }
 
-  checkVotes() {
+  checkVotes(): void {
     if (this.expense.upvotes?.includes(this.usersub)) {
       this.upIsFilled = true;
     } else if (this.expense.downvotes?.includes(this.usersub)) {

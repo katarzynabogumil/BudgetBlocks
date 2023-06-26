@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { ProjectModel, ProjectService } from '@app/core';
 
 @Component({
@@ -12,15 +11,14 @@ export class ProjectItemsContainerComponent implements OnInit {
   projectInvitations: ProjectModel[] = [];
 
   constructor(
-    private auth: AuthService,
     public projectApi: ProjectService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getProjects();
   }
 
-  getProjects() {
+  getProjects(): void {
     this.projectApi.getAllProjects().subscribe();
     this.projectApi.projects$.
       subscribe(res => {
@@ -34,7 +32,7 @@ export class ProjectItemsContainerComponent implements OnInit {
       });
   }
 
-  getProjectInvitations() {
+  getProjectInvitations(): void {
     this.projectApi.getProjectInvitations().subscribe();
     this.projectApi.projectInvitations$.
       subscribe(projects => {

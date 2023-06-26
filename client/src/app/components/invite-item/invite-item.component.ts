@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService } from '@app/core';
 
 @Component({
@@ -6,16 +6,12 @@ import { EmptyProject, ProjectModel, ProjectService } from '@app/core';
   templateUrl: './invite-item.component.html',
   styleUrls: ['./invite-item.component.css']
 })
-export class InviteItemComponent implements OnInit {
+export class InviteItemComponent {
   @Input() project: ProjectModel = EmptyProject;
 
   constructor(
     private projectApi: ProjectService,
   ) { }
-
-  ngOnInit(): void {
-    // this.expenseApi.compareMode$.subscribe((isTrue: boolean) => this.compareMode = isTrue);
-  }
 
   acceptInvitation() {
     if (this.project.id) {

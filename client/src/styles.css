@@ -275,7 +275,7 @@ select:focus {
 
 textarea {
   resize: vertical;
-  max-height: 350px;
+  max-height: 220px;
 }
 
 .form-card>h2 {
