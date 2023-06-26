@@ -20,9 +20,7 @@ export class OpenAiService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/rating/${projectId}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     console.log('External API OpenAi called.', projectId);
@@ -46,9 +44,7 @@ export class OpenAiService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/missing-categories/${projectId}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     console.log('External API OpenAi called.', projectId);

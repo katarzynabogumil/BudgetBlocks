@@ -1,4 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+.gitignore
 
 # Compiled output
 /dist
@@ -44,3 +45,4 @@ Thumbs.db
 .env
 .gitignore
 src/environments/environment.ts
+src/environments/environment.prod.ts

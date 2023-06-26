@@ -1,9 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EmptyProject, ProjectModel, CurrenciesService, EmptyCurrencyRates, CurrencyRatesModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
-import { AuthService } from '@auth0/auth0-angular';
+import { EmptyProject, ProjectModel, CurrenciesService, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-expense-items-container',
@@ -25,16 +23,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
   minSum: number = 0;
   maxSum: number = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
-  currencyRates: CurrencyRatesModel = EmptyCurrencyRates;
   showDetails: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private auth: AuthService,
     public expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,
-    private currenciesApi: CurrenciesService,
     private commentApi: CommentService
   ) { }
 
@@ -54,68 +49,11 @@ export class ExpenseItemsContainerComponent implements OnInit {
         this.expenses = p.expenses;
         this.categories = p.categories || [];
 
-        this.checkCurrencyRates();
         this.getComments(p.id as number);
         this.getExpensesToCategories();
         this.updateSum();
       }
     });
-  }
-
-  checkCurrencyRates() {
-    const expensesToRecalculate = this.expenses
-      .filter(exp => exp.currency.toLowerCase() !== this.project.currency.toLowerCase());
-
-    if (expensesToRecalculate.length) {
-      this.getNewCurrencyRates();
-
-      this.currenciesApi.currencyRates$.subscribe(rates => {
-        this.currencyRates = rates;
-
-        if (this.project.currencyRates?.timestamp !== rates.timestamp) {
-          this.project.currencyRates = rates;
-
-          this.projectApi.editProject(this.id, this.project)
-            .subscribe((res: ApiResponseProjectModel) => {
-              if (!res.error) console.log('Project edited.');
-              else console.log(res.error);
-            });
-        }
-
-        expensesToRecalculate.forEach((expToRecalculate: ExpenseModel) => {
-          expToRecalculate.calcCost = expToRecalculate.cost * this.currencyRates.rates[expToRecalculate.currency];
-
-          this.expenses = this.expenses
-            .map((exp: ExpenseModel) => {
-              if (exp.id === expToRecalculate.id) {
-                exp.calcCost = expToRecalculate.calcCost;
-              }
-              return exp;
-            });
-        });
-      });
-    }
-  }
-
-  getNewCurrencyRates() {
-    let ratesAreOld: boolean = false;
-    if (this.project.currencyRates?.success) {
-      const now = new Date().getTime();
-      const timestamp = this.project.currencyRates.timestamp;
-      if (now - timestamp > 86400) ratesAreOld = true;
-    }
-
-    if (ratesAreOld ||
-      (this.project.id && !this.project.currencyRates) ||
-      this.project.currencyRates?.base !== this.project.currency
-    ) {
-      this.currenciesApi.currencyRates$.subscribe(rates => {
-        if (!rates.success && ((!rates.success && !rates.error?.code) || rates.base !== this.project.currency)) {
-
-          this.currenciesApi.getRates(this.project.currency).subscribe()
-        };
-      })
-    }
   }
 
   getComments(id: number) {

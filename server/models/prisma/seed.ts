@@ -1,6 +1,3 @@
-// @ts-nocheck 
-'use strict';
-
 import { PrismaClient } from '@prisma/client';
 import { mockdata } from './mockdata';
 

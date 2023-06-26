@@ -1,6 +1,3 @@
-// @ts-nocheck 
-'use strict';
-
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -16,7 +13,6 @@ export const mockdata = {
       projects: {
         create: [
           {
-            id: 1,
             name: "Summer Vacation",
             type: "trip",
             budget: 5000,
@@ -79,7 +75,7 @@ export const mockdata = {
                         cost: 6663,
                         currency: "EUR",
                         link: "https://www.booking.com/hotel/es/w-barcelona.de.html?checkin=2023-07-15;checkout=2023-07-30;dest_id=49226",
-                        photo: "https://insiderei.com/wp-content/uploads/2017/06/sundeck.jpg",
+                        photo: "https://i.pinimg.com/originals/0f/37/a9/0f37a9b0d7bda41c3eb99d21812593f0.jpg",
                         notes: "A bit of a splurge",
                         project: { connect: { id: 1 } }
                       },
@@ -115,7 +111,7 @@ export const mockdata = {
                         cost: 250,
                         currency: "EUR",
                         link: null,
-                        photo: "https://cdn2.rcstatic.com/images/car_images/web/opel/corsa_4_doors_lrg.jpg",
+                        photo: "https://wallpapercave.com/wp/wp10852433.jpg",
                         notes: "Opel corsa at Firefly",
                         project: { connect: { id: 1 } }
                       },
@@ -171,7 +167,6 @@ export const mockdata = {
             }
           },
           {
-            id: 2,
             name: "Living room redecoration",
             type: "construction",
             budget: 1500,

@@ -4,6 +4,9 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+const env = process.env.NODE_ENV;
+const isDevelopment = env === 'development';
+
 const CONTEXT = `
   Context:
   We are a budgeting app that helps you keep your budget for a specific goal in check, for example: a trip, an event or a home renovation. It allows you to set up new projects with a set budget goal with other users, add different expenses or even different options for each expense and compare their effect on the overall cost.
@@ -44,27 +47,30 @@ export const getProjectRating = async function (
 
     const prompt = RATING_PROMPT + JSON.stringify(projectData);
 
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: HEADERS,
-      body: JSON.stringify({
-        messages: [
-          {
-            role: 'assistant',
-            content: prompt
-          }
-        ],
-        ...CONF
-      }),
-    });
+    let rating = 0;
+    if (isDevelopment) {
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({
+          messages: [
+            {
+              role: 'assistant',
+              content: prompt
+            }
+          ],
+          ...CONF
+        }),
+      });
 
-    const responseData = await response.json();
-    if (!responseData.error) {
-      const rating = Number(responseData.choices[0].message.content);
-      // const rating = 3;
-      res.status(201);
-      res.send({ rating });
-    } else res.sendStatus(400);
+      const responseData = await response.json();
+      if (!responseData.error) {
+        rating = Number(responseData.choices[0].message.content);
+      } else res.sendStatus(400);
+    }
+
+    res.status(201);
+    res.send({ rating });
 
   } catch (e) {
     console.log('Error: ', e);
@@ -83,28 +89,30 @@ export const getMissingCategories = async function (
 
     const prompt = CATEGORY_PROMPT + JSON.stringify(projectData);
 
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: HEADERS,
-      body: JSON.stringify({
-        messages: [
-          {
-            role: 'assistant',
-            content: prompt
-          }
-        ],
-        ...CONF
-      }),
-    });
+    let categories = '';
+    if (isDevelopment) {
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({
+          messages: [
+            {
+              role: 'assistant',
+              content: prompt
+            }
+          ],
+          ...CONF
+        }),
+      });
 
-    const responseData = await response.json();
-    if (!responseData.error) {
-      const categories = responseData.choices[0].message.content;
-      // const categories = 'Food, Souvenirs';
+      const responseData = await response.json();
+      if (!responseData.error) {
+        categories = responseData.choices[0].message.content;
+      } else res.sendStatus(400);
+    }
 
-      res.status(201);
-      res.send({ categories });
-    } else res.sendStatus(400);
+    res.status(201);
+    res.send({ categories });
 
   } catch (e) {
     console.log('Error: ', e);

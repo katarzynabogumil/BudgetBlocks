@@ -1,0 +1,17 @@
+#btn-rates {
+  background-color: #cccccc;
+  margin-top: 0;
+}
+
+.rates {
+  text-align: left;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+#false,
+#true {
+  margin-left: 15px;
+  margin-right: 5px;
+}

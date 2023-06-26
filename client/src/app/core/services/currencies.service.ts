@@ -34,9 +34,7 @@ export class CurrenciesService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/currencies/${base}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(

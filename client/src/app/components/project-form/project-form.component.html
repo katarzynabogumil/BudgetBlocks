@@ -32,12 +32,16 @@
 
           <label>CURRENCY</label>
           <select formControlName="currency" class="form-control">
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-            <option value="GBP">GBP</option>
-            <option value="GBP">GBP</option>
-            <option value="--" disabled="[true]">--</option>
-            <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
+            <optgroup *ngIf="isProduction else notProduction">
+              <option value="EUR" selected>EUR</option>
+            </optgroup>
+            <ng-template #notProduction>
+              <option value="EUR">EUR</option>
+              <option value="USD">USD</option>
+              <option value="GBP">GBP</option>
+              <option value="--" disabled="[true]">--</option>
+              <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
+            </ng-template>
           </select>
         </div>
 
@@ -115,6 +119,14 @@
         <div class="form-row grid-single">
           <label>DESCRIPTION</label>
           <textarea formControlName="description" class="form-control"></textarea>
+        </div>
+
+        <div *ngIf="!isAddMode" class="rates">
+          <label>REFRESH CURRENCY RATES</label>
+          <input type="radio" id="true" name="refreshRates" value="true" formControlName="refreshRates">
+          <label for="true"> YES</label>
+          <input type="radio" id="false" name="refreshRates" value="false" formControlName="refreshRates">
+          <label for="false"> NO</label>
         </div>
 
         <div class="invalid-feedback">* Required fields.</div>

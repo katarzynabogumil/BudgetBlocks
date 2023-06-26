@@ -20,9 +20,7 @@ export class CommentService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/comments/${projectId}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -48,9 +46,7 @@ export class CommentService {
       url: `${env.api.serverUrl}/comment/${expenseId}`,
       method: 'POST',
       body: data,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -75,9 +71,7 @@ export class CommentService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/comment/${id}`,
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(

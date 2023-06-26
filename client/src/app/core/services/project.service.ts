@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseProjectModel, ApiResponseProjectModelArr, EmptyProject, ProjectModel, RatingModel, RequestConfigModel } from '../models';
+import { ApiResponseProjectModel, ApiResponseProjectModelArr, CreateProjectModel, EmptyProject, ProjectModel, RatingModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -25,9 +25,7 @@ export class ProjectService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/projects/invitations`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -50,9 +48,7 @@ export class ProjectService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/projects`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -78,9 +74,7 @@ export class ProjectService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -102,14 +96,12 @@ export class ProjectService {
       ;
   };
 
-  addProject = (projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
+  addProject = (projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project`,
       method: 'POST',
       body: projectData,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -130,20 +122,20 @@ export class ProjectService {
       ;
   }
 
-  editProject = (id: number, projectData: ProjectModel): Observable<ApiResponseProjectModel> => {
+  editProject = (id: number, projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'PUT',
       body: projectData,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const data = response.data as ProjectModel;
         const error = response.error;
+
+        console.log(response);
 
         if (!error) {
           this.projects = this.projects.map(project => {
@@ -165,9 +157,7 @@ export class ProjectService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -192,9 +182,7 @@ export class ProjectService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/accept`,
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -221,9 +209,7 @@ export class ProjectService {
       url: `${env.api.serverUrl}/project/${projectId}/adduser`,
       method: 'POST',
       body: { email },
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(

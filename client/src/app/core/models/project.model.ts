@@ -3,6 +3,24 @@ import { UserModel } from "./user.model";
 import { ExpCategoryModel } from './expCategory.model';
 import { CurrencyRatesModel } from "./currencyRates.model";
 
+export interface CreateProjectModel {
+  name: string;
+  type: string;
+  budget: number;
+  budgetRating?: number;
+  currency: string;
+  currencyRates?: CurrencyRatesModel;
+  dateFrom?: Date | string;
+  dateTo?: Date | string;
+  area?: number;
+  location?: string;
+  noOfGuests?: number;
+  origin?: string;
+  destination?: string;
+  occasion?: string;
+  description?: string;
+}
+
 export interface ProjectModel {
   id?: number;
   createdAt?: Date;

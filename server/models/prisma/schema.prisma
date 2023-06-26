@@ -58,7 +58,7 @@ model Expense {
   name       String    @db.VarChar(255)
   cost       Float
   currency   String
-  calcCost   Int?
+  calcCost   Float?
   link       String?
   photo      String?
   notes      String?

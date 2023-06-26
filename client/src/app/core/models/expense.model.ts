@@ -1,7 +1,19 @@
-import { UserModel } from './user.model';
 import { CommentModel } from './comment.model';
 import { ProjectModel } from './project.model';
 import { EmptyExpCategory, ExpCategoryModel } from './expCategory.model';
+
+export interface CreateExpenseModel {
+  name: string;
+  category: ExpCategoryModel;
+  cost: number;
+  calcCost?: number;
+  currency: string;
+  link?: string;
+  photo?: string;
+  notes?: string;
+  formCategory?: string,
+  newCategory?: string,
+}
 
 export interface ExpenseModel {
   id?: number;
@@ -17,7 +29,6 @@ export interface ExpenseModel {
   link?: string;
   photo?: string;
   notes?: string;
-  optional?: boolean;
   upvotes?: string[];
   downvotes?: string[];
   comments?: CommentModel[];

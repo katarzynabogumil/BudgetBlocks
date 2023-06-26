@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ExpenseService, ProjectService, CurrenciesService, ApiResponseExpenseModel, ExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
+import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, ExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
@@ -12,9 +12,9 @@ import { OpenAiService } from 'src/app/core/services/openai.service';
 })
 export class ExpenseFormComponent implements OnInit {
   expenseForm: FormGroup = this.formBuilder.group({
-    name: ["", [Validators.required, Validators.minLength(1)]],
+    name: ['', [Validators.required, Validators.minLength(1)]],
     cost: [, [Validators.required, Validators.minLength(1)]],
-    currency: ["EUR"],
+    currency: ['EUR'],
     link: [],
     photo: [],
     notes: [],
@@ -26,6 +26,7 @@ export class ExpenseFormComponent implements OnInit {
   allCategoryNames: string[] = [];
   currencies: string[] = [];
   projectId: number = -1;
+  currencyRates: CurrencyRatesModel = EmptyCurrencyRates;
   expenseId: number = -1;
   isAddMode: boolean = false;
   isDuplicate: boolean = false;
@@ -49,6 +50,7 @@ export class ExpenseFormComponent implements OnInit {
     this.isAddMode = !this.expenseId;
 
     this.getCategories();
+    this.getCurrencyRates();
 
     if (!this.isAddMode) {
       this.expenseApi.getExpense(this.projectId, this.expenseId)
@@ -65,39 +67,23 @@ export class ExpenseFormComponent implements OnInit {
     });
   }
 
+  getCurrencyRates() {
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+      this.currencyRates = p.currencyRates || EmptyCurrencyRates;
+    });
+  }
+
   handleSubmit() {
     this.getCategories();
 
     this.submitted = true;
-    const expense = this.expenseForm.value;
+    let expense = this.expenseForm.value as CreateExpenseModel;
 
-    for (let cat of this.categories) {
-      this.allCategoryNames.push(cat.category.toLowerCase());
-    }
+    let checkCatResult = this.handleCategories(expense);
+    if (checkCatResult) expense = checkCatResult;
+    else return;
 
-    expense.category = EmptyExpCategory;
-    if ((!expense.formCategory && expense.newCategory) ||
-      (expense.formCategory === 'add' &&
-        this.allCategoryNames.includes(expense.newCategory.toLowerCase()))) {
-      this.isDuplicate = true;
-      return;
-    }
-
-    if (expense.formCategory === 'add') {
-      if (!expense.newCategory) return;
-      expense.category.category = expense.newCategory;
-      expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
-        return a.orderId > b.orderId ? a : b;
-      }, EmptyExpCategory).orderId + 1 || 0;
-
-    } else {
-      expense.category.category = expense.formCategory;
-      expense.category.orderId = this.categories.find(cat => {
-        return cat.category === expense.formCategory;
-      })?.orderId || 0;
-    }
-    delete expense.formCategory;
-    delete expense.newCategory;
+    expense = this.recalculateCost(this.projectId, expense);
 
     if (this.expenseForm.invalid) {
       return;
@@ -108,13 +94,12 @@ export class ExpenseFormComponent implements OnInit {
         this.editExpense(this.projectId, this.expenseId, expense);
       }
 
-
       this.expenseForm.reset();
       this.submitted = false;
     }
   }
 
-  addExpense(projectId: number, data: ExpenseModel) {
+  addExpense(projectId: number, data: CreateExpenseModel) {
     this.expenseApi.addExpense(projectId, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -125,7 +110,7 @@ export class ExpenseFormComponent implements OnInit {
       });
   }
 
-  editExpense(projectId: number, id: number, data: ExpenseModel) {
+  editExpense(projectId: number, id: number, data: CreateExpenseModel) {
     this.expenseApi.editExpense(projectId, id, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -134,6 +119,46 @@ export class ExpenseFormComponent implements OnInit {
         } else console.log(res.error);
         this.router.navigate([`/project/${this.projectId}`]);
       });
+  }
+
+  handleCategories(expense: CreateExpenseModel): CreateExpenseModel | null {
+    for (let cat of this.categories) {
+      this.allCategoryNames.push(cat.category.toLowerCase());
+    }
+
+    expense.category = EmptyExpCategory;
+    if ((!expense.formCategory && expense.newCategory) ||
+      (expense.formCategory === 'add' && expense.newCategory &&
+        this.allCategoryNames.includes(expense.newCategory.toLowerCase()))) {
+      this.isDuplicate = true;
+      return null;
+    }
+
+    if (expense.formCategory === 'add') {
+      if (!expense.newCategory) return null;
+      expense.category.category = expense.newCategory;
+      expense.category.orderId = this.categories.reduce((a: ExpCategoryModel, b: ExpCategoryModel) => {
+        return a.orderId > b.orderId ? a : b;
+      }, EmptyExpCategory).orderId + 1 || 0;
+
+    } else {
+      expense.category.category = expense.formCategory || '';
+      expense.category.orderId = this.categories.find(cat => {
+        return cat.category === expense.formCategory;
+      })?.orderId || 0;
+    }
+    delete expense.formCategory;
+    delete expense.newCategory;
+
+    return expense;
+  }
+
+  recalculateCost(projectId: number, expense: CreateExpenseModel): CreateExpenseModel {
+    const rate = this.currencyRates.rates[expense.currency];
+    if (this.currencyRates.success && rate !== 1) {
+      expense.calcCost = expense.cost * rate;
+    }
+    return expense;
   }
 
   getMissingCategories(projectId: number) {

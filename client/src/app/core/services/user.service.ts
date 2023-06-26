@@ -10,15 +10,13 @@ import { ApiService } from './api.service';
 export class UserService {
   userSub: string = '';
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService) { }
 
   getUser = (): Observable<ApiResponseUserModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/user`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -29,7 +27,7 @@ export class UserService {
           error,
         });
       }))
-    ;
+      ;
   };
 
   saveUser = (userData: UserModel): Observable<ApiResponseUserModel> => {
@@ -37,9 +35,7 @@ export class UserService {
       url: `${env.api.serverUrl}/user`,
       method: 'POST',
       body: userData,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(

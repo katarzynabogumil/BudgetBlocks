@@ -8,6 +8,12 @@ import { ApiResponseModel, RequestConfigModel } from '../models';
   providedIn: 'root'
 })
 export class ApiService {
+  public headers = {
+    headers: {
+      'content-type': 'application/json',
+    }
+  };
+
   constructor(
     private http: HttpClient,
   ) { }

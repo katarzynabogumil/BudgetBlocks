@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpCategoryModel } from '@app/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -23,7 +22,6 @@ export class ProjectDashboardComponent implements OnInit {
   progressBarValue: number = 0;
 
   constructor(
-    private auth: AuthService,
     public expenseApi: ExpenseService,
     public projectApi: ProjectService,
     private route: ActivatedRoute,

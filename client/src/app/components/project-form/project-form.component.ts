@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-
-import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel } from '@app/core';
+import { environment as env } from '../../../environments/environment';
+import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class ProjectFormComponent implements OnInit {
     origin: [],
     destination: [],
     description: [],
+    refreshRates: []
   })
   currencies: string[] = [];
   id: number = -1;
@@ -32,6 +33,7 @@ export class ProjectFormComponent implements OnInit {
   isAddMode: boolean = false;
   submitted: boolean = false;
   dateIsValid: boolean = true;
+  isProduction: boolean = env.production;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,7 +52,10 @@ export class ProjectFormComponent implements OnInit {
     if (!this.isAddMode) {
       this.projectApi.getProject(this.id)
         .subscribe((res: ApiResponseProjectModel) => {
-          this.projectForm.patchValue(res.data);
+          const projectData = res.data as CreateProjectModel;
+          projectData.dateTo = projectData.dateTo?.toString().slice(0, -1);
+          projectData.dateFrom = projectData.dateFrom?.toString().slice(0, -1);
+          this.projectForm.patchValue(projectData);
         });
     }
   }
@@ -64,11 +69,14 @@ export class ProjectFormComponent implements OnInit {
     if (this.projectForm.invalid || !this.dateIsValid) {
       return;
     } else {
-      let id = this.id || -1;
+
+      if (this.isAddMode || project.refreshRates) project.currencyRates = this.getCurrencyRates(project);
+      delete project.refreshRates;
+
       if (this.isAddMode) {
-        this.addProject(this.projectForm.value);
+        this.addProject(project);
       } else {
-        this.editProject(this.id, this.projectForm.value);
+        this.editProject(this.id, project);
       }
 
       this.projectForm.reset();
@@ -84,7 +92,7 @@ export class ProjectFormComponent implements OnInit {
     else this.dateIsValid = true;
   }
 
-  addProject(data: ProjectModel) {
+  addProject(data: CreateProjectModel) {
     this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
       if (!res.error) {
         console.log('Project added.');
@@ -96,7 +104,7 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  editProject(id: number, data: ProjectModel) {
+  editProject(id: number, data: CreateProjectModel) {
     this.projectApi.editProject(id, data)
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) {
@@ -106,6 +114,20 @@ export class ProjectFormComponent implements OnInit {
         } else console.log(res.error);
         this.router.navigate([`/project/${id}`]);
       });
+  }
+
+  getCurrencyRates(project: ProjectModel): CurrencyRatesModel {
+    let newRates = EmptyCurrencyRates;
+    this.currenciesApi.currencyRates$.subscribe(rates => {
+      if (!rates.success && ((!rates.success && !rates.error?.code) || rates.base !== project.currency)) {
+        console.log('got new rates')
+        this.currenciesApi.getRates(project.currency).subscribe()
+      } else {
+        newRates = rates;
+        console.log('saved new rates', rates)
+      }
+    })
+    return newRates;
   }
 
   close() {
@@ -121,7 +143,7 @@ export class ProjectFormComponent implements OnInit {
         this.projectApi.getProject(id)
           .subscribe((res: ApiResponseProjectModel) => {
             res.data.budgetRating = rating;
-            this.editProject(id, res.data);
+            this.editProject(id, res.data as CreateProjectModel);
           });
       }
     });

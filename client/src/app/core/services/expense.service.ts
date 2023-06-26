@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, ExpenseModel, ProjectModel, ApiResponseExpenseModel, RequestConfigModel, EmptyExpense } from '../models';
+import { ApiResponseModel, ExpenseModel, ProjectModel, ApiResponseExpenseModel, RequestConfigModel, EmptyExpense, CreateExpenseModel } from '../models';
 import { ApiService } from './api.service';
 import { ProjectService } from './project.service';
 
@@ -25,9 +25,7 @@ export class ExpenseService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -45,14 +43,12 @@ export class ExpenseService {
       ;
   };
 
-  addExpense = (projectId: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
+  addExpense = (projectId: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense`,
       method: 'POST',
       body: data,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -74,14 +70,12 @@ export class ExpenseService {
       ;
   }
 
-  editExpense = (projectId: number, id: number, data: ExpenseModel): Observable<ApiResponseExpenseModel> => {
+  editExpense = (projectId: number, id: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'PUT',
       body: data,
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -112,9 +106,7 @@ export class ExpenseService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(
@@ -143,9 +135,7 @@ export class ExpenseService {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}/${direction}`,
       method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      },
+      ...this.api.headers
     };
 
     return this.api.callApi(config).pipe(

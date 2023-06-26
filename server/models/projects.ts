@@ -113,6 +113,7 @@ async function getProjectPublicFromDB(id: number) {
 };
 
 async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpdateInput) {
+  console.log('input rates', inputData.currencyRates)
   let {
     categories: _1,
     expenses: _2,
@@ -120,11 +121,8 @@ async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpd
     invitedUsers: _4,
     ...data
   } = inputData;
-  if (data.currencyRates === null) data.currencyRates = undefined;
 
-  if (data.currencyRates) {
-    data.currencyRates = data.currencyRates as Prisma.JsonObject;
-  }
+  data.currencyRates = data.currencyRates as Prisma.JsonObject;
 
   const project = await prisma.project.update({
     where: {
@@ -135,6 +133,7 @@ async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpd
       updatedAt: new Date()
     }
   });
+  console.log(project)
   return project;
 };
 
