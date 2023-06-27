@@ -122,7 +122,6 @@ export class ProjectService {
   }
 
   editProject = (id: number, projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
-    console.log(projectData);
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'PUT',
@@ -134,8 +133,6 @@ export class ProjectService {
       mergeMap((response) => {
         const data = response.data as ProjectModel;
         const error = response.error;
-
-        console.log(response);
 
         if (!error) {
           this.projects = this.projects.map(project => {

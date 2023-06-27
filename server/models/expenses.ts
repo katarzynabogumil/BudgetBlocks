@@ -1,5 +1,8 @@
-import prisma from "./prisma";
-import { ExpCategory, Expense, Prisma } from '@prisma/client'
+import prisma from './prisma';
+import { Prisma } from '@prisma/client';
+import { ExpCategoryInclExpenses } from '../interfaces/expCategory.model';
+import { ExpenseInclCategory } from '../interfaces/expense.model';
+
 import {
   getCategoryFromDb,
   saveCategoryToDb,
@@ -7,16 +10,16 @@ import {
   updateCatOptionalinDb,
 } from './categories';
 
-type ExpCategoryInclExpenses = null | ExpCategory | (ExpCategory & {
-  expenses: Expense[];
-})
-
-async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInput) {
+async function saveExpenseToDb
+  (
+    projectId: number,
+    data: Prisma.ExpenseCreateInput
+  ): Promise<ExpenseInclCategory> {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
-  let { category: _, ...expenseData } = data;
+  const { category: _, ...expenseData } = data;
 
-  let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
-  if (!category) category = await saveCategoryToDb(projectId, categoryData);
+  const category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category)
+    || await saveCategoryToDb(projectId, categoryData);
 
   const newExpense = await prisma.expense.create({
     data: {
@@ -34,63 +37,54 @@ async function saveExpenseToDb(projectId: number, data: Prisma.ExpenseCreateInpu
     }
   });
   return newExpense;
-};
+}
 
-async function updateExpenseinDb(projectId: number, expenseId: number, data: Prisma.ExpenseUpdateInput) {
+async function updateExpenseinDb
+  (
+    projectId: number,
+    expenseId: number,
+    data: Prisma.ExpenseUpdateInput
+  ): Promise<ExpenseInclCategory> {
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
-  let { category: _, ...expenseData } = data;
+  const { category: _, ...expenseData } = data;
 
-  let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category);
-  if (!category) category = await saveCategoryToDb(projectId, categoryData);
-  else if (category.optional !== categoryData.optional) category = await updateCatOptionalinDb(category.id, categoryData.optional || false);
+  let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category)
+    || await saveCategoryToDb(projectId, categoryData);
+  if (category.optional !== categoryData.optional) {
+    category = await updateCatOptionalinDb(category.id, categoryData.optional || false);
+  }
 
   const expense = await prisma.expense.update({
     where: {
       id: expenseId,
     },
     data: {
-      ...data,
+      ...expenseData,
       updatedAt: new Date(),
       category: {
         connect: { id: category.id }
       },
     },
     include: {
-      category: {
-        include: {
-          expenses: true,
-        }
-      }
+      category: true,
     }
   });
   return expense;
-};
+}
 
-// async function getExpensesFromDB (projectId: number) {
-//   const expenses = await prisma.expense.findMany({
-//     where: {
-//       projectId: projectId
-//     },
-//     include: {
-//       comments: true,
-//     },
-//   });
-//   return expenses;
-// }; 
-
-async function getExpenseFromDB(id: number) {
+async function getExpenseFromDB(id: number): Promise<ExpenseInclCategory | null> {
   const expense = await prisma.expense.findUnique({
     where: {
       id
     },
     include: {
-      category: true
+      category: true,
     }
   });
   return expense;
-};
+}
 
-async function deleteExpenseFromDB(projectId: number, expenseId: number) {
+async function deleteExpenseFromDB(projectId: number, expenseId: number): Promise<ExpenseInclCategory> {
   const expense = await prisma.expense.delete({
     where: {
       id: expenseId
@@ -100,14 +94,19 @@ async function deleteExpenseFromDB(projectId: number, expenseId: number) {
     }
   });
 
-  let category = await getCategoryFromDb(projectId, expense.category.category);
+  const category = await getCategoryFromDb(projectId, expense.category.category);
   if (!category?.expenses.length) deleteCategoryFromDb(expense.category.id);
 
   return expense;
-};
+}
 
 
-async function addUserVoteToDb(direction: string, userSub: string, expenseId: number) {
+async function addUserVoteToDb
+  (
+    direction: string,
+    userSub: string,
+    expenseId: number
+  ): Promise<ExpenseInclCategory> {
   const expense = await prisma.expense.findUnique({
     where: {
       id: expenseId,
@@ -153,7 +152,6 @@ export {
   saveExpenseToDb,
   updateExpenseinDb,
   getExpenseFromDB,
-  // getExpensesFromDB,
   deleteExpenseFromDB,
   saveCategoryToDb,
   addUserVoteToDb,

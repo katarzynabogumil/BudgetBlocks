@@ -12,7 +12,11 @@ import {
   acceptInvitationDb
 } from '../models/projects';
 
-async function saveProject(req: express.Request<{}, {}, Prisma.ProjectCreateInput>, res: express.Response) {
+async function saveProject
+  (
+    req: express.Request<object, object, Prisma.ProjectCreateInput>,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectData = req.body;
     const userSub = req.auth?.payload.sub || '';
@@ -25,9 +29,9 @@ async function saveProject(req: express.Request<{}, {}, Prisma.ProjectCreateInpu
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function getAllProjects(req: express.Request, res: express.Response) {
+async function getAllProjects(req: express.Request, res: express.Response): Promise<void> {
   try {
     const userSub = req.auth?.payload.sub || '';
     if (userSub) {
@@ -42,9 +46,9 @@ async function getAllProjects(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function getProjectInvitations(req: express.Request, res: express.Response) {
+async function getProjectInvitations(req: express.Request, res: express.Response): Promise<void> {
   try {
     const userSub = req.auth?.payload.sub || '';
     if (userSub) {
@@ -59,9 +63,9 @@ async function getProjectInvitations(req: express.Request, res: express.Response
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function getProject(req: express.Request, res: express.Response) {
+async function getProject(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = Number(req.params.id);
     const project = await getProjectFromDB(id);
@@ -71,13 +75,13 @@ async function getProject(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 async function editProject
   (
-    req: express.Request<{ id: string }, {}, Prisma.ProjectUpdateInput>,
+    req: express.Request<{ id: string }, object, Prisma.ProjectUpdateInput>,
     res: express.Response
-  ) {
+  ): Promise<void> {
   try {
     const id = Number(req.params.id);
     const data = req.body;
@@ -88,9 +92,9 @@ async function editProject
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function deleteProject(req: express.Request, res: express.Response) {
+async function deleteProject(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = Number(req.params.id);
     const project = await deleteProjectsFromDB(id);
@@ -100,9 +104,13 @@ async function deleteProject(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function addUser(req: express.Request<{ projectId: string }, {}, { email: string }>, res: express.Response) {
+async function addUser
+  (
+    req: express.Request<{ projectId: string }, object, { email: string }>,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const email = req.body.email;
@@ -115,9 +123,13 @@ async function addUser(req: express.Request<{ projectId: string }, {}, { email: 
     console.log('Error: ', e);
     res.sendStatus(404);
   }
-};
+}
 
-async function acceptInvitation(req: express.Request<{ projectId: string }, {}, { email: string }>, res: express.Response) {
+async function acceptInvitation
+  (
+    req: express.Request<{ projectId: string }, object, { email: string }>,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const userSub = req.auth?.payload.sub || '';
@@ -130,7 +142,7 @@ async function acceptInvitation(req: express.Request<{ projectId: string }, {}, 
     console.log('Error: ', e);
     res.sendStatus(404);
   }
-};
+}
 
 
 export {

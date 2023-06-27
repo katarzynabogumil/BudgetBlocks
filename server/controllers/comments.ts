@@ -8,7 +8,7 @@ import {
 } from '../models/comments';
 import { getUserFromDB } from '../models/users';
 
-async function getAllComments(req: express.Request, res: express.Response) {
+async function getAllComments(req: express.Request, res: express.Response): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const comments = await getCommentsFromDB(projectId);
@@ -18,9 +18,9 @@ async function getAllComments(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function saveComment(req: express.Request<{ expenseId: string }, {}, Prisma.CommentCreateInput>, res: express.Response) {
+async function saveComment(req: express.Request<{ expenseId: string }, object, Prisma.CommentCreateInput>, res: express.Response): Promise<void> {
   try {
     const expenseId = Number(req.params.expenseId);
     const data = req.body;
@@ -37,9 +37,9 @@ async function saveComment(req: express.Request<{ expenseId: string }, {}, Prism
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function deleteComment(req: express.Request, res: express.Response) {
+async function deleteComment(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = Number(req.params.commentId);
     const comment = await deleteCommentFromDB(id);
@@ -49,7 +49,7 @@ async function deleteComment(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 export {
   getAllComments,

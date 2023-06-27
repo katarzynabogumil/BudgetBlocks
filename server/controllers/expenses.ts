@@ -9,7 +9,11 @@ import {
   addUserVoteToDb,
 } from '../models/expenses';
 
-async function saveExpense(req: express.Request<{ id: string, projectId: string }, {}, Prisma.ExpenseCreateInput>, res: express.Response) {
+async function saveExpense
+  (
+    req: express.Request<{ id: string, projectId: string }, object, Prisma.ExpenseCreateInput>,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const data = req.body;
@@ -22,9 +26,9 @@ async function saveExpense(req: express.Request<{ id: string, projectId: string 
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function getExpense(req: express.Request, res: express.Response) {
+async function getExpense(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = Number(req.params.id);
     const expense = await getExpenseFromDB(id);
@@ -34,13 +38,13 @@ async function getExpense(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 async function editExpense
   (
-    req: express.Request<{ id: string, projectId: string }, {}, Prisma.ExpenseUpdateInput>,
+    req: express.Request<{ id: string, projectId: string }, object, Prisma.ExpenseUpdateInput>,
     res: express.Response
-  ) {
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const id = Number(req.params.id);
@@ -52,9 +56,9 @@ async function editExpense
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function deleteExpense(req: express.Request, res: express.Response) {
+async function deleteExpense(req: express.Request, res: express.Response): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const id = Number(req.params.id);
@@ -65,9 +69,9 @@ async function deleteExpense(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function vote(req: express.Request, res: express.Response) {
+async function vote(req: express.Request, res: express.Response): Promise<void> {
   try {
     const expenseId = Number(req.params.id);
     const direction = req.params.direction;
@@ -85,7 +89,7 @@ async function vote(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 
 export {

@@ -3,7 +3,11 @@ import { Prisma } from '@prisma/client'
 
 import { saveUserToDb, getUserFromDB } from '../models/users';
 
-async function saveUser(req: express.Request<{}, {}, Prisma.UserCreateInput>, res: express.Response) {
+async function saveUser
+  (
+    req: express.Request<object, object, Prisma.UserCreateInput>,
+    res: express.Response
+  ): Promise<void> {
   try {
     const userData = req.body;
     const newUser = await saveUserToDb(userData);
@@ -14,9 +18,9 @@ async function saveUser(req: express.Request<{}, {}, Prisma.UserCreateInput>, re
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-async function getUser(req: express.Request, res: express.Response) {
+async function getUser(req: express.Request, res: express.Response): Promise<void> {
   try {
     const userSub = req.auth?.payload.sub || '';
     if (userSub) {
@@ -31,7 +35,7 @@ async function getUser(req: express.Request, res: express.Response) {
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 export {
   saveUser,

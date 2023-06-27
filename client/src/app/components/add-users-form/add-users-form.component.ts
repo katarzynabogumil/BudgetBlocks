@@ -53,7 +53,6 @@ export class AddUsersFormComponent implements OnInit {
     const email = this.addUserForm.value.invite;
 
     this.owners.forEach((user: UserModel) => {
-      console.log(user.email)
       if (user.email === email) {
         this.isOwner = true;
       }

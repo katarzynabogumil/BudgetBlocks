@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from 'express';
 
 export const notFoundHandler = (
   request: Request,
-  response: Response,
-  next: NextFunction
+  response: Response
 ) => {
-  const message = "Not Found";
+  const message = 'Not Found';
 
   response.status(404).json({ message });
 };

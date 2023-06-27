@@ -7,9 +7,9 @@ import {
 
 async function changeOrderId
   (
-    req: express.Request<{ categoryId: string, orderId: string }, {}, Prisma.ExpenseUpdateInput>,
+    req: express.Request<{ categoryId: string, orderId: string }, object, Prisma.ExpenseUpdateInput>,
     res: express.Response
-  ) {
+  ): Promise<void> {
   try {
     const categoryId = Number(req.params.categoryId);
     const orderId = Number(req.params.orderId);
@@ -20,7 +20,7 @@ async function changeOrderId
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
 export {
   changeOrderId

@@ -2,7 +2,7 @@ import express from 'express';
 
 import {
   validateAccessToken,
-} from "./middleware/auth0.middleware";
+} from './middleware/auth0.middleware';
 
 import {
   saveUser,

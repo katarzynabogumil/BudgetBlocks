@@ -3,8 +3,7 @@ import { mockdata } from './mockdata';
 
 const prisma = new PrismaClient();
 
-async function main() {
-
+async function main(): Promise<void> {
   await prisma.$transaction([
     prisma.user.upsert({
       where: { id: 1 },

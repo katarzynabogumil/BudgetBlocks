@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '../.env' });
 
-let dbConfig = {
+const dbConfig = {
   database: 'chat',
   username: process.env.SQL_USERNAME || '',
   password: process.env.SQL_PASS || '',

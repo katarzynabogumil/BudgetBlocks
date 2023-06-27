@@ -23,7 +23,6 @@ export class OpenAiService {
       ...this.api.headers
     };
 
-    console.log('External API OpenAi called.', projectId);
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const data = response.data as RatingModel;
@@ -47,7 +46,6 @@ export class OpenAiService {
       ...this.api.headers
     };
 
-    console.log('External API OpenAi called.', projectId);
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const data = response.data as { categories: string };

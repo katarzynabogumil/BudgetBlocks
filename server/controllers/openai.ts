@@ -36,10 +36,11 @@ const CONF = {
   stream: false,
 };
 
-export const getProjectRating = async function (
-  req: express.Request,
-  res: express.Response
-) {
+async function getProjectRating
+  (
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const projectData = await getProjectPublicFromDB(projectId);
@@ -76,12 +77,13 @@ export const getProjectRating = async function (
     console.log('Error: ', e);
     res.sendStatus(500);
   }
-};
+}
 
-export const getMissingCategories = async function (
-  req: express.Request,
-  res: express.Response
-) {
+async function getMissingCategories
+  (
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
     const projectData = await getProjectPublicFromDB(projectId);
@@ -118,4 +120,9 @@ export const getMissingCategories = async function (
     console.log('Error: ', e);
     res.sendStatus(500);
   }
+}
+
+export {
+  getProjectRating,
+  getMissingCategories,
 };

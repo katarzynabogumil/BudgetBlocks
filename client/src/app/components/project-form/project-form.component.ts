@@ -135,7 +135,6 @@ export class ProjectFormComponent implements OnInit {
           if (rates.success && rates.base === project.currency) {
             return of(rates);
           } else {
-            console.log('getting new rates')
             return this.currenciesApi.getRates(project.currency).pipe(
               switchMap((rates: ApiResponseCurrenciesModel) => {
                 return of(rates.data);

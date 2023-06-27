@@ -53,7 +53,7 @@ export class CommentService {
       mergeMap((response) => {
         const data = response.data as CommentModel;
         const error = response.error;
-        console.log('adding comments')
+
         if (!error) {
           this.comments[expenseId].push(data);
           this.comments$.next(this.comments);
@@ -78,7 +78,6 @@ export class CommentService {
       mergeMap((response) => {
         const data = response.data as CommentModel;
         const error = response.error;
-        console.log('delete comments')
 
         if (!error) {
           this.comments[expenseId] = this.comments[expenseId].filter(comment => comment.id !== data.id);

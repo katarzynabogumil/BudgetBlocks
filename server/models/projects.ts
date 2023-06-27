@@ -1,7 +1,38 @@
-import prisma from "./prisma";
+import prisma from './prisma';
 import { Prisma } from '@prisma/client'
+import { ProjectInclOwners, ProjectInclExpenses, ProjectPublic } from '../interfaces/project.model';
 
-async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput) {
+const PROJECT_CONNECTIONS = {
+  include: {
+    owners: true,
+    invitedUsers: true,
+    expenses: {
+      include: {
+        category: {
+          include: {
+            expenses: true,
+          }
+        }
+      }
+    },
+    categories: {
+      include: {
+        expenses: {
+          include: {
+            comments: true,
+            category: true,
+          }
+        },
+      }
+    },
+  },
+}
+
+async function saveProjectToDb
+  (
+    userSub: string,
+    data: Prisma.ProjectCreateInput
+  ): Promise<ProjectInclExpenses> {
   const user = await prisma.user.findUnique({
     where: {
       sub: userSub
@@ -18,34 +49,12 @@ async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput)
         connect: { id: user.id }
       }
     },
-    include: {
-      owners: true,
-      invitedUsers: true,
-      expenses: {
-        include: {
-          category: {
-            include: {
-              expenses: true,
-            }
-          }
-        }
-      },
-      categories: {
-        include: {
-          expenses: {
-            include: {
-              comments: true,
-              category: true,
-            }
-          },
-        }
-      },
-    },
+    ...PROJECT_CONNECTIONS,
   });
   return newProject;
 }
 
-async function getProjectsFromDB(userSub: string) {
+async function getProjectsFromDB(userSub: string): Promise<ProjectInclOwners[]> {
   const projects = await prisma.project.findMany({
     where: {
       owners: {
@@ -58,9 +67,9 @@ async function getProjectsFromDB(userSub: string) {
     },
   });
   return projects;
-};
+}
 
-async function getProjectInvitationsFromDB(userSub: string) {
+async function getProjectInvitationsFromDB(userSub: string): Promise<ProjectInclOwners[]> {
   const projects = await prisma.project.findMany({
     where: {
       invitedUsers: {
@@ -73,41 +82,19 @@ async function getProjectInvitationsFromDB(userSub: string) {
     },
   });
   return projects;
-};
+}
 
-async function getProjectFromDB(id: number) {
+async function getProjectFromDB(id: number): Promise<ProjectInclExpenses | null> {
   const project = await prisma.project.findUnique({
     where: {
       id
     },
-    include: {
-      owners: true,
-      invitedUsers: true,
-      expenses: {
-        include: {
-          category: {
-            include: {
-              expenses: true,
-            }
-          }
-        }
-      },
-      categories: {
-        include: {
-          expenses: {
-            include: {
-              comments: true,
-              category: true,
-            }
-          },
-        }
-      },
-    },
+    ...PROJECT_CONNECTIONS,
   });
   return project;
-};
+}
 
-async function getProjectPublicFromDB(id: number) {
+async function getProjectPublicFromDB(id: number): Promise<ProjectPublic | null> {
   const project = await prisma.project.findUnique({
     where: {
       id
@@ -133,10 +120,14 @@ async function getProjectPublicFromDB(id: number) {
     },
   });
   return project;
-};
+}
 
-async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpdateInput) {
-  let {
+async function updateProjectinDb
+  (
+    projectId: number,
+    inputData: Prisma.ProjectUpdateInput
+  ): Promise<ProjectInclExpenses> {
+  const {
     categories: _1,
     expenses: _2,
     owners: _3,
@@ -153,12 +144,17 @@ async function updateProjectinDb(projectId: number, inputData: Prisma.ProjectUpd
     data: {
       ...data,
       updatedAt: new Date()
-    }
+    },
+    ...PROJECT_CONNECTIONS,
   });
   return project;
-};
+}
 
-async function addUserToProject(projectId: number, email: string) {
+async function addUserToProject
+  (
+    projectId: number,
+    email: string
+  ): Promise<ProjectInclExpenses> {
   const user = await prisma.user.findUnique({
     where: {
       email
@@ -176,34 +172,16 @@ async function addUserToProject(projectId: number, email: string) {
         connect: { id: user.id }
       },
     },
-    include: {
-      owners: true,
-      invitedUsers: true,
-      expenses: {
-        include: {
-          category: {
-            include: {
-              expenses: true,
-            }
-          }
-        }
-      },
-      categories: {
-        include: {
-          expenses: {
-            include: {
-              comments: true,
-              category: true,
-            }
-          },
-        }
-      },
-    },
+    ...PROJECT_CONNECTIONS,
   });
   return project;
-};
+}
 
-async function acceptInvitationDb(projectId: number, userSub: string) {
+async function acceptInvitationDb
+  (
+    projectId: number,
+    userSub: string
+  ): Promise<ProjectInclExpenses> {
   const user = await prisma.user.findUnique({
     where: {
       sub: userSub
@@ -224,41 +202,20 @@ async function acceptInvitationDb(projectId: number, userSub: string) {
         disconnect: { id: user.id }
       },
     },
-    include: {
-      owners: true,
-      invitedUsers: true,
-      expenses: {
-        include: {
-          category: {
-            include: {
-              expenses: true,
-            }
-          }
-        }
-      },
-      categories: {
-        include: {
-          expenses: {
-            include: {
-              comments: true,
-              category: true,
-            }
-          },
-        }
-      },
-    },
+    ...PROJECT_CONNECTIONS,
   });
   return project;
-};
+}
 
-async function deleteProjectsFromDB(projectId: number) {
+async function deleteProjectsFromDB(projectId: number): Promise<ProjectInclExpenses> {
   const project = await prisma.project.delete({
     where: {
       id: projectId
     },
+    ...PROJECT_CONNECTIONS,
   });
   return project;
-};
+}
 
 export {
   saveProjectToDb,

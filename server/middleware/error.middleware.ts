@@ -1,17 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from 'express';
 import {
   InvalidTokenError,
   UnauthorizedError,
-} from "express-oauth2-jwt-bearer";
+} from 'express-oauth2-jwt-bearer';
 
 export const errorHandler = (
   error: any,
   request: Request,
-  response: Response,
-  next: NextFunction
+  response: Response
 ) => {
   if (error instanceof InvalidTokenError) {
-    const message = "Bad credentials";
+    const message = 'Bad credentials';
 
     response.status(error.status).json({ message });
 
@@ -19,7 +18,7 @@ export const errorHandler = (
   }
 
   if (error instanceof UnauthorizedError) {
-    const message = "Requires authentication";
+    const message = 'Requires authentication';
 
     response.status(error.status).json({ message });
 
@@ -27,7 +26,7 @@ export const errorHandler = (
   }
 
   const status = 500;
-  const message = "Internal Server Error";
+  const message = 'Internal Server Error';
 
   response.status(status).json({ message });
 };
