@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory } from '@app/core';
+import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory, EmptyCreateExpCategory } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class ExpenseFormComponent implements OnInit {
     notes: [],
     formCategory: [],
     newCategory: [],
+    optional: [],
   })
 
   categories: ExpCategoryModel[] = [];
@@ -126,7 +127,7 @@ export class ExpenseFormComponent implements OnInit {
       this.allCategoryNames.push(cat.category.toLowerCase());
     }
 
-    expense.category = EmptyExpCategory;
+    expense.category = EmptyCreateExpCategory;
     if ((!expense.formCategory && expense.newCategory) ||
       (expense.formCategory === 'add' && expense.newCategory &&
         this.allCategoryNames.includes(expense.newCategory.toLowerCase()))) {
@@ -147,8 +148,12 @@ export class ExpenseFormComponent implements OnInit {
         return cat.category === expense.formCategory;
       })?.orderId || 0;
     }
+
+    if (expense.optional) expense.category.optional = true;
+
     delete expense.formCategory;
     delete expense.newCategory;
+    delete expense.optional;
 
     return expense;
   }

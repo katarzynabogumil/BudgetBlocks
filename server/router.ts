@@ -35,6 +35,10 @@ import {
 } from './controllers/comments';
 
 import {
+  changeOrderId
+} from './controllers/categories';
+
+import {
   getCurrencyRates
 } from './controllers/currencies';
 
@@ -66,6 +70,8 @@ router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vo
 router.get('/comments/:projectId', validateAccessToken, getAllComments);
 router.post('/comment/:expenseId', validateAccessToken, saveComment);
 router.delete('/comment/:commentId', validateAccessToken, deleteComment);
+
+router.put('/categories/:categoryId/:orderId', validateAccessToken, changeOrderId);
 
 router.get('/user', validateAccessToken, getUser);
 router.post('/user', validateAccessToken, saveUser);

@@ -18,38 +18,45 @@
             </span>
             <b>Budget:</b> {{ project.budget | currency: project.currency : 'symbol' : '1.0-0' }} <br>
           </div>
-          <b>Sum:</b> {{ sum | currency: project.currency : 'symbol' : '1.0-0' }} <br>
-          <i class="smaller">including one option from each category</i><br>
-        </div>
-
-        <div *ngIf="project.noOfGuests">
-          <b>Sum per guest:</b> {{ sum/project.noOfGuests | currency: project.currency : 'symbol' : '1.0-0' }}
-        </div>
-
-        <div *ngIf="minSum !== maxSum">
-          <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency : 'symbol' : '1.0-0' }}<br>
-          <b>Minimal cost variant:</b> {{ minSum | currency: project.currency : 'symbol' : '1.0-0' }}
-        </div>
-
-        <div id="bar">
-          <mat-progress-bar id="bar-height" mode="determinate" [value]="progressBarValue">
-          </mat-progress-bar>
-
-          <div *ngIf="sum > project.budget">
-            You are {{ difference | currency: project.currency : 'symbol' : '1.0-0'}} over budget!
-          </div>
-          <div *ngIf="sum < project.budget">
-            You have {{ difference | currency: project.currency : 'symbol' : '1.0-0' }} remaining budget.
+          <div *ngIf="sum > 0">
+            <b>Sum:</b> {{ sum | currency: project.currency : 'symbol' : '1.0-0' }} <br>
+            <i class="smaller">including one option from each category</i><br>
           </div>
         </div>
 
-        <div *ngIf="project.expenses.length" class="text-container">
-          <b>Categories:</b><br>
-          <div id="categories">
-            <div *ngFor="let category of categories" class="smaller">
-              <b>{{ category.category }}:</b>
-              {{ expenseSumsByCat[category.orderId] | currency: project.currency : 'symbol' : '1.0-0' }}
-              <i class="gray"> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-0' }}%</i>
+        <div *ngIf="sum > 0">
+          <div *ngIf="project.noOfGuests">
+            <b>Sum per guest:</b> {{ sum/project.noOfGuests | currency: project.currency : 'symbol' : '1.0-0' }}
+          </div>
+
+          <div *ngIf="minSum !== maxSum">
+            <b>Maximal cost variant:</b> {{ maxSum | currency: project.currency : 'symbol' : '1.0-0' }}<br>
+            <b>Minimal cost variant:</b> {{ minSum | currency: project.currency : 'symbol' : '1.0-0' }}
+          </div>
+
+          <div id="bar">
+            <mat-progress-bar id="bar-height" mode="determinate" [value]="progressBarValue">
+            </mat-progress-bar>
+
+            <div *ngIf="sum > project.budget">
+              You are {{ difference | currency: project.currency : 'symbol' : '1.0-0'}} over budget!
+            </div>
+            <div *ngIf="sum < project.budget">
+              You have {{ difference | currency: project.currency : 'symbol' : '1.0-0' }} remaining budget.
+            </div>
+          </div>
+
+          <div *ngIf="project.expenses.length" class="text-container">
+            <b>Categories:</b><br>
+            <div id="categories">
+              <div *ngFor="let category of categories" class="smaller">
+                <span *ngIf="category.optional else notOptional">{{ category.category }} (optional):</span>
+                <ng-template #notOptional>
+                  <b>{{ category.category }}:</b>
+                </ng-template>
+                {{ expenseSumsByCat[category.orderId] | currency: project.currency : 'symbol' : '1.0-0' }}
+                <i class="gray"> - {{ expenseSumsByCat[category.orderId]/sum * 100 | number: '1.0-0' }}%</i>
+              </div>
             </div>
           </div>
         </div>

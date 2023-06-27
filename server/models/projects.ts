@@ -18,6 +18,29 @@ async function saveProjectToDb(userSub: string, data: Prisma.ProjectCreateInput)
         connect: { id: user.id }
       }
     },
+    include: {
+      owners: true,
+      invitedUsers: true,
+      expenses: {
+        include: {
+          category: {
+            include: {
+              expenses: true,
+            }
+          }
+        }
+      },
+      categories: {
+        include: {
+          expenses: {
+            include: {
+              comments: true,
+              category: true,
+            }
+          },
+        }
+      },
+    },
   });
   return newProject;
 }

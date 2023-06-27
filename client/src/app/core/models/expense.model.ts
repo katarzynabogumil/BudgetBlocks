@@ -1,10 +1,10 @@
 import { CommentModel } from './comment.model';
 import { ProjectModel } from './project.model';
-import { EmptyExpCategory, ExpCategoryModel } from './expCategory.model';
+import { CreateExpCategoryModel, EmptyExpCategory, ExpCategoryModel } from './expCategory.model';
 
 export interface CreateExpenseModel {
   name: string;
-  category: ExpCategoryModel;
+  category: CreateExpCategoryModel;
   cost: number;
   calcCost?: number;
   currency: string;
@@ -13,6 +13,7 @@ export interface CreateExpenseModel {
   notes?: string;
   formCategory?: string,
   newCategory?: string,
+  optional?: boolean,
 }
 
 export interface ExpenseModel {

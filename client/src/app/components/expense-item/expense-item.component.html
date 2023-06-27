@@ -1,12 +1,14 @@
 <div class="img-container">
-  <img class="img" *ngIf="expense.photo" [src]="expense.photo" alt="expense photo">
+  <img class="img" *ngIf="expense.photo" [src]="expense.photo" alt="expense photo" [draggable]="false">
 </div>
 
 <div class="expense-text">
   <div>
     <h2>{{expense.name}}</h2>
     <div class="smaller">
-      <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span><br>
+      <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span>
+      <span *ngIf="expense.category.optional"> (opt.)</span>
+      <br>
       <b>Cost: </b>{{expense.cost | currency: expense.currency }}<br>
       <span *ngIf="expense.calcCost" class="smaller">
         <b>Recalculated cost: </b>{{expense.calcCost | currency: projectCurrency }}<br>

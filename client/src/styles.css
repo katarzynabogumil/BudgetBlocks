@@ -159,7 +159,6 @@ a:active {
   margin-right: 15px;
   margin-bottom: 15px;
   width: 350px;
-  min-height: 40px;
   box-shadow: 0 0 10px rgb(120, 120, 120);
 }
 
@@ -188,6 +187,10 @@ h2 {
   min-width: 100px;
   font-weight: var(--bold);
   cursor: pointer;
+}
+
+.gray {
+  color: #8a8a8a;
 }
 
 @media screen and (min-width: 800px) {

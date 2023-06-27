@@ -84,7 +84,6 @@ export class ProjectService {
 
         if (error) this.router.navigate([`projects/`]);
         else {
-          data.categories = data.categories?.sort((a, b) => a.orderId - b.orderId)
           this.project$.next(data);
         }
 

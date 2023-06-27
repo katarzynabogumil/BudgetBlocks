@@ -4,7 +4,7 @@ dotenv.config();
 export const mockdata = {
   users: [
     {
-      id: 1,
+      // id: 1,
       sub: process.env.MOCK_USER_1_SUB || '',
       firstName: process.env.MOCK_USER_1_FNAME || '',
       lastName: process.env.MOCK_USER_1_LNAME || '',
@@ -29,7 +29,7 @@ export const mockdata = {
             categories: {
               create: [
                 {
-                  id: 1,
+                  // id: 1,
                   category: 'Flights',
                   orderId: 1,
                   expenses: {
@@ -65,7 +65,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 2,
+                  // id: 2,
                   category: 'Accommodation',
                   orderId: 2,
                   expenses: {
@@ -101,7 +101,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 3,
+                  // id: 3,
                   category: 'Transportation',
                   orderId: 3,
                   expenses: {
@@ -128,7 +128,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 4,
+                  // id: 4,
                   category: 'Activities',
                   orderId: 4,
                   expenses: {
@@ -183,7 +183,7 @@ export const mockdata = {
             categories: {
               create: [
                 {
-                  id: 5,
+                  // id: 5,
                   category: 'Sofa',
                   orderId: 1,
                   expenses: {
@@ -219,7 +219,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 6,
+                  // id: 6,
                   category: 'Carpet',
                   orderId: 2,
                   expenses: {
@@ -246,7 +246,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 7,
+                  // id: 7,
                   category: 'Art',
                   orderId: 3,
                   expenses: {
@@ -282,7 +282,7 @@ export const mockdata = {
                   }
                 },
                 {
-                  id: 8,
+                  // id: 8,
                   category: 'Lamp',
                   orderId: 4,
                   expenses: {
