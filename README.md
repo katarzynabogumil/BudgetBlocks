@@ -61,6 +61,7 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
    ```bash
    cd ..
    cd server/models
+   npx prisma migrate dev --name init 
    npx prisma migrate reset
    cd ..
    npm start

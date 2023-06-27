@@ -76,6 +76,7 @@ model ExpCategory {
   expenses  Expense[]
   orderId   Int
   category  String
+  optional  Boolean? @default(false)
 }
 
 model Comment {

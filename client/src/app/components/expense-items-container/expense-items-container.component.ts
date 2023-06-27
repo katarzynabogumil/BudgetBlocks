@@ -47,7 +47,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.projectApi.getProject(this.id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       if (p.id >= 0) {
-        console.log(p);
         this.project = p;
         this.expenses = p.expenses;
         this.categories = p.categories?.sort((a, b) => {
@@ -57,8 +56,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
         this.getComments(p.id);
         this.getExpensesToCategories();
         this.updateSum();
-
-        console.log(this.expensesAtCatOrderId);
       }
     });
   }
@@ -154,14 +151,14 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   handleSelect(event: Event, expense: ExpenseModel): void {
-    if (this.compareMode && expense.category.expenses?.length !== 1) {
+    if (this.compareMode) {
       for (let expArr of Object.values(this.expensesAtCatOrderId)) {
         for (let exp of expArr) {
           if (exp.id === expense.id) {
             if (exp.selected) {
               exp.selected = false;
-              // select first - something has to be selected in a category
-              expArr[0].selected = true;
+              // if category not optional select first - something has to be selected in a category
+              if (!exp.category.optional) expArr[0].selected = true;
             } else {
               // iterate through all and set to false
               expArr.forEach(e => e.selected = false);
@@ -203,8 +200,6 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   private reorderCategory(fromId: number, toId: number): void {
-    console.log('changed category id from', fromId, toId);
-    console.log(this.project)
     const lastOrderIdToChange = Math.max(fromId, toId);
 
     this.categories.forEach(cat => {
@@ -222,10 +217,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
       }
 
       if (newOrderId > -1) {
-        console.log('changing category, oldOrder, newOrder', cat.orderId, newOrderId)
         this.categoriesApi.changeCatOrderId(cat.id, newOrderId).subscribe(() => {
           if (cat.orderId === lastOrderIdToChange) {
-            console.log('calling new project, lastIndexToChange, from, to', lastOrderIdToChange, fromId, toId)
             this.projectApi.getProject(this.id).subscribe();
           }
         });

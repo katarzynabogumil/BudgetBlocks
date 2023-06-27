@@ -72,6 +72,16 @@
         </div>
 
         <div class="form-row grid-single">
+          <label>OPTIONAL</label>
+          <div id="optional-radio-container">
+            <input type="radio" id="true" name="optional" value="true" formControlName="optional">
+            <label for="true"> YES</label>
+            <input type="radio" id="false" name="optional" value="false" formControlName="optional">
+            <label for="false"> NO</label>
+          </div>
+        </div>
+
+        <div class="form-row grid-single">
           <label>LINK (URL)</label>
           <input type="text" formControlName="link" class="form-control" />
         </div>

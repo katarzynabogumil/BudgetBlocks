@@ -1,8 +1,12 @@
-#checkbox-options {
+#optional-radio-container {
   display: flex;
   flex-direction: row;
 }
 
-#checkbox-options > * {
+#optional-radio-container>label {
   margin-right: 20px;
+}
+
+#optional-radio-container>input {
+  margin-right: 5px;
 }

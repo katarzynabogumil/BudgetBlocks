@@ -2,7 +2,7 @@ import express from 'express';
 import { Prisma } from '@prisma/client'
 
 import {
-  updateCategoryinDb
+  updateCatOrderIdinDb
 } from '../models/categories';
 
 async function changeOrderId
@@ -13,7 +13,7 @@ async function changeOrderId
   try {
     const categoryId = Number(req.params.categoryId);
     const orderId = Number(req.params.orderId);
-    const category = await updateCategoryinDb(categoryId, orderId);
+    const category = await updateCatOrderIdinDb(categoryId, orderId);
     res.status(200);
     res.send(category);
   } catch (e) {
@@ -21,9 +21,6 @@ async function changeOrderId
     res.sendStatus(500);
   }
 };
-
-
-
 
 export {
   changeOrderId

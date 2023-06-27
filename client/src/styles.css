@@ -189,6 +189,10 @@ h2 {
   cursor: pointer;
 }
 
+.gray {
+  color: #8a8a8a;
+}
+
 @media screen and (min-width: 800px) {
   .main-card {
     width: 340px;
