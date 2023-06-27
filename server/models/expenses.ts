@@ -47,6 +47,13 @@ async function updateExpenseinDb(projectId: number, expenseId: number, data: Pri
       category: {
         connect: { id: category.id }
       },
+    },
+    include: {
+      category: {
+        include: {
+          expenses: true,
+        }
+      }
     }
   });
   return expense;

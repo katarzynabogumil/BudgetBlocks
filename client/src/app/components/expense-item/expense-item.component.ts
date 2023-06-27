@@ -31,19 +31,13 @@ export class ExpenseItemComponent implements OnInit {
     public expenseApi: ExpenseService,
     private route: ActivatedRoute,
     public projectApi: ProjectService,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
 
     this.usersub$.subscribe(sub => {
       this.usersub = sub || '';
-      this.checkVotes();
-    });
-
-    this.expenseApi.expense$.subscribe(exp => {
-      this.expense = exp;
       this.checkVotes();
     });
   }
@@ -56,8 +50,7 @@ export class ExpenseItemComponent implements OnInit {
   }
 
   toggleVotes(direction: string): void {
-    this.expenseApi.vote(direction, this.projectId, this.expense.id || 0).subscribe(res => {
-    });
+    this.expenseApi.vote(direction, this.projectId, this.expense.id || 0).subscribe();
   }
 
   checkVotes(): void {

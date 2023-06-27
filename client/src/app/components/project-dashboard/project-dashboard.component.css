@@ -20,8 +20,6 @@
 }
 
 mat-progress-bar {
-  background-color: #cccccc;
-  color: var(--pink);
   transform: scaleY(2);
   transform-origin: bottom;
 }

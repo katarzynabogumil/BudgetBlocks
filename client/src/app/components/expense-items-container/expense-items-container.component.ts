@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, EmptyExpense, ApiResponseProjectModel, CommentService } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, CommentService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -43,8 +43,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   getProject(): void {
     this.projectApi.getProject(this.id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
-      if (p.id) {
-        console.log(p);
+      if (p.id >= 0) {
         this.project = p;
         this.expenses = p.expenses;
         this.categories = p.categories || [];
@@ -85,11 +84,11 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
       if (compareMode) {
         this.compareMode = true;
-        this.markSelectedInit(true)
-        this.updateSum()
+        this.markSelectedInit(this.compareMode);
+        this.updateSum();
       } else {
         this.compareMode = false;
-        this.updateSum()
+        this.updateSum();
       }
       this.expenseApi.compareMode$.next(compareMode);
     });
@@ -116,21 +115,21 @@ export class ExpenseItemsContainerComponent implements OnInit {
               catCost = exp.calcCost
             } else {
               this.sum += exp.cost;
-              catCost = exp.cost
+              catCost = exp.cost;
             }
           }
         })
       } else {
         if (expArr[0].calcCost) {
           this.sum += expArr[0].calcCost;
-          catCost = expArr[0].calcCost
+          catCost = expArr[0].calcCost;
         } else {
           this.sum += expArr[0].cost;
-          catCost = expArr[0].cost
+          catCost = expArr[0].cost;
         }
       }
 
-      this.expenseSumsByCat[key] = catCost
+      this.expenseSumsByCat[key] = catCost;
 
       this.maxSum += expArr.reduce((a, b) => {
         return a.cost > b.cost ? a : b;

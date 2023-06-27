@@ -39,7 +39,7 @@ export const mockdata = {
                         cost: 724,
                         currency: "EUR",
                         link: null,
-                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687800663/flights_redj4q.webp",
                         notes: "Departure time: 6:00 AM. I'm too old for that.",
                         project: { connect: { id: 1 } }
                       },
@@ -48,7 +48,7 @@ export const mockdata = {
                         cost: 927,
                         currency: "EUR",
                         link: null,
-                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687800663/flights_redj4q.webp",
                         notes: "Departureat 10:00 AM",
                         project: { connect: { id: 1 } }
                       },
@@ -57,7 +57,7 @@ export const mockdata = {
                         cost: 525,
                         currency: "EUR",
                         link: null,
-                        photo: "https://i0.wp.com/www.sarahltravels.com/wp-content/uploads/2019/07/s-o-c-i-a-l-c-u-t-96A9UTFAMUM-unsplash-1.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687800663/flights_redj4q.webp",
                         notes: "Departure at 10:00 PM, not the worst",
                         project: { connect: { id: 1 } }
                       },
