@@ -4,6 +4,10 @@
   flex-wrap: wrap;
 }
 
+.gray {
+  color: #8a8a8a;
+}
+
 @media screen and (min-width: 800px) {
   #project-dashboard {
     height: 100%;

@@ -164,7 +164,6 @@ a:active {
 
 .main-card {
   z-index: 1;
-  padding-right: 5px;
   padding: 10px 5px 10px 10px;
 }
 
@@ -187,10 +186,6 @@ h2 {
   min-width: 100px;
   font-weight: var(--bold);
   cursor: pointer;
-}
-
-.gray {
-  color: #8a8a8a;
 }
 
 @media screen and (min-width: 800px) {
@@ -249,6 +244,7 @@ h2 {
   }
 
 }
+
 
 /* FORMS */
 
@@ -317,9 +313,11 @@ textarea {
   }
 }
 
+
+/* ICONS */
+
 .material-symbols-outlined {
   font-variation-settings:
-    /* 'FILL' 0, */
     'wght' 400,
     'GRAD' 0,
     'opsz' 48
