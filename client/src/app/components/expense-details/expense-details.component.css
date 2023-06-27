@@ -1,9 +1,12 @@
+.detail-card {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-bottom: 0;
+}
+
 @media screen and (min-width: 800px) {
   .detail-card {
     width: 350px;
-    margin-bottom: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
     padding: 15px;
   }
 }
