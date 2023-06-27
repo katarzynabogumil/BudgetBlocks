@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExpenseModel, EmptyExpense, ExpenseService, ProjectService, ProjectModel } from '@app/core';
+import { ExpenseModel, EmptyExpense, ExpenseService, ProjectService } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs';
 
@@ -11,26 +11,26 @@ import { map } from 'rxjs';
 })
 export class ExpenseItemComponent implements OnInit {
   @Input() expense: ExpenseModel = EmptyExpense;
-  @Input() projectCurrency: string = '';
-  @Input() compareMode: boolean = false;
+  @Input() projectCurrency = '';
+  @Input() compareMode = false;
   @Output() toggleDetailsEvent = new EventEmitter();
 
   usersub$ = this.auth.user$.pipe(map((user) => user?.sub));
-  usersub: string = '';
+  usersub = '';
 
-  showDetails: boolean = false;
-  projectId: number = -1;
-  upIsFilled: boolean = false;
-  downIsFilled: boolean = false;
+  showDetails = false;
+  projectId = -1;
+  upIsFilled = false;
+  downIsFilled = false;
 
-  upvotes: number = 0;
-  downvotes: number = 0;
+  upvotes = 0;
+  downvotes = 0;
 
   constructor(
     private auth: AuthService,
-    public expenseApi: ExpenseService,
+    private expenseApi: ExpenseService,
     private route: ActivatedRoute,
-    public projectApi: ProjectService,
+    private projectApi: ProjectService,
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class ExpenseItemComponent implements OnInit {
     this.expenseApi.vote(direction, this.projectId, this.expense.id || 0).subscribe();
   }
 
-  checkVotes(): void {
+  private checkVotes(): void {
     if (this.expense.upvotes?.includes(this.usersub)) {
       this.upIsFilled = true;
     } else if (this.expense.downvotes?.includes(this.usersub)) {

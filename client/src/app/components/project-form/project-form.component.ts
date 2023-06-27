@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
-import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, EmptyCurrencyRates, ApiResponseModel, ApiResponseCurrenciesModel } from '@app/core';
+import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 import { Observable, of, switchMap } from 'rxjs';
 
@@ -13,10 +13,10 @@ import { Observable, of, switchMap } from 'rxjs';
 })
 export class ProjectFormComponent implements OnInit {
   projectForm: FormGroup = this.formBuilder.group({
-    name: ["", [Validators.required, Validators.minLength(1)]],
-    type: ["", [Validators.required, Validators.minLength(1)]],
-    budget: ["", [Validators.required, Validators.minLength(1)]],
-    currency: ["EUR"],
+    name: ['', [Validators.required, Validators.minLength(1)]],
+    type: ['', [Validators.required, Validators.minLength(1)]],
+    budget: ['', [Validators.required, Validators.minLength(1)]],
+    currency: ['EUR'],
     dateFrom: [],
     dateTo: [],
     area: [],
@@ -29,11 +29,11 @@ export class ProjectFormComponent implements OnInit {
     refreshRates: []
   })
   currencies: string[] = [];
-  id: number = -1;
-  rating: number = -1;
-  isAddMode: boolean = false;
-  submitted: boolean = false;
-  dateIsValid: boolean = true;
+  id = -1;
+  rating = -1;
+  isAddMode = false;
+  submitted = false;
+  dateIsValid = true;
   isProduction: boolean = env.production;
 
   constructor(
@@ -42,7 +42,7 @@ export class ProjectFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private currenciesApi: CurrenciesService,
-    public aiApi: OpenAiService
+    private aiApi: OpenAiService
   ) { }
 
   ngOnInit(): void {
@@ -97,14 +97,18 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  onDateChange(event: Event): void {
+  onDateChange(): void {
     const dateTo = new Date(this.projectForm.value.dateTo).toISOString();
     const dateFrom = new Date(this.projectForm.value.dateFrom).toISOString();
     if (dateTo < dateFrom) this.dateIsValid = false;
     else this.dateIsValid = true;
   }
 
-  addProject(data: CreateProjectModel): void {
+  close(): void {
+    this.router.navigate([`/projects/`]);
+  }
+
+  private addProject(data: CreateProjectModel): void {
     this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
       if (!res.error) {
         console.log('Project added.');
@@ -116,7 +120,7 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  editProject(id: number, data: CreateProjectModel): void {
+  private editProject(id: number, data: CreateProjectModel): void {
     this.projectApi.editProject(id, data)
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) {
@@ -128,7 +132,7 @@ export class ProjectFormComponent implements OnInit {
       });
   }
 
-  getCurrencyRates(project: CreateProjectModel): Observable<CurrencyRatesModel> {
+  private getCurrencyRates(project: CreateProjectModel): Observable<CurrencyRatesModel> {
     if (!project.currencyRates || project.refreshRates) {
       return this.currenciesApi.currencyRates$.pipe(
         switchMap(rates => {
@@ -148,11 +152,7 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  close(): void {
-    this.router.navigate([`/projects/`]);
-  }
-
-  getRating(id: number): void {
+  private getRating(id: number): void {
     this.aiApi.getRating(id).subscribe();
     this.aiApi.rating$.subscribe((res: RatingModel) => {
       const rating = res.rating;

@@ -8,10 +8,10 @@ import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
 })
 export class ProjectItemComponent {
   @Input() project: ProjectModel = EmptyProject;
-  linkDisabled: boolean = false;
+  linkDisabled = false;
 
   constructor(
-    public projectApi: ProjectService
+    private projectApi: ProjectService
   ) { }
 
   removeProject(): void {

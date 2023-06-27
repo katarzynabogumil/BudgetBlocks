@@ -23,19 +23,19 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: "",
+        path: '',
         component: ProjectItemsContainerComponent,
       },
       {
-        path: "add",
+        path: 'add',
         component: ProjectFormComponent,
       },
       {
-        path: "edit/:id",
+        path: 'edit/:id',
         component: ProjectFormComponent,
       },
       {
-        path: "addusers/:id",
+        path: 'addusers/:id',
         component: AddUsersFormComponent,
       },
     ]
@@ -46,15 +46,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: "",
+        path: '',
         component: ExpenseItemsContainerComponent,
       },
       {
-        path: "add",
+        path: 'add',
         component: ExpenseFormComponent,
       },
       {
-        path: "edit/:expenseId",
+        path: 'edit/:expenseId',
         component: ExpenseFormComponent,
       },
     ]

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectModel, UserModel, EmptyProject } from '@app/core';
+import { ProjectModel, ProjectService, ApiResponseProjectModel, UserModel, EmptyProject } from '@app/core';
 
 @Component({
   selector: 'app-add-users-form',
@@ -11,15 +11,15 @@ import { ProjectModel, ProjectService, CurrenciesService, ApiResponseProjectMode
 })
 export class AddUsersFormComponent implements OnInit {
   addUserForm: FormGroup = this.formBuilder.group({
-    invite: ["", [Validators.email]],
+    invite: ['', [Validators.email]],
 
   })
-  id: number = -1;
+  id = -1;
   project: ProjectModel = EmptyProject;
-  submitted: boolean = false;
-  success: boolean = false;
-  isOwner: boolean = false;
-  isInvited: boolean = false;
+  submitted = false;
+  success = false;
+  isOwner = false;
+  isInvited = false;
   owners: UserModel[] = [];
   invitedUsers: UserModel[] = [];
 
@@ -33,15 +33,6 @@ export class AddUsersFormComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
     this.getProject(this.id);
-  }
-
-  getProject(id: number): void {
-    this.projectApi.getProject(id).subscribe();
-    this.projectApi.project$.subscribe((p: ProjectModel) => {
-      this.project = p;
-      this.owners = p.owners || [];
-      this.invitedUsers = p.invitedUsers || [];
-    });
   }
 
   handleSubmit(): void {
@@ -72,15 +63,24 @@ export class AddUsersFormComponent implements OnInit {
     this.submitted = false;
   }
 
-  inviteUser(email: string): void {
+  close(): void {
+    this.router.navigate([`/project/` + this.id]);
+  }
+
+  private getProject(id: number): void {
+    this.projectApi.getProject(id).subscribe();
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+      this.project = p;
+      this.owners = p.owners || [];
+      this.invitedUsers = p.invitedUsers || [];
+    });
+  }
+
+  private inviteUser(email: string): void {
     this.projectApi.addUser(email, this.id)
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) console.log('Project edited.');
         else console.log(res.error);
       });
-  }
-
-  close(): void {
-    this.router.navigate([`/project/` + this.id]);
   }
 }

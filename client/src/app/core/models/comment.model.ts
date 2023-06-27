@@ -1,5 +1,5 @@
-import { ExpenseModel } from "./expense.model";
-import { UserModel } from "./user.model";
+import { ExpenseModel } from './expense.model';
+import { UserModel } from './user.model';
 
 export interface CommentModel {
   id?: number;

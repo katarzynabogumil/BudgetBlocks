@@ -13,7 +13,7 @@ import { OpenAiService } from 'src/app/core/services/openai.service';
 export class ExpenseFormComponent implements OnInit {
   expenseForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(1)]],
-    cost: [, [Validators.required, Validators.minLength(1)]],
+    cost: ['', [Validators.required, Validators.minLength(1)]],
     currency: ['EUR'],
     link: [],
     photo: [],
@@ -26,21 +26,21 @@ export class ExpenseFormComponent implements OnInit {
   categories: ExpCategoryModel[] = [];
   allCategoryNames: string[] = [];
   currencies: string[] = [];
-  projectId: number = -1;
+  projectId = -1;
   currencyRates: CurrencyRatesModel = EmptyCurrencyRates;
-  expenseId: number = -1;
-  isAddMode: boolean = false;
-  isDuplicate: boolean = false;
-  submitted: boolean = false;
+  expenseId = -1;
+  isAddMode = false;
+  isDuplicate = false;
+  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private expenseApi: ExpenseService,
     private currenciesApi: CurrenciesService,
-    public projectApi: ProjectService,
+    private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    public aiApi: OpenAiService
+    private aiApi: OpenAiService
   ) { }
 
   ngOnInit(): void {
@@ -62,25 +62,13 @@ export class ExpenseFormComponent implements OnInit {
     }
   }
 
-  getCategories(): void {
-    this.projectApi.project$.subscribe((p: ProjectModel) => {
-      this.categories = p.categories || [];
-    });
-  }
-
-  getCurrencyRates(): void {
-    this.projectApi.project$.subscribe((p: ProjectModel) => {
-      this.currencyRates = p.currencyRates || EmptyCurrencyRates;
-    });
-  }
-
   handleSubmit(): void {
     this.getCategories();
 
     this.submitted = true;
     let expense = this.expenseForm.value as CreateExpenseModel;
 
-    let checkCatResult = this.handleCategories(expense);
+    const checkCatResult = this.handleCategories(expense);
     if (checkCatResult) expense = checkCatResult;
     else return;
 
@@ -100,7 +88,24 @@ export class ExpenseFormComponent implements OnInit {
     }
   }
 
-  addExpense(projectId: number, data: CreateExpenseModel): void {
+  close(): void {
+    this.router.navigate([`/project/${this.projectId}`]);
+  }
+
+
+  private getCategories(): void {
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+      this.categories = p.categories || [];
+    });
+  }
+
+  private getCurrencyRates(): void {
+    this.projectApi.project$.subscribe((p: ProjectModel) => {
+      this.currencyRates = p.currencyRates || EmptyCurrencyRates;
+    });
+  }
+
+  private addExpense(projectId: number, data: CreateExpenseModel): void {
     this.expenseApi.addExpense(projectId, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -111,7 +116,7 @@ export class ExpenseFormComponent implements OnInit {
       });
   }
 
-  editExpense(projectId: number, id: number, data: CreateExpenseModel): void {
+  private editExpense(projectId: number, id: number, data: CreateExpenseModel): void {
     this.expenseApi.editExpense(projectId, id, data).
       subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
@@ -122,8 +127,8 @@ export class ExpenseFormComponent implements OnInit {
       });
   }
 
-  handleCategories(expense: CreateExpenseModel): CreateExpenseModel | null {
-    for (let cat of this.categories) {
+  private handleCategories(expense: CreateExpenseModel): CreateExpenseModel | null {
+    for (const cat of this.categories) {
       this.allCategoryNames.push(cat.category.toLowerCase());
     }
 
@@ -158,7 +163,7 @@ export class ExpenseFormComponent implements OnInit {
     return expense;
   }
 
-  recalculateCost(projectId: number, expense: CreateExpenseModel): CreateExpenseModel {
+  private recalculateCost(projectId: number, expense: CreateExpenseModel): CreateExpenseModel {
     const rate = this.currencyRates.rates[expense.currency];
     if (this.currencyRates.success && rate !== 1) {
       expense.calcCost = expense.cost * rate;
@@ -166,11 +171,7 @@ export class ExpenseFormComponent implements OnInit {
     return expense;
   }
 
-  getMissingCategories(projectId: number): void {
+  private getMissingCategories(projectId: number): void {
     this.aiApi.getMissingCategories(projectId).subscribe();
-  }
-
-  close(): void {
-    this.router.navigate([`/project/${this.projectId}`]);
   }
 }

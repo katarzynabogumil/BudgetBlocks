@@ -1,7 +1,7 @@
-import { ExpenseModel } from "./expense.model";
-import { UserModel } from "./user.model";
+import { ExpenseModel } from './expense.model';
+import { UserModel } from './user.model';
 import { ExpCategoryModel } from './expCategory.model';
-import { CurrencyRatesModel } from "./currencyRates.model";
+import { CurrencyRatesModel } from './currencyRates.model';
 
 export interface CreateProjectModel {
   name: string;

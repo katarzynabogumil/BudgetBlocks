@@ -12,23 +12,23 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AllProjectsDashboardComponent implements OnInit {
   username$ = this.auth.user$.pipe(map((user) => user?.nickname?.replace(/\b./g, x => x.toUpperCase())));
-  id: number = -1;
+  id = -1;
 
   constructor(
     private auth: AuthService,
-    public userApi: UserService,
+    private userApi: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     this.checkIfNewUser();
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe(() => {
       this.id = Number(this.route.firstChild?.snapshot.params['id']) || -1;
     });
   }
 
-  checkIfNewUser(): void {
+  private checkIfNewUser(): void {
     if (!this.userApi.userSub) {
       this.auth.user$.subscribe(user => {
 
@@ -41,14 +41,14 @@ export class AllProjectsDashboardComponent implements OnInit {
     }
   }
 
-  checkIfInDb(): Observable<boolean> {
+  private checkIfInDb(): Observable<boolean> {
     return this.userApi.getUser().pipe(
       switchMap((res: ApiResponseModel) => {
         return of(res.data ? true : false);
       }));
   }
 
-  saveToDb(userData: User | null | undefined): void {
+  private saveToDb(userData: User | null | undefined): void {
     if (userData) {
       const user: UserModel = {
         sub: userData.sub || '',

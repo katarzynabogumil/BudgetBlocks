@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ApiResponseModel, RequestConfigModel, EmptyCurrencyRates, CurrencyRatesModel, RatingModel, ApiResponseRatingModel } from '../models';
+import { ApiResponseModel, RequestConfigModel, RatingModel, ApiResponseRatingModel } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({

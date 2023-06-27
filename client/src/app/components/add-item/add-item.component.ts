@@ -8,15 +8,15 @@ import { OpenAiService } from 'src/app/core/services/openai.service';
   styleUrls: ['./add-item.component.css']
 })
 export class AddItemComponent implements OnInit {
-  @Input() item: string = '';
+  @Input() item = '';
   @Input() project: ProjectModel = EmptyProject;
-  @Input() link: string = '';
-  compareMode: boolean = false;
-  categories: string = '';
+  @Input() link = '';
+  compareMode = false;
+  categories = '';
 
   constructor(
-    public expenseApi: ExpenseService,
-    public aiApi: OpenAiService
+    private expenseApi: ExpenseService,
+    private aiApi: OpenAiService
   ) { }
 
   ngOnInit(): void {

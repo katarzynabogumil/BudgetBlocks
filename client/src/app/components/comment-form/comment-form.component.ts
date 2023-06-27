@@ -10,9 +10,9 @@ import { CommentService, ExpenseModel, EmptyExpense } from '@app/core';
 })
 export class CommentFormComponent {
   commentForm: FormGroup = this.formBuilder.group({
-    comment: ["", [Validators.required]],
+    comment: ['', [Validators.required]],
   })
-  submitted: boolean = false;
+  submitted = false;
   @Input() expense: ExpenseModel = EmptyExpense;
 
   constructor(
@@ -31,7 +31,7 @@ export class CommentFormComponent {
     this.submitted = false;
   }
 
-  postComment(text: string): void {
+  private postComment(text: string): void {
     this.commentApi.addComment(this.expense.id || -1, { text }).subscribe();
   }
 }

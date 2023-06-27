@@ -1,5 +1,5 @@
 import { ProjectModel } from './project.model';
-import { ExpenseModel } from "./expense.model";
+import { ExpenseModel } from './expense.model';
 
 export interface CreateExpCategoryModel {
   orderId: number;

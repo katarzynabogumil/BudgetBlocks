@@ -9,23 +9,23 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./expense-items-container.component.css']
 })
 export class ExpenseItemsContainerComponent implements OnInit {
-  id: number = -1;
+  id = -1;
   project: ProjectModel = EmptyProject;
   expenses: ExpenseModel[] = [];
   expensesAtCatOrderId: { [key: string]: ExpenseModel[] } = {};
   categories: ExpCategoryModel[] = [];
-  compareMode: boolean = false;
+  compareMode = false;
   checkboxForm: FormGroup = this.formBuilder.group({
     compareMode: [],
   });
 
-  sum: number = 0;
-  minSum: number = 0;
-  maxSum: number = 0;
+  sum = 0;
+  minSum = 0;
+  maxSum = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
-  showDetails: boolean = false;
-  fromId: number = -1;
-  toId: number = -1;
+  showDetails = false;
+  fromId = -1;
+  toId = -1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,7 +86,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   private onModeChanges(): void {
-    this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
+    this.checkboxForm.get('compareMode')?.valueChanges.subscribe(compareMode => {
       if (compareMode) {
         this.compareMode = true;
         this.markSelectedInit(this.compareMode);
@@ -100,7 +100,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   private markSelectedInit(flag: boolean): void {
-    for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+    for (const expArr of Object.values(this.expensesAtCatOrderId)) {
       expArr[0].selected = flag;
     }
   }
@@ -110,7 +110,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.minSum = 0;
     this.maxSum = 0;
 
-    for (let [key, expArr] of Object.entries(this.expensesAtCatOrderId)) {
+    for (const [key, expArr] of Object.entries(this.expensesAtCatOrderId)) {
       let catCost = 0;
       if (this.compareMode) {
         expArr.forEach(exp => {
@@ -152,8 +152,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   handleSelect(event: Event, expense: ExpenseModel): void {
     if (this.compareMode) {
-      for (let expArr of Object.values(this.expensesAtCatOrderId)) {
-        for (let exp of expArr) {
+      for (const expArr of Object.values(this.expensesAtCatOrderId)) {
+        for (const exp of expArr) {
           if (exp.id === expense.id) {
             if (exp.selected) {
               exp.selected = false;
@@ -175,7 +175,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   toggleDetails([showDetails, expense]: [boolean, ExpenseModel]): void {
     if (!this.compareMode) {
-      for (let expArr of Object.values(this.expensesAtCatOrderId)) {
+      for (const expArr of Object.values(this.expensesAtCatOrderId)) {
         expArr.forEach(exp => {
           if (exp.id === expense.id) exp.showDetails = showDetails;
         });

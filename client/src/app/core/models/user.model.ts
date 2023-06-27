@@ -1,6 +1,6 @@
 import { ProjectModel } from './project.model';
-import { ExpenseModel } from "./expense.model";
-import { CommentModel } from "./comment.model";
+import { ExpenseModel } from './expense.model';
+import { CommentModel } from './comment.model';
 
 export interface UserModel {
   id?: number;

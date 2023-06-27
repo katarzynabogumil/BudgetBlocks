@@ -13,7 +13,7 @@ export class InviteItemComponent {
     private projectApi: ProjectService,
   ) { }
 
-  acceptInvitation() {
+  acceptInvitation(): void {
     if (this.project.id) {
       this.projectApi.acceptInvitation(this.project.id).subscribe();
     }

@@ -11,14 +11,14 @@ export class ProjectItemsContainerComponent implements OnInit {
   projectInvitations: ProjectModel[] = [];
 
   constructor(
-    public projectApi: ProjectService
+    private projectApi: ProjectService
   ) { }
 
   ngOnInit(): void {
     this.getProjects();
   }
 
-  getProjects(): void {
+  private getProjects(): void {
     this.projectApi.getAllProjects().subscribe();
     this.projectApi.projects$.
       subscribe(res => {
@@ -32,7 +32,7 @@ export class ProjectItemsContainerComponent implements OnInit {
       });
   }
 
-  getProjectInvitations(): void {
+  private getProjectInvitations(): void {
     this.projectApi.getProjectInvitations().subscribe();
     this.projectApi.projectInvitations$.
       subscribe(projects => {

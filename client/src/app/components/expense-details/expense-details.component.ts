@@ -11,8 +11,8 @@ import { map } from 'rxjs';
 })
 export class ExpenseDetailsComponent {
   @Input() expense: ExpenseModel = EmptyExpense;
-  @Input() isHidden: boolean = true;
-  projectId: number = -1;
+  @Input() isHidden = true;
+  projectId = -1;
   allComments: { [key: number]: CommentModel[] } = {};
   comments: CommentModel[] = [];
   username$ = this.auth.user$
@@ -20,7 +20,7 @@ export class ExpenseDetailsComponent {
 
   constructor(
     private auth: AuthService,
-    public expenseApi: ExpenseService,
+    private expenseApi: ExpenseService,
     private route: ActivatedRoute,
     private commentApi: CommentService
   ) { }

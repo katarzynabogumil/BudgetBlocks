@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ApiResponseProjectModel, ExpCategoryModel } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpCategoryModel } from '@app/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,23 +8,23 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./project-dashboard.component.css'],
 })
 export class ProjectDashboardComponent implements OnInit {
-  id: number = -1;
+  id = -1;
   project: ProjectModel = EmptyProject;
   categories: ExpCategoryModel[] | undefined = [];
 
-  compareMode: boolean = false;
+  compareMode = false;
 
-  sum: number = 0;
-  minSum: number = 0;
-  maxSum: number = 0;
+  sum = 0;
+  minSum = 0;
+  maxSum = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
-  difference: number = 0;
-  progressBarValue: number = 0;
-  backupRates: boolean = false;
+  difference = 0;
+  progressBarValue = 0;
+  backupRates = false;
 
   constructor(
-    public expenseApi: ExpenseService,
-    public projectApi: ProjectService,
+    private expenseApi: ExpenseService,
+    private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -36,7 +36,23 @@ export class ProjectDashboardComponent implements OnInit {
     this.getExpenseSum();
   }
 
-  getProject(id: number): void {
+  editProject(id: number, data: ProjectModel): void {
+    this.projectApi.editProject(id, data)
+      .subscribe(() => {
+        console.log('Project edited.');
+        this.router.navigate([`/project/${id}`]);
+      });
+  }
+
+  removeProject(): void {
+    this.projectApi.deleteProject(this.id)
+      .subscribe(() => {
+        console.log('Project removed.');
+        this.router.navigate([`/projects/`]);
+      });
+  }
+
+  private getProject(id: number): void {
     this.projectApi.getProject(id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
@@ -45,23 +61,7 @@ export class ProjectDashboardComponent implements OnInit {
     });
   }
 
-  editProject(id: number, data: ProjectModel): void {
-    this.projectApi.editProject(id, data)
-      .subscribe((res: ApiResponseProjectModel) => {
-        console.log('Project edited.');
-        this.router.navigate([`/project/${id}`]);
-      });
-  }
-
-  removeProject(): void {
-    this.projectApi.deleteProject(this.id)
-      .subscribe((res: ApiResponseProjectModel) => {
-        console.log('Project removed.');
-        this.router.navigate([`/projects/`]);
-      });
-  }
-
-  getExpenseSum() {
+  private getExpenseSum(): void {
     this.expenseApi.expenseSum$.subscribe(sum => {
       this.sum = sum;
       this.difference = Math.abs(this.project.budget - this.sum);

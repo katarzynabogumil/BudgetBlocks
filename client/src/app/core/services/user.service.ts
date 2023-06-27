@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class UserService {
-  userSub: string = '';
+  userSub = '';
 
   constructor(public api: ApiService) { }
 
