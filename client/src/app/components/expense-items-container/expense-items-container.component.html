@@ -18,7 +18,8 @@
   <div *ngIf="expenses" id="expenses-items-inner-container">
 
     <div *ngFor="let category of categories">
-      <div class="category-row">
+      <div class="category-row" [draggable]="true" (dragstart)="onDragStart(category.orderId)"
+        (dragenter)="onDragEnter(category.orderId)" (dragend)="onDragEnd()">
         <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]" class="category-row-item">
           <div class="card whitespace" [hidden]="!expense.showDetails"></div>
 
@@ -28,7 +29,8 @@
             (toggleDetailsEvent)="toggleDetails($event)" [projectCurrency]="this.project.currency">
           </app-expense-item>
 
-          <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails">
+          <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails"
+            [ngStyle]="{'display': expense.showDetails ? 'block' : 'none'}">
           </app-expense-details>
         </div>
       </div>

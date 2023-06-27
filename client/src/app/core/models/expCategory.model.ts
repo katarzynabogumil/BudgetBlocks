@@ -2,7 +2,7 @@ import { ProjectModel } from './project.model';
 import { ExpenseModel } from "./expense.model";
 
 export interface ExpCategoryModel {
-  id?: number;
+  id: number;
   project?: ProjectModel;
   expenses?: ExpenseModel[];
   orderId: number;
@@ -10,6 +10,7 @@ export interface ExpCategoryModel {
 }
 
 export const EmptyExpCategory = {
+  id: -1,
   category: '',
   orderId: 0,
 }

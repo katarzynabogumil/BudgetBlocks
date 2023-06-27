@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, CommentService } from '@app/core';
+import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, CommentService, CategoriesService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -24,13 +24,16 @@ export class ExpenseItemsContainerComponent implements OnInit {
   maxSum: number = 0;
   expenseSumsByCat: { [key: string]: number; } = {};
   showDetails: boolean = false;
+  fromId: number = -1;
+  toId: number = -1;
 
   constructor(
     private formBuilder: FormBuilder,
-    public expenseApi: ExpenseService,
-    public projectApi: ProjectService,
+    private expenseApi: ExpenseService,
+    private projectApi: ProjectService,
     private route: ActivatedRoute,
-    private commentApi: CommentService
+    private commentApi: CommentService,
+    private categoriesApi: CategoriesService
   ) { }
 
   ngOnInit(): void {
@@ -40,26 +43,31 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.onModeChanges();
   }
 
-  getProject(): void {
+  private getProject(): void {
     this.projectApi.getProject(this.id).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       if (p.id >= 0) {
+        console.log(p);
         this.project = p;
         this.expenses = p.expenses;
-        this.categories = p.categories || [];
+        this.categories = p.categories?.sort((a, b) => {
+          return a.orderId - b.orderId;
+        }) || [];
 
         this.getComments(p.id);
         this.getExpensesToCategories();
         this.updateSum();
+
+        console.log(this.expensesAtCatOrderId);
       }
     });
   }
 
-  getComments(id: number): void {
+  private getComments(id: number): void {
     this.commentApi.getAllComments(id).subscribe();
   }
 
-  getExpensesToCategories(): void {
+  private getExpensesToCategories(): void {
     this.expensesAtCatOrderId = {}
     this.categories.forEach((cat: ExpCategoryModel) => {
       this.expensesAtCatOrderId[cat.orderId] = this.expenses
@@ -80,7 +88,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     })
   }
 
-  onModeChanges(): void {
+  private onModeChanges(): void {
     this.checkboxForm.get("compareMode")?.valueChanges.subscribe(compareMode => {
       if (compareMode) {
         this.compareMode = true;
@@ -94,13 +102,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
     });
   }
 
-  markSelectedInit(flag: boolean): void {
+  private markSelectedInit(flag: boolean): void {
     for (let expArr of Object.values(this.expensesAtCatOrderId)) {
       expArr[0].selected = flag;
     }
   }
 
-  updateSum(): void {
+  private updateSum(): void {
     this.sum = 0;
     this.minSum = 0;
     this.maxSum = 0;
@@ -176,5 +184,52 @@ export class ExpenseItemsContainerComponent implements OnInit {
         });
       }
     }
+  }
+
+  onDragStart(fromId: number): void {
+    this.fromId = fromId;
+  }
+
+  onDragEnter(toId: number): void {
+    this.toId = toId;
+  }
+
+  onDragEnd(): void {
+    if (this.fromId !== this.toId) {
+      this.reorderCategory(this.fromId, this.toId);
+    }
+    this.fromId = -1;
+    this.toId = -1;
+  }
+
+  private reorderCategory(fromId: number, toId: number): void {
+    console.log('changed category id from', fromId, toId);
+    console.log(this.project)
+    const lastOrderIdToChange = Math.max(fromId, toId);
+
+    this.categories.forEach(cat => {
+      let newOrderId = -1;
+
+      if (cat.orderId == fromId) newOrderId = toId;
+      else if (fromId < toId &&
+        cat.orderId > fromId &&
+        cat.orderId <= toId) {
+        newOrderId = cat.orderId - 1;
+      } else if (fromId > toId &&
+        cat.orderId >= toId &&
+        cat.orderId < fromId) {
+        newOrderId = cat.orderId + 1;
+      }
+
+      if (newOrderId > -1) {
+        console.log('changing category, oldOrder, newOrder', cat.orderId, newOrderId)
+        this.categoriesApi.changeCatOrderId(cat.id, newOrderId).subscribe(() => {
+          if (cat.orderId === lastOrderIdToChange) {
+            console.log('calling new project, lastIndexToChange, from, to', lastOrderIdToChange, fromId, toId)
+            this.projectApi.getProject(this.id).subscribe();
+          }
+        });
+      }
+    });
   }
 }

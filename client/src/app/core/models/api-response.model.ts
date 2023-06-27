@@ -1,6 +1,7 @@
 import { AppErrorModel } from './app-error.model';
 import { CommentDictModel, CommentModel } from './comment.model';
 import { CurrencyRatesModel } from './currencyRates.model';
+import { ExpCategoryModel } from './expCategory.model';
 import { ExpenseModel } from './expense.model';
 import { ProjectModel } from './project.model';
 import { RatingModel } from './rating.model';
@@ -28,6 +29,11 @@ export interface ApiResponseProjectModelArr {
 
 export interface ApiResponseExpenseModel {
   data: ExpenseModel;
+  error: AppErrorModel | null;
+}
+
+export interface ApiResponseExpCategoryModel {
+  data: ExpCategoryModel;
   error: AppErrorModel | null;
 }
 
