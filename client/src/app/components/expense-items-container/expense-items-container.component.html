@@ -29,7 +29,7 @@
             (toggleDetailsEvent)="toggleDetails($event)" [projectCurrency]="this.project.currency">
           </app-expense-item>
 
-          <app-expense-details class="card" [expense]="expense" [isHidden]="!expense.showDetails"
+          <app-expense-details [expense]="expense" [isHidden]="!expense.showDetails"
             [ngStyle]="{'display': expense.showDetails ? 'block' : 'none'}">
           </app-expense-details>
         </div>
