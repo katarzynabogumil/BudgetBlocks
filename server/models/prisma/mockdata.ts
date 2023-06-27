@@ -75,7 +75,7 @@ export const mockdata = {
                         cost: 6663,
                         currency: "EUR",
                         link: "https://www.booking.com/hotel/es/w-barcelona.de.html?checkin=2023-07-15;checkout=2023-07-30;dest_id=49226",
-                        photo: "https://i.pinimg.com/originals/0f/37/a9/0f37a9b0d7bda41c3eb99d21812593f0.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/hotelw_tul1cw.jpg",
                         notes: "A bit of a splurge",
                         project: { connect: { id: 1 } }
                       },
@@ -84,7 +84,7 @@ export const mockdata = {
                         cost: 2547,
                         currency: "EUR",
                         link: "https://www.booking.com/hotel/es/rec-barcelona.de.html?aid=304142&checkin=2023-07-15;checkout=2023-07-30;dest_id=49226",
-                        photo: "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_600,q_auto,w_600//itemimages/89/11/8911532_v5.jpeg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/hotelrec_tfhfmp.jpg",
                         notes: "Charming hotel in the city center",
                         project: { connect: { id: 1 } }
                       },
@@ -93,7 +93,7 @@ export const mockdata = {
                         cost: 3597,
                         currency: "EUR",
                         link: "https://www.airbnb.com/rooms/plus/22739717?adults=2&check_in=2023-07-15&check_out=2023-07-30",
-                        photo: "https://a0.muscache.com/im/pictures/572f640c-dd3b-4e95-8893-caf715e42789.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/airbnb_bjmass.jpg",
                         notes: "Apartment as a not so budget option",
                         project: { connect: { id: 1 } }
                       },
@@ -111,7 +111,7 @@ export const mockdata = {
                         cost: 250,
                         currency: "EUR",
                         link: null,
-                        photo: "https://wallpapercave.com/wp/wp10852433.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/car_egvybk.jpg",
                         notes: "Opel corsa at Firefly",
                         project: { connect: { id: 1 } }
                       },
@@ -120,7 +120,7 @@ export const mockdata = {
                         cost: 40,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.travelpins.at/wp-content/uploads/2014/02/201402-BARCELONA-CARD-IMG_9206_1018x460px.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/publictransport_sgm4jj.jpg",
                         notes: "Explore the city like a local",
                         project: { connect: { id: 1 } }
                       },
@@ -138,7 +138,7 @@ export const mockdata = {
                         cost: 60,
                         currency: "EUR",
                         link: null,
-                        photo: "https://res.cloudinary.com/https-www-isango-com/image/upload/f_auto/t_m_Prod/v7682/europe/spain/barcelona/23280.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/tour_lhpnj6.jpg",
                         notes: "Guided tour of the main attractions",
                         project: { connect: { id: 1 } }
                       },
@@ -147,7 +147,7 @@ export const mockdata = {
                         cost: 52,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.embeddedmetadata.org/supportgallery-img/images/img-2011-12-06T134452-170.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/sagrada_fbwc9l.jpg",
                         notes: "Explore the city's rich cultural heritage",
                         project: { connect: { id: 1 } }
                       },
@@ -156,7 +156,7 @@ export const mockdata = {
                         cost: 590,
                         currency: "EUR",
                         link: null,
-                        photo: "https://whythisplace.com/wp-content/uploads/2022/08/abac-barcelona-interiors-1024x576.jpeg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/abac_tthbbf.jpg",
                         notes: "+140 EUR each for wine pairing",
                         project: { connect: { id: 1 } }
                       },
@@ -193,7 +193,7 @@ export const mockdata = {
                         cost: 1599,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.leyform.com/_seating-f-office-waiting-congress-areas/gallery/lobby-reception-and-waiting-room-sofas-armchairs-img-01.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/fancysofa_fwoinf.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -202,7 +202,7 @@ export const mockdata = {
                         cost: 999,
                         currency: "EUR",
                         link: null,
-                        photo: "https://bielefelder-werkstaetten.jab.de/medias/sys_master/images/images/h01/hc0/8883597541406/img-bw-brand-configurator-furniture-inspiration-sofa-2-Kopie.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/cosysofa_k255jc.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -211,7 +211,7 @@ export const mockdata = {
                         cost: 829,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.ikea.com/de/de/images/products/aepplaryd-3er-sofa-lejde-grau-schwarz__1023709_pe833227_s5.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/ikeasofa_ar7jxc.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -229,7 +229,7 @@ export const mockdata = {
                         cost: 29,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.ikea.com/de/de/images/products/tiphede-teppich-flach-gewebt-natur-schwarz__0772105_pe755880_s5.jpg?f=m",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/cheapcarpet_aiqxga.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -238,7 +238,7 @@ export const mockdata = {
                         cost: 99,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.ikea.com/de/de/images/products/vedbaek-teppich-kurzflor-hellgrau__1080044_pe857843_s5.jpg?f=xs",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/ikeacarpet_wzlqri.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -256,7 +256,7 @@ export const mockdata = {
                         cost: 89,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.bhg.com/thmb/jtizEvo0XmvalwcWw3ba1XG-zk4=/1244x0/filters:no_upscale():strip_icc()/colorful-painting-mantelpiece-d61bdfea-0bc87b9d67054574813b79e479b15fdc.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/colorfulart_vunxzs.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -265,7 +265,7 @@ export const mockdata = {
                         cost: 129,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.bhg.com/thmb/HE4h7i2P3GRm6j95-mzj0MV6yGQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/large-watercolor-swirl-art-entryway-bench-6fa89b7f-7af183672bec44f897fa8627c871686e.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/abstractart_tlcs71.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -274,7 +274,7 @@ export const mockdata = {
                         cost: 239,
                         currency: "EUR",
                         link: null,
-                        photo: "https://m.media-amazon.com/images/I/81nANRbTjSL.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854050/art_watk3x.jpg",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -292,7 +292,7 @@ export const mockdata = {
                         cost: 69,
                         currency: "EUR",
                         link: null,
-                        photo: "https://www.ikea.com/de/de/images/products/lauters-standleuchte-esche-weiss__0663863_pe712536_s5.jpg",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854046/lamp_jqqctu.avif",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
@@ -301,7 +301,7 @@ export const mockdata = {
                         cost: 159,
                         currency: "EUR",
                         link: null,
-                        photo: "https://lw-cdn.com/images/6705C2AFBADA/k_35bd8c8139847aca002047e42cc2fdbe;w_535;h_535;q_70/gebogene-stehleuchte-jonera-schwarz-und-golden.webp",
+                        photo: "https://res.cloudinary.com/dpx650seh/image/upload/c_fill,h_200,w_150/v1687854048/curvedlamp_bzoz2a.webp",
                         notes: null,
                         project: { connect: { id: 2 } }
                       },
