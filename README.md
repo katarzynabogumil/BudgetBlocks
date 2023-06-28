@@ -13,7 +13,7 @@ BudgetBlocks is a tool that helps you keep your budget for a specific goal in ch
 
 ## Preview video
 
-Video of a project demo is uploaded [here](https://www.youtube.com/watch?v=0MSrGjOTyk4).
+Video of a project demo is uploaded [here](https://www.youtube.com/watch?v=tHvyqWPzkMI).
 
 ## Getting started
 
@@ -35,9 +35,9 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
 
     * Get an [exchange rates api key](https://exchangeratesapi.io/) and fill out the necessary flied in the serverside `.env` file.
 
-    * Get an [openAI api key](https://platform.openai.com/account/api-keys) and fill out the necessary flied in the serverside `.env` file.
-
     * Make new `environment.ts` file in `/client/src/environments` folder. You can copy the `environment-example.ts` file for that and leave the values empty. They can be filled by a script at `npm start`.
+
+    * *Optional* Get an [openAI api key](https://platform.openai.com/account/api-keys) and fill out the necessary field in the serverside `.env` file. Please note, for API to be called, the `NODE_ENV` in the `.env` file on the server-side has to be set to `development`.
 
 3. Change to `server` folder, install dependencies and run server.
 
