@@ -47,38 +47,46 @@ import {
   getMissingCategories
 } from './controllers/openai';
 
+import {
+  paramsValidationRules,
+  currenciesParamsValidationRules,
+  voteParamsValidationRules,
+  projectValidationRules,
+  validate,
+} from './middleware/sanitize.middleware';
+
 const router: express.Router = express.Router();
 
 router.get('/projects', validateAccessToken, getAllProjects);
 router.get('/projects/invitations', validateAccessToken, getProjectInvitations);
 
-router.post('/project', validateAccessToken, saveProject);
-router.get('/project/:id', validateAccessToken, getProject);
-router.put('/project/:id', validateAccessToken, editProject);
-router.delete('/project/:id', validateAccessToken, deleteProject);
+router.post('/project', validateAccessToken, projectValidationRules(), validate, saveProject);
+router.get('/project/:id', validateAccessToken, paramsValidationRules(), validate, getProject);
+router.put('/project/:id', validateAccessToken, paramsValidationRules(), validate, editProject);
+router.delete('/project/:id', validateAccessToken, paramsValidationRules(), validate, deleteProject);
 
 router.post('/project/:projectId/expense', validateAccessToken, saveExpense);
-router.get('/project/:projectId/expense/:id', validateAccessToken, getExpense);
-router.put('/project/:projectId/expense/:id', validateAccessToken, editExpense);
-router.delete('/project/:projectId/expense/:id', validateAccessToken, deleteExpense);
+router.get('/project/:projectId/expense/:id', validateAccessToken, paramsValidationRules(), validate, getExpense);
+router.put('/project/:projectId/expense/:id', validateAccessToken, paramsValidationRules(), validate, editExpense);
+router.delete('/project/:projectId/expense/:id', validateAccessToken, paramsValidationRules(), validate, deleteExpense);
 
 router.post('/project/:projectId/adduser', validateAccessToken, addUser);
-router.put('/project/:projectId/accept', validateAccessToken, acceptInvitation);
+router.put('/project/:projectId/accept', validateAccessToken, paramsValidationRules(), validate, acceptInvitation);
 
-router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, vote);
+router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, voteParamsValidationRules(), validate, vote);
 
-router.get('/comments/:projectId', validateAccessToken, getAllComments);
+router.get('/comments/:projectId', validateAccessToken, paramsValidationRules(), validate, getAllComments);
 router.post('/comment/:expenseId', validateAccessToken, saveComment);
-router.delete('/comment/:commentId', validateAccessToken, deleteComment);
+router.delete('/comment/:commentId', validateAccessToken, paramsValidationRules(), validate, deleteComment);
 
-router.put('/categories/:categoryId/:orderId', validateAccessToken, changeOrderId);
+router.put('/categories/:categoryId/:orderId', validateAccessToken, paramsValidationRules(), validate, changeOrderId);
 
-router.get('/user', validateAccessToken, getUser);
+router.get('/user', validateAccessToken, paramsValidationRules(), validate, getUser);
 router.post('/user', validateAccessToken, saveUser);
 
-router.get('/currencies/:base', validateAccessToken, getCurrencyRates);
+router.get('/currencies/:base', validateAccessToken, currenciesParamsValidationRules(), validate, getCurrencyRates);
 
-router.get('/rating/:projectId', validateAccessToken, getProjectRating);
-router.get('/missing-categories/:projectId', validateAccessToken, getMissingCategories);
+router.get('/rating/:projectId', validateAccessToken, paramsValidationRules(), validate, getProjectRating);
+router.get('/missing-categories/:projectId', validateAccessToken, paramsValidationRules(), validate, getMissingCategories);
 
 export default router;
