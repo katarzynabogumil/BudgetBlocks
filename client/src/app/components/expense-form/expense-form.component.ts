@@ -66,13 +66,14 @@ export class ExpenseFormComponent implements OnInit {
     this.getCategories();
 
     this.submitted = true;
-    let expense = this.expenseForm.value as CreateExpenseModel;
+    let expense = this.expenseForm.value;
+    expense.optional = (expense.optional === 'true') ? true : false;
 
     const checkCatResult = this.handleCategories(expense);
     if (checkCatResult) expense = checkCatResult;
     else return;
 
-    expense = this.recalculateCost(this.projectId, expense);
+    expense = this.recalculateCost(expense);
 
     if (this.expenseForm.invalid) {
       return;
@@ -154,7 +155,7 @@ export class ExpenseFormComponent implements OnInit {
       })?.orderId || 0;
     }
 
-    if (expense.optional) expense.category.optional = true;
+    expense.category.optional = expense.optional;
 
     delete expense.formCategory;
     delete expense.newCategory;
@@ -163,10 +164,12 @@ export class ExpenseFormComponent implements OnInit {
     return expense;
   }
 
-  private recalculateCost(projectId: number, expense: CreateExpenseModel): CreateExpenseModel {
+  private recalculateCost(expense: CreateExpenseModel): CreateExpenseModel {
     const rate = this.currencyRates.rates[expense.currency];
     if (this.currencyRates.success && rate !== 1) {
       expense.calcCost = expense.cost * rate;
+    } else if (this.currencyRates.base === expense.currency) {
+      expense.calcCost = 0;
     }
     return expense;
   }

@@ -5,7 +5,9 @@
         add
       </span>
       Accept invitation to: <br>
-      {{project.name}}
+      {{project.name}} with
+      <span class="inherit" *ngFor="let owner of project.owners; last as isLast">{{owner.nickname}}<span
+          *ngIf="!isLast">, </span></span>
     </h2>
   </a>
 </div>

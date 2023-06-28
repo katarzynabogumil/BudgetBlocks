@@ -51,7 +51,7 @@ async function updateExpenseinDb
   let category: ExpCategoryInclExpenses = await getCategoryFromDb(projectId, categoryData.category)
     || await saveCategoryToDb(projectId, categoryData);
   if (category.optional !== categoryData.optional) {
-    category = await updateCatOptionalinDb(category.id, categoryData.optional || false);
+    category = await updateCatOptionalinDb(category.id, !!(categoryData.optional));
   }
 
   const expense = await prisma.expense.update({
@@ -69,6 +69,7 @@ async function updateExpenseinDb
       category: true,
     }
   });
+
   return expense;
 }
 

@@ -24,7 +24,6 @@
 .expense-item {
   display: flex;
   flex-direction: row;
-  height: 200px;
   position: relative;
   padding: 0;
   margin-bottom: 0;
@@ -32,7 +31,6 @@
 
 .whitespace {
   position: absolute;
-  height: 200px;
   z-index: 0;
   box-shadow: none;
   border-bottom-left-radius: 0;
@@ -91,7 +89,12 @@ app-expense-details {
     flex-direction: column;
   }
 
+  .expense-item {
+    height: 200px;
+  }
+
   .whitespace {
+    height: 200px;
     width: 350px;
     margin: 0;
   }
@@ -135,7 +138,12 @@ app-expense-details {
     min-width: 100%;
   }
 
+  .expense-item {
+    height: 230px;
+  }
+
   .whitespace {
+    height: 230px;
     left: 20px;
     width: calc(100% - 40px);
   }

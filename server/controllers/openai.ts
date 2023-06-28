@@ -67,11 +67,17 @@ async function getProjectRating
       const responseData = await response.json();
       if (!responseData.error) {
         rating = Number(responseData.choices[0].message.content);
-      } else res.sendStatus(400);
+        res.status(200);
+        res.send({ rating });
+      } else {
+        console.log(responseData);
+        res.sendStatus(400);
+        return;
+      }
+    } else {
+      res.status(200);
+      res.send({ rating });
     }
-
-    res.status(201);
-    res.send({ rating });
 
   } catch (e) {
     console.log('Error: ', e);
@@ -110,10 +116,13 @@ async function getMissingCategories
       const responseData = await response.json();
       if (!responseData.error) {
         categories = responseData.choices[0].message.content;
-      } else res.sendStatus(400);
+      } else {
+        console.log(responseData);
+        res.sendStatus(400);
+        return;
+      }
     }
-
-    res.status(201);
+    res.status(200);
     res.send({ categories });
 
   } catch (e) {

@@ -53,6 +53,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
           return a.orderId - b.orderId;
         }) || [];
 
+        this.recalculateCost();
         this.getComments(p.id);
         this.getExpensesToCategories();
         this.updateSum();
@@ -82,6 +83,19 @@ export class ExpenseItemsContainerComponent implements OnInit {
           if ((b.calcCost || b.cost) < (a.calcCost || a.cost)) return 1;
           return 0;
         });
+    })
+  }
+
+  private recalculateCost(): void {
+    this.expenses.forEach(exp => {
+      if (exp.currency !== this.project.currency) {
+        const rate = this.project.currencyRates?.rates[exp.currency] || 1;
+        if (this.project.currencyRates?.success && rate !== 1) {
+          exp.calcCost = exp.cost * rate;
+        }
+      } else {
+        exp.calcCost = 0;
+      }
     })
   }
 

@@ -15,3 +15,7 @@ h2 {
   padding: 10px 20px 20px;
   margin-bottom: 20px;
 }
+
+.inherit {
+  font: inherit;
+}
