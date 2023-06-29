@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
-import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel } from '@app/core';
+import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel, CsrfService } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 import { Observable, of, switchMap } from 'rxjs';
 
@@ -35,9 +35,11 @@ export class ProjectFormComponent implements OnInit {
   submitted = false;
   dateIsValid = true;
   isProduction: boolean = env.production;
+  csrfToken = "";
 
   constructor(
     private formBuilder: FormBuilder,
+    private csrf: CsrfService,
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
@@ -59,6 +61,10 @@ export class ProjectFormComponent implements OnInit {
           this.projectForm.patchValue(projectData);
         });
     }
+
+    this.csrf.getToken().subscribe(res => {
+      this.csrfToken = res.data.csrfToken as string;
+    });
   }
 
   handleSubmit(): void {
@@ -109,7 +115,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private addProject(data: CreateProjectModel): void {
-    this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
+    this.projectApi.addProject(data, this.csrfToken).subscribe((res: ApiResponseProjectModel) => {
       if (!res.error) {
         console.log('Project added.');
         this.id = res.data.id || this.id;

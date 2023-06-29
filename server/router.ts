@@ -59,28 +59,32 @@ import {
   validate,
 } from './middleware/sanitize.middleware';
 
+import { crsfController, csrfSynchronisedProtection } from './middleware/csrf.middleware';
+
 const router: express.Router = express.Router();
+
+router.get("/csrf-token", crsfController);
 
 router.get('/projects', validateAccessToken, getAllProjects);
 router.get('/projects/invitations', validateAccessToken, getProjectInvitations);
 
-router.post('/project', validateAccessToken, projectValidationRules(), validate, saveProject);
+router.post('/project', csrfSynchronisedProtection, validateAccessToken, projectValidationRules(), validate, saveProject);
 router.get('/project/:id', validateAccessToken, paramsValidationRules(), validate, getProject);
-router.put('/project/:id', validateAccessToken, projectValidationRules(), validate, editProject);
+router.put('/project/:id', csrfSynchronisedProtection, validateAccessToken, projectValidationRules(), validate, editProject);
 router.delete('/project/:id', validateAccessToken, paramsValidationRules(), validate, deleteProject);
 
-router.post('/project/:projectId/expense', validateAccessToken, expenseValidationRules(), validate, saveExpense);
+router.post('/project/:projectId/expense', csrfSynchronisedProtection, validateAccessToken, expenseValidationRules(), validate, saveExpense);
 router.get('/project/:projectId/expense/:id', validateAccessToken, paramsValidationRules(), validate, getExpense);
-router.put('/project/:projectId/expense/:id', validateAccessToken, expenseValidationRules(), validate, editExpense);
+router.put('/project/:projectId/expense/:id', csrfSynchronisedProtection, validateAccessToken, expenseValidationRules(), validate, editExpense);
 router.delete('/project/:projectId/expense/:id', validateAccessToken, paramsValidationRules(), validate, deleteExpense);
 
-router.post('/project/:projectId/adduser', validateAccessToken, addUserValidationRules(), validate, addUser);
+router.post('/project/:projectId/adduser', csrfSynchronisedProtection, validateAccessToken, addUserValidationRules(), validate, addUser);
 router.put('/project/:projectId/accept', validateAccessToken, paramsValidationRules(), validate, acceptInvitation);
 
 router.put('/project/:projectId/expense/:id/:direction', validateAccessToken, voteParamsValidationRules(), validate, vote);
 
 router.get('/comments/:projectId', validateAccessToken, paramsValidationRules(), validate, getAllComments);
-router.post('/comment/:expenseId', validateAccessToken, commentValidationRules(), validate, saveComment);
+router.post('/comment/:expenseId', csrfSynchronisedProtection, validateAccessToken, commentValidationRules(), validate, saveComment);
 router.delete('/comment/:commentId', validateAccessToken, paramsValidationRules(), validate, deleteComment);
 
 router.put('/categories/:categoryId/:orderId', validateAccessToken, paramsValidationRules(), validate, changeOrderId);

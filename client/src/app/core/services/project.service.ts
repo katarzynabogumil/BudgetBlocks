@@ -95,7 +95,10 @@ export class ProjectService {
       ;
   };
 
-  addProject = (projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
+  addProject = (projectData: CreateProjectModel, token: string): Observable<ApiResponseProjectModel> => {
+    const headers = this.api.headers;
+    headers.headers['BB-Xsrf-Header'] = token;
+
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project`,
       method: 'POST',

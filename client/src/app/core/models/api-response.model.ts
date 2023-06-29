@@ -61,3 +61,8 @@ export interface ApiResponseCurrenciesModel {
   data: CurrencyRatesModel;
   error: AppErrorModel | null;
 }
+
+export interface ApiResponseTokenModel {
+  data: { csrfToken: string };
+  error: AppErrorModel | null;
+}

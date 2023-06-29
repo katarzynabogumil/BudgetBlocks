@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule, HttpXsrfTokenExtractor } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
@@ -61,6 +61,10 @@ export function playerFactory() {
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'BB-Xsrf-Cookie',
+      headerName: 'BB-Xsrf-Header',
+    }),
     AuthModule.forRoot({
       ...env.auth0,
       httpInterceptor: {

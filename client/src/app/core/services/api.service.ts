@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
-import { ApiResponseModel, RequestConfigModel } from '../models';
+import { ApiResponseModel, RequestConfigModel, HeadersModel } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  public headers = {
+  public headers: HeadersModel = {
     headers: {
       'content-type': 'application/json',
-    }
+    },
+    credentials: 'include',
+    mode: 'cors',
   };
 
   constructor(
@@ -18,6 +20,7 @@ export class ApiService {
   ) { }
 
   callApi = (config: RequestConfigModel): Observable<ApiResponseModel> => {
+
     return this.http
       .request<unknown>(
         config.method,
