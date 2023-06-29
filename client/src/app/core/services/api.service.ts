@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
-import { ApiResponseModel, RequestConfigModel, HeadersModel } from '../models';
+import { ApiResponseModel, RequestConfigModel } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  public headers: HeadersModel = {
+  public headers = {
     headers: {
       'content-type': 'application/json',
     },

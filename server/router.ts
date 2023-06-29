@@ -59,11 +59,9 @@ import {
   validate,
 } from './middleware/sanitize.middleware';
 
-import { crsfController, csrfSynchronisedProtection } from './middleware/csrf.middleware';
+import { csrfSynchronisedProtection } from './middleware/csrf.middleware';
 
 const router: express.Router = express.Router();
-
-router.get("/csrf-token", crsfController);
 
 router.get('/projects', validateAccessToken, getAllProjects);
 router.get('/projects/invitations', validateAccessToken, getProjectInvitations);

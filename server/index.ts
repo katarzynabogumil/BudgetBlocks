@@ -81,11 +81,7 @@ app.use(session({
   },
 }));
 
-app.use(crsfMiddleware);
-// app.get("/csrf-token", (req: express.Request, res: express.Response) => {
-//   const csrfToken = getTokenFromState(req)
-//   return res.json({ csrfToken: csrfToken });
-// });
+app.get("/csrf-token", crsfMiddleware);
 // app.use(csrfSynchronisedProtection);
 
 app.use(compression());

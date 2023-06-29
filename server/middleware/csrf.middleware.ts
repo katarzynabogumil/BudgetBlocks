@@ -1,11 +1,9 @@
 import { csrfSync } from 'csrf-sync';
-import { Response, Request, NextFunction } from 'express';
+import { Response, Request } from 'express';
 
 const {
   generateToken,
   csrfSynchronisedProtection,
-  storeTokenInState,
-  getTokenFromState
 } = csrfSync({
   getTokenFromState: (req) => {
     return req.session.csrfToken;
@@ -20,26 +18,25 @@ const {
   size: 256,
 });
 
-function crsfMiddleware(req: Request, res: Response, next: NextFunction) {
-  let syncedToken = getTokenFromState(req);
+// function crsfMiddleware(req: Request, res: Response, next: NextFunction) {
+//   let syncedToken = getTokenFromState(req);
 
-  if (syncedToken === undefined) {
-    syncedToken = generateToken(req);
-    storeTokenInState(req, syncedToken)
-  }
+//   if (syncedToken === undefined) {
+//     syncedToken = generateToken(req);
+//     storeTokenInState(req, syncedToken)
+//   }
 
-  next();
-}
+//   next();
+// }
 
-function crsfController(req: Request, res: Response) {
-  const csrfToken = getTokenFromState(req)
-  res.status(200);
-  res.send({ csrfToken: csrfToken });
+function crsfMiddleware(req: Request, res: Response) {
+  // const csrfToken = getTokenFromState(req)
+  // res.status(200);
+  // res.send({ csrfToken: csrfToken });
+  return res.json({ token: generateToken(req) });
 }
 
 export {
   csrfSynchronisedProtection,
-  getTokenFromState,
   crsfMiddleware,
-  crsfController
 };

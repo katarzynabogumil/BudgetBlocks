@@ -9,4 +9,3 @@ export * from './comment.model';
 export * from './expCategory.model';
 export * from './currencyRates.model';
 export * from './rating.model';
-export * from './headers.model';
