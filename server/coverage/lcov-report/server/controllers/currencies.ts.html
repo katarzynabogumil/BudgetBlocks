@@ -1,0 +1,208 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for server/controllers/currencies.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">server/controllers</a> currencies.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">42.1% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>8/19</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/5</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/3</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">44.44% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>8/18</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
+import * as dotenv from 'dotenv';
+dotenv.config();
+&nbsp;
+const env = process.env.NODE_ENV;
+const isDevelopment = env === 'development';
+&nbsp;
+const URL = 'http://api.exchangeratesapi.io/latest?base=';
+const API_KEY = '&amp;access_key=' + process.env.CURRENCIES_API_KEY;
+&nbsp;
+const BACKUP_CURRENCIES = {
+  'success': true,
+  'backup': true,
+  'timestamp': 1687767063,
+  'base': 'EUR',
+  'date': '2023-06-26',
+  'rates': { 'AED': 3.999119, 'AFN': 93.169011, 'ALL': 107.391529, 'AMD': 419.670437, 'ANG': 1.956142, 'AOA': 865.042839, 'ARS': 275.543207, 'AUD': 1.631575, 'AWG': 1.959824, 'AZN': 1.849472, 'BAM': 1.953264, 'BBD': 2.191574, 'BDT': 117.417523, 'BGN': 1.952437, 'BHD': 0.40918, 'BIF': 3067.373079, 'BMD': 1.088791, 'BND': 1.46832, 'BOB': 7.500535, 'BRL': 5.211937, 'BSD': 1.0854, 'BTC': 3.5839185e-5, 'BTN': 88.978322, 'BWP': 14.579335, 'BYN': 2.739278, 'BYR': 21340.305657, 'BZD': 2.187568, 'CAD': 1.43298, 'CDF': 2591.322688, 'CHF': 0.974871, 'CLF': 0.031648, 'CLP': 873.252043, 'CNY': 7.877945, 'COP': 4450.284392, 'CRC': 587.453324, 'CUC': 1.088791, 'CUP': 28.852964, 'CVE': 110.131031, 'CZK': 23.660531, 'DJF': 193.250821, 'DKK': 7.446668, 'DOP': 59.823413, 'DZD': 147.704301, 'EGP': 33.645057, 'ERN': 16.331867, 'ETB': 59.193089, 'EUR': 1, 'FJD': 2.421743, 'FKP': 0.856463, 'GBP': 0.855005, 'GEL': 2.858071, 'GGP': 0.856463, 'GHS': 12.526194, 'GIP': 0.856463, 'GMD': 64.786242, 'GNF': 9331.7961, 'GTQ': 8.510261, 'GYD': 229.570316, 'HKD': 8.523329, 'HNL': 26.722054, 'HRK': 7.595529, 'HTG': 150.327547, 'HUF': 369.372724, 'IDR': 16377.65024, 'ILS': 3.952361, 'IMP': 0.856463, 'INR': 89.331939, 'IQD': 1421.879677, 'IRR': 46028.643772, 'ISK': 148.892405, 'JEP': 0.856463, 'JMD': 167.502483, 'JOD': 0.772501, 'JPY': 155.840863, 'KES': 151.083804, 'KGS': 95.04972, 'KHR': 4478.266821, 'KMF': 492.378549, 'KPW': 979.91157, 'KRW': 1423.670414, 'KWD': 0.334662, 'KYD': 0.904542, 'KZT': 486.736868, 'LAK': 20664.355232, 'LBP': 16289.577123, 'LKR': 334.321993, 'LRD': 193.750391, 'LSL': 20.415013, 'LTL': 3.214917, 'LVL': 0.658599, 'LYD': 5.198297, 'MAD': 10.811058, 'MDL': 19.498038, 'MGA': 4933.593277, 'MKD': 61.426128, 'MMK': 2279.360976, 'MNT': 3741.285348, 'MOP': 8.753693, 'MRO': 388.698237, 'MUR': 49.488915, 'MVR': 16.723799, 'MWK': 1104.486012, 'MXN': 18.671243, 'MYR': 5.09173, 'MZN': 68.865945, 'NAD': 20.414969, 'NGN': 824.74849, 'NIO': 39.699176, 'NOK': 11.760751, 'NPR': 142.362744, 'NZD': 1.768708, 'OMR': 0.419186, 'PAB': 1.08543, 'PEN': 3.939248, 'PGK': 3.915915, 'PHP': 60.663627, 'PKR': 310.967237, 'PLN': 4.430019, 'PYG': 7904.807485, 'QAR': 3.964275, 'RON': 4.95324, 'RSD': 117.219363, 'RUB': 92.372739, 'RWF': 1251.574716, 'SAR': 4.084145, 'SBD': 9.058789, 'SCR': 14.628932, 'SDG': 654.910528, 'SEK': 11.684133, 'SGD': 1.473728, 'SHP': 1.324787, 'SLE': 19.625369, 'SLL': 21503.624568, 'SOS': 618.97624, 'SRD': 41.407827, 'STD': 22535.777612, 'SVC': 9.496842, 'SYP': 2735.622905, 'SZL': 20.266868, 'THB': 38.352659, 'TJS': 11.852943, 'TMT': 3.810769, 'TND': 3.365491, 'TOP': 2.56968, 'TRY': 27.959921, 'TTD': 7.377555, 'TWD': 33.797601, 'TZS': 2613.098491, 'UAH': 40.085146, 'UGX': 3988.966508, 'USD': 1.088791, 'UYU': 41.009006, 'UZS': 12449.062428, 'VEF': 2991818.292311, 'VES': 29.686842, 'VND': 25616.532722, 'VUV': 127.943177, 'WST': 2.921348, 'XAF': 655.100275, 'XAG': 0.047753, 'XAU': 0.000564, 'XCD': 2.942513, 'XDR': 0.809449, 'XOF': 655.112294, 'XPF': 119.821736, 'YER': 272.578984, 'ZAR': 20.33829, 'ZMK': 9800.424873, 'ZMW': 18.476546, 'ZWL': 350.590292 }
+};
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getCurrencyRates(</span>req: express.Request, res: express.Response): Promise&lt;void&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const base = <span class="cstat-no" title="statement not covered" >req.params.base;</span>
+&nbsp;
+    let currencies = <span class="cstat-no" title="statement not covered" >await fetch(URL + base + API_KEY)</span>
+      .then(<span class="fstat-no" title="function not covered" >res </span>=&gt; <span class="cstat-no" title="statement not covered" >res.status &lt;= 400 ? res : Promise.reject(res))</span>
+      .then(<span class="fstat-no" title="function not covered" >res </span>=&gt; <span class="cstat-no" title="statement not covered" >res.json())</span>;
+&nbsp;
+    // in case API limit reached in production
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isDevelopment &amp;&amp; !currencies.success) <span class="cstat-no" title="statement not covered" >currencies = BACKUP_CURRENCIES;</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >    res.send(currencies);</span>
+  } catch (e) {
+<span class="cstat-no" title="statement not covered" >    console.log('Error: ', e);</span>
+<span class="cstat-no" title="statement not covered" >    res.sendStatus(500);</span>
+  }
+}
+&nbsp;
+export {
+  getCurrencyRates
+};
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-06-29T20:28:07.471Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    
