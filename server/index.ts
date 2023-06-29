@@ -4,8 +4,6 @@ import compression from 'compression';
 import RateLimit from 'express-rate-limit';
 import nocache from 'nocache';
 import cors from 'cors';
-import session from 'express-session';
-import { crsfMiddleware } from './middleware/csrf.middleware';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,7 +16,6 @@ const app: express.Application = express();
 
 const PORT = parseInt(process.env.PORT || '', 10);
 const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
-const COOKIE_SECRET = process.env.COOKIE_SECRET || 'cookie secret';
 
 const limiter = RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
@@ -62,27 +59,11 @@ app.use(
   cors({
     origin: CLIENT_ORIGIN_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Authorization', 'Content-Type', 'BB-Xsrf-Header'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
     maxAge: 86400,
     credentials: true,
   })
 );
-
-app.use(session({
-  secret: COOKIE_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60,
-    sameSite: true,
-    httpOnly: false,
-    path: '/',
-    secure: false, // true after https
-  },
-}));
-
-app.get("/csrf-token", crsfMiddleware);
-// app.use(csrfSynchronisedProtection);
 
 app.use(compression());
 
