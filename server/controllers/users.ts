@@ -11,7 +11,6 @@ async function saveUser
   try {
     const userData = req.body;
     const newUser = await saveUserToDb(userData);
-
     res.status(201);
     res.send(newUser);
   } catch (e) {
