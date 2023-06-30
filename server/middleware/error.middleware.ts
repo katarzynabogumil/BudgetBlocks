@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
   InvalidTokenError,
   UnauthorizedError,
@@ -7,7 +7,8 @@ import {
 export const errorHandler = (
   error: any,
   request: Request,
-  response: Response
+  response: Response,
+  next: NextFunction,
 ) => {
   if (error instanceof InvalidTokenError) {
     const message = 'Bad credentials';

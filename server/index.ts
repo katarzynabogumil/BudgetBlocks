@@ -14,7 +14,6 @@ import { notFoundHandler } from './middleware/not-found.middleware';
 
 const app: express.Application = express();
 
-const PORT = parseInt(process.env.PORT || '', 10);
 const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 
 const limiter = RateLimit({
@@ -71,10 +70,6 @@ app.use(router);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
-
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
 
 export {
   app

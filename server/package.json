@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server.ts",
   "scripts": {
     "test": "jest",
-    "start": "nodemon index.ts"
+    "start": "nodemon server.ts"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
