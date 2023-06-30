@@ -67,17 +67,17 @@ const projectValidationRules = () => {
 
     body('currencyRates').optional({ nullable: true }),
     check('currencyRates.success')
-      .if(body('currencyRates').exists()).isBoolean(),
+      .if(body('currencyRates').exists()).optional({ nullable: true }).isBoolean(),
     check('currencyRates.backup')
       .if(body('currencyRates').exists()).optional({ nullable: true }).isBoolean(),
     check('currencyRates.timestamp')
-      .if(body('currencyRates').exists()).toInt(),
+      .if(body('currencyRates').exists()).optional({ nullable: true }).toInt(),
     check('currencyRates.base')
-      .if(body('currencyRates').exists()).trim().escape(),
+      .if(body('currencyRates').exists()).optional({ nullable: true }).trim().escape(),
     check('currencyRates.date')
-      .if(body('currencyRates').exists()).trim().escape(),
+      .if(body('currencyRates').exists()).optional({ nullable: true }).trim().escape(),
     check('currencyRates.rates.**')
-      .if(body('currencyRates').exists()).toFloat(),
+      .if(body('currencyRates').exists()).optional({ nullable: true }).toFloat(),
 
     check('currencyRates.error').optional({ nullable: true }),
     check('currencyRates.error.code').optional({ nullable: true })

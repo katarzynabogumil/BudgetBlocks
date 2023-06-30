@@ -12,11 +12,12 @@ describe('Server tests - user endpoints:', () => {
     done();
   });
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await prisma.user.deleteMany();
   })
 
   afterAll(async () => {
+    await prisma.user.deleteMany();
     await prisma.$disconnect();
     server.close();
   });
@@ -32,7 +33,7 @@ describe('Server tests - user endpoints:', () => {
       expect(res.body).toHaveProperty('sub', mockdata.user.sub);
     });
 
-    it('should get authorized user from db if not saved', async () => {
+    it('should not get user from db if not saved', async () => {
       const res = await request(server)
         .get('/user')
         .set('Authorization', `Bearer ${mockdata.token}`);

@@ -4,10 +4,14 @@ import { saveUserToDb, getUserFromDB } from '../models/users';
 import { Prisma } from '@prisma/client';
 
 describe('Database integration tests - user:', () => {
-  afterEach(async () => {
+  beforeEach(async () => {
+    await prisma.user.deleteMany();
+  })
+
+  afterAll(async () => {
     await prisma.user.deleteMany();
     await prisma.$disconnect();
-  })
+  });
 
   describe('saveUserToDb:', () => {
     test('should create new user with valid data', async () => {
@@ -20,10 +24,15 @@ describe('Database integration tests - user:', () => {
     test('should not create new user with not unique sub', async () => {
       const data = mockdata.user;
       await saveUserToDb(data);
-      await saveUserToDb(data)
-        .catch(e => {
-          expect(e).toEqual(new Error('There is a unique constraint violation.'));
-        });
+      const wrapper = async () => {
+        try {
+          await saveUserToDb(data);
+        } catch (e) {
+          return e as Error;
+        }
+      }
+      const error = await wrapper();
+      expect(error).toBeInstanceOf(Error);
     });
 
     test('should not create new user with missing input', async () => {

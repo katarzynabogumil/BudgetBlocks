@@ -33,12 +33,16 @@ async function saveProjectToDb
     userSub: string,
     data: Prisma.ProjectCreateInput
   ): Promise<ProjectInclExpenses> {
+  if (!data.name || !data.type || !data.budget || !data.currency) {
+    throw new Error('Required fields are missing.')
+  }
+
   const user = await prisma.user.findUnique({
     where: {
       sub: userSub
     },
   });
-  if (!user) throw new Error();
+  if (!user) throw new Error('No user found.');
 
   data.createdAt = new Date();
 
@@ -127,6 +131,10 @@ async function updateProjectinDb
     projectId: number,
     inputData: Prisma.ProjectUpdateInput
   ): Promise<ProjectInclExpenses> {
+  if (!inputData.name || !inputData.type || !inputData.budget || !inputData.currency) {
+    throw new Error('Required fields are missing.')
+  }
+
   const {
     categories: _1,
     expenses: _2,
@@ -136,6 +144,7 @@ async function updateProjectinDb
   } = inputData;
 
   data.currencyRates = data.currencyRates as Prisma.JsonObject;
+  if (!data.currencyRates) data.currencyRates = undefined;
 
   const project = await prisma.project.update({
     where: {
