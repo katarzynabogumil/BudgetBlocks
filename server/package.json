@@ -4,10 +4,14 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "jest",
-    "start": "nodemon server.ts"
+    "start": "nodemon server.ts",
+    "docker:up": "docker-compose --env-file .env.test up -d",
+    "docker:down": "docker-compose --env-file .env.test down",
+    "unit-test": "jest -c jest.config.unit.ts -i",
+    "test": "npm run docker:up && dotenv -e .env.test -- npx prisma migrate deploy && jest -c jest.config.ts -i"
   },
   "prisma": {
+    "schema": "models/prisma/schema.prisma",
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "keywords": [],
@@ -42,6 +46,7 @@
     "babel-jest": "^29.5.0",
     "eslint": "^8.43.0",
     "jest": "^29.5.0",
+    "jest-mock-extended": "^3.0.4",
     "nodemon": "^2.0.22",
     "npm": "^9.7.2",
     "prisma": "^4.16.1",

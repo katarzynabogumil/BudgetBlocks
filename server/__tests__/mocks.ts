@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: './.env.test' });
 
 export const mockdata = {
   token: process.env.AUTH0_TEST_TOKEN,
@@ -10,7 +10,7 @@ export const mockdata = {
     nickname: process.env.MOCK_USER_1_NICKNAME || '',
     email: process.env.MOCK_USER_1_EMAIL || '',
   },
-  projects: {
+  project: {
     create: [
       {
         name: 'Summer Vacation',
