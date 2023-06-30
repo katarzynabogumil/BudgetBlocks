@@ -15,6 +15,10 @@ async function saveExpenseToDb
     projectId: number,
     data: Prisma.ExpenseCreateInput
   ): Promise<ExpenseInclCategory> {
+  if (!data.name || !data.cost || !data.currency) {
+    throw new Error('Required fields are missing.')
+  }
+
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
   const { category: _, ...expenseData } = data;
 
@@ -45,6 +49,10 @@ async function updateExpenseinDb
     expenseId: number,
     data: Prisma.ExpenseUpdateInput
   ): Promise<ExpenseInclCategory> {
+  if (!data.name || !data.cost || !data.currency) {
+    throw new Error('Required fields are missing.')
+  }
+
   const categoryData = data.category as Prisma.ExpCategoryCreateInput;
   const { category: _, ...expenseData } = data;
 

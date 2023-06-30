@@ -10,6 +10,13 @@ export const mockdata = {
     nickname: process.env.MOCK_USER_1_NICKNAME || '',
     email: process.env.MOCK_USER_1_EMAIL || '',
   },
+  invitedUser: {
+    sub: 'mocksub',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    nickname: 'nickname',
+    email: 'email@email.com',
+  },
   project: {
     name: 'Summer Vacation',
     type: 'trip',

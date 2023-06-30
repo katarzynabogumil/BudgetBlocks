@@ -33,6 +33,10 @@ async function saveCommentToDb
     userId: number,
     data: Prisma.CommentCreateInput
   ): Promise<CommentModel> {
+  if (!data.text) {
+    throw new Error('Required fields are missing.')
+  }
+
   const newComment = await prisma.comment.create({
     data: {
       text: data.text,

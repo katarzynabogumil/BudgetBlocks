@@ -34,7 +34,7 @@ async function saveProjectToDb
     data: Prisma.ProjectCreateInput
   ): Promise<ProjectInclExpenses> {
   if (!data.name || !data.type || !data.budget || !data.currency) {
-    throw new Error('Required fields are missing.')
+    throw new Error('Required fields are missing.');
   }
 
   const user = await prisma.user.findUnique({
@@ -132,7 +132,7 @@ async function updateProjectinDb
     inputData: Prisma.ProjectUpdateInput
   ): Promise<ProjectInclExpenses> {
   if (!inputData.name || !inputData.type || !inputData.budget || !inputData.currency) {
-    throw new Error('Required fields are missing.')
+    throw new Error('Required fields are missing.');
   }
 
   const {
@@ -144,7 +144,7 @@ async function updateProjectinDb
   } = inputData;
 
   data.currencyRates = data.currencyRates as Prisma.JsonObject;
-  if (!data.currencyRates) data.currencyRates = undefined;
+  if (!data.currencyRates) data.currencyRates = undefined
 
   const project = await prisma.project.update({
     where: {
@@ -197,6 +197,15 @@ async function acceptInvitationDb
     },
   });
   if (!user) throw new Error('User not registered.');
+
+  const projectInvitation = await prisma.project.findMany({
+    where: {
+      invitedUsers: {
+        some: { sub: userSub }
+      }
+    }
+  });
+  if (projectInvitation.length === 0) throw new Error('User not invited.');
 
   const project = await prisma.project.update({
     where: {
