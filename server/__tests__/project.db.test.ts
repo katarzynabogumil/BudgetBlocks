@@ -1,5 +1,7 @@
 import prisma from '../models/prisma';
+import { Prisma, User, Project } from '@prisma/client';
 import { mockdata } from './mocks';
+
 import {
   saveProjectToDb,
   getProjectsFromDB,
@@ -10,8 +12,6 @@ import {
   getProjectInvitationsFromDB,
   acceptInvitationDb
 } from '../models/projects';
-import { Prisma } from '@prisma/client';
-import { User, Project } from '@prisma/client';
 
 describe('Database integration tests - project:', () => {
   let user: User;
@@ -177,7 +177,7 @@ describe('Database integration tests - project:', () => {
 
   describe('updateProjectinDb:', () => {
 
-    test('should update project from db with valid data', async () => {
+    test('should update project with valid data', async () => {
       const projectData = mockdata.project;
       projectData.name = 'New name';
       const updatedProject = await updateProjectinDb(project.id, projectData);
@@ -185,11 +185,11 @@ describe('Database integration tests - project:', () => {
       expect(updatedProject).toHaveProperty('name', projectData.name);
     });
 
-    test('should not update project from db with invalid data', async () => {
+    test('should not update project with invalid data', async () => {
       project.name = '';
       const wrapper = async () => {
         try {
-          await updateProjectinDb(project.id, project as Prisma.ProjectCreateInput);
+          await updateProjectinDb(project.id, project as Prisma.ProjectUpdateInput);
         } catch (e) {
           return e as Error;
         }
@@ -198,47 +198,10 @@ describe('Database integration tests - project:', () => {
       expect(error).toBeInstanceOf(Error);
     });
 
-    test('should not update project from db if not saved yet', async () => {
+    test('should not update project if not saved yet', async () => {
       const wrapper = async () => {
         try {
-          await updateProjectinDb(-1, project as Prisma.ProjectCreateInput);
-        } catch (e) {
-          return e as Error;
-        }
-      }
-      const error = await wrapper();
-      expect(error).toBeInstanceOf(Error);
-    });
-  });
-
-
-  describe('updateProjectinDb:', () => {
-
-    test('should update project from db with valid data', async () => {
-      const projectData = mockdata.project;
-      projectData.name = 'New name';
-      const updatedProject = await updateProjectinDb(project.id, projectData);
-      expect(updatedProject).toHaveProperty('id');
-      expect(updatedProject).toHaveProperty('name', projectData.name);
-    });
-
-    test('should not update project from db with invalid data', async () => {
-      project.name = '';
-      const wrapper = async () => {
-        try {
-          await updateProjectinDb(project.id, project as Prisma.ProjectCreateInput);
-        } catch (e) {
-          return e as Error;
-        }
-      }
-      const error = await wrapper();
-      expect(error).toBeInstanceOf(Error);
-    });
-
-    test('should not update project from db if not saved yet', async () => {
-      const wrapper = async () => {
-        try {
-          await updateProjectinDb(-1, project as Prisma.ProjectCreateInput);
+          await updateProjectinDb(-1, project as Prisma.ProjectUpdateInput);
         } catch (e) {
           return e as Error;
         }
@@ -320,7 +283,7 @@ describe('Database integration tests - project:', () => {
       await prisma.project.deleteMany();
       const wrapper = async () => {
         try {
-          await acceptInvitationDb(project.id, mockdata.invitedUser.sub);
+          await deleteProjectsFromDB(project.id);
         } catch (e) {
           return e as Error;
         }

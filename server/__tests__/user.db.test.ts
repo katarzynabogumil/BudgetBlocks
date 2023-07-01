@@ -1,7 +1,7 @@
 import prisma from '../models/prisma';
+import { Prisma } from '@prisma/client';
 import { mockdata } from './mocks';
 import { saveUserToDb, getUserFromDB } from '../models/users';
-import { Prisma } from '@prisma/client';
 
 describe('Database integration tests - user:', () => {
   beforeEach(async () => {

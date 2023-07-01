@@ -84,7 +84,7 @@ model Comment {
   updatedAt DateTime @updatedAt
   expense   Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
   expenseId Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   text      String
 }

@@ -121,6 +121,7 @@ async function addUserVoteToDb
       id: expenseId,
     }
   });
+  if (!expense) throw Error('Expense not found.');
 
   let upvotes: string[] = expense?.upvotes || [];
   let downvotes: string[] = expense?.downvotes || [];
