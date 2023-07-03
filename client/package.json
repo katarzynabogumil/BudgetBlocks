@@ -8,7 +8,8 @@
     "build": "npm run env && ng build",
     "build-prod": "npm run env && ng build --prod",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "cypress:open": "cypress open"
   },
   "private": true,
   "dependencies": {
@@ -35,8 +36,10 @@
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
+    "cypress": "^12.16.0",
     "dotenv": "^16.1.4",
     "eslint": "^8.43.0",
+    "eslint-plugin-cypress": "^2.13.3",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
