@@ -80,7 +80,7 @@ async function getProjectRating
     }
 
   } catch (e) {
-    console.log('Error: ', e);
+    console.log('Error: ', e)
     res.sendStatus(500);
   }
 }

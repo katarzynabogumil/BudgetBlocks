@@ -15,7 +15,7 @@ describe('Server authentication tests:', () => {
   });
 
   describe('Invalid endpoints:', () => {
-    it('should return status code 404 when route does not exist', async () => {
+    test('should return status code 404 when route does not exist', async () => {
       const res = await request(server).get('/');
       expect(res.statusCode).toEqual(404);
       expect(res.body.message).toEqual('Not Found');
@@ -23,14 +23,14 @@ describe('Server authentication tests:', () => {
   });
 
   describe('Authentication:', () => {
-    it('should return status code 401 when Auth0 token not provided', async () => {
+    test('should return status code 401 when Auth0 token not provided', async () => {
       const res = await request(server)
         .get('/user')
       expect(res.statusCode).toEqual(401);
       expect(res.body.message).toEqual('Requires authentication');
     });
 
-    it('should return status code 401 when wrong Auth0 token provided', async () => {
+    test('should return status code 401 when wrong Auth0 token provided', async () => {
       const res = await request(server)
         .get('/user')
         .set('Authorization', `Bearer 0`);
@@ -38,7 +38,7 @@ describe('Server authentication tests:', () => {
       expect(res.body.message).toEqual('Bad credentials');
     });
 
-    it('should return status code 200 when Auth0 token provided', async () => {
+    test('should return status code 200 when Auth0 token provided', async () => {
       const res = await request(server)
         .get('/user')
         .set('Authorization', `Bearer ${mockdata.token}`);

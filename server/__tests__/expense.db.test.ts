@@ -188,9 +188,15 @@ describe('Database integration tests - expense:', () => {
     });
 
     test('should not add vote to expense with no direction', async () => {
-      const updatedExp = await addUserVoteToDb('', user.sub, expense.id);
-      expect(updatedExp).toHaveProperty('id');
-      expect(updatedExp).toHaveProperty('upvotes', []);
+      const wrapper = async () => {
+        try {
+          await addUserVoteToDb('', user.sub, expense.id);
+        } catch (e) {
+          return e as Error;
+        }
+      }
+      const error = await wrapper();
+      expect(error).toBeInstanceOf(Error);
     });
 
     test('should not add vote to expense with invalid data', async () => {

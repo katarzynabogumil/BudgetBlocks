@@ -23,7 +23,7 @@ describe('Server tests - user endpoints:', () => {
   });
 
   describe('GET /user', () => {
-    it('should get authorized user from db if saved', async () => {
+    test('should get authorized user from db if saved', async () => {
       await prisma.user.create({ data: mockdata.user });
       const res = await request(server)
         .get('/user')
@@ -33,7 +33,7 @@ describe('Server tests - user endpoints:', () => {
       expect(res.body).toHaveProperty('sub', mockdata.user.sub);
     });
 
-    it('should not get user from db if not saved', async () => {
+    test('should not get user from db if not saved', async () => {
       const res = await request(server)
         .get('/user')
         .set('Authorization', `Bearer ${mockdata.token}`);
@@ -43,7 +43,7 @@ describe('Server tests - user endpoints:', () => {
   });
 
   describe('POST /user', () => {
-    it('should save user to db', async () => {
+    test('should save user to db', async () => {
       const res = await request(server)
         .post('/user')
         .set('Authorization', `Bearer ${mockdata.token}`)
@@ -54,7 +54,7 @@ describe('Server tests - user endpoints:', () => {
       expect(res.body).toHaveProperty('sub', mockdata.user.sub);
     });
 
-    it('should not save invalid user to db', async () => {
+    test('should not save user without sub to db', async () => {
       const { sub: _, ...invalidData } = mockdata.user;
       const res = await request(server)
         .post('/user')
@@ -64,7 +64,18 @@ describe('Server tests - user endpoints:', () => {
       expect(res.statusCode).toEqual(500);
     });
 
-    it('should not save user duplicate to db', async () => {
+    test('should not save user without valid email to db', async () => {
+      const user = mockdata.user;
+      user.email = '';
+      const res = await request(server)
+        .post('/user')
+        .set('Authorization', `Bearer ${mockdata.token}`)
+        .set('Content-Type', 'application/json')
+        .send(user);
+      expect(res.statusCode).toEqual(422);
+    });
+
+    test('should not save user duplicate to db', async () => {
       await prisma.user.create({ data: mockdata.user });
       const res = await request(server)
         .post('/user')

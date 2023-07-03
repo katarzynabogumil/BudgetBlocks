@@ -140,6 +140,8 @@ async function addUserVoteToDb
       downvotes = [...downvotes, userSub];
       upvotes = upvotes.filter(sub => sub !== userSub);
     }
+  } else {
+    throw Error('No direction provided.');
   }
 
   const updatedExp = await prisma.expense.update({

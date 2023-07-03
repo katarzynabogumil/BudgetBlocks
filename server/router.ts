@@ -87,7 +87,7 @@ router.put('/categories/:categoryId/:orderId', validateAccessToken, paramsValida
 
 router.get('/user', validateAccessToken, paramsValidationRules(), validate, getUser);
 router.post('/user', validateAccessToken, userValidationRules(), validate, saveUser);
-
+//
 router.get('/currencies/:base', validateAccessToken, currenciesParamsValidationRules(), validate, getCurrencyRates);
 
 router.get('/rating/:projectId', validateAccessToken, paramsValidationRules(), validate, getProjectRating);

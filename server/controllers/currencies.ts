@@ -26,7 +26,10 @@ async function getCurrencyRates(req: express.Request, res: express.Response): Pr
       .then(res => res.json());
 
     // in case API limit reached in production
-    if (!isDevelopment && !currencies.success) currencies = BACKUP_CURRENCIES;
+    if (!isDevelopment && !currencies.success) {
+      if (base === 'EUR') currencies = BACKUP_CURRENCIES;
+      else throw new Error('Invalid base provided.');
+    }
 
     res.status(200);
     res.send(currencies);
