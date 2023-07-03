@@ -11,8 +11,50 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
+Cypress.Commands.add('login', () => {
+  const log = Cypress.log({
+    displayName: "AUTH0 LOGIN",
+    message: [`Authenticating ${Cypress.env('auth_username')}`],
+    autoEnd: false,
+  });
+  log.snapshot("before");
+
+  const userData = {
+    username: Cypress.env('auth_username'),
+    password: Cypress.env('auth_password')
+  };
+
+  cy.visit('http://localhost:4200/');
+  cy.get('.auth-btn').contains('Log In').click()
+
+  cy.origin(Cypress.env("auth0_domain"), { args: userData }, (userData) => {
+    cy.get('input[name="email"]').type(userData.username);
+    cy.get('input[name="password"]').type(userData.password);
+    cy.get('button[name="submit"]').click();
+  });
+
+  cy.url().should("equal", "http://localhost:4200/projects");
+
+  log.snapshot("after");
+  log.end();
+});
+
+
+Cypress.Commands.add('visitLoggedIn', (endpoint, token) => {
+  Cypress.log({
+    name: 'visitLoggedIn',
+  });
+
+  const options = {
+    method: 'GET',
+    url: `http://localhost:4200${endpoint}`,
+    auth: {
+      'bearer': token
+    }
+  };
+  return cy.request(options);
+});
+
 //
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })

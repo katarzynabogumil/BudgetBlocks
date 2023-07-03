@@ -22,6 +22,8 @@ const limiter = RateLimit({
 });
 app.use(limiter);
 
+app.disable('x-powered-by');
+
 app.use(
   helmet({
     hsts: {
