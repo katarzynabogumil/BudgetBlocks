@@ -1,6 +1,6 @@
-const { writeFile } = require('fs');
-const { promisify } = require('util');
-const dotenv = require('dotenv');
+import { writeFile } from 'fs';
+import { promisify } from 'util';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 

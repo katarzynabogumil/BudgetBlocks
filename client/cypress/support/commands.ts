@@ -11,25 +11,22 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (email: string, password: string) => {
   const log = Cypress.log({
     displayName: "AUTH0 LOGIN",
-    message: [`Authenticating ${Cypress.env('auth_username')}`],
+    message: [`Authenticating ${email}`],
     autoEnd: false,
   });
   log.snapshot("before");
 
-  const userData = {
-    username: Cypress.env('auth_username'),
-    password: Cypress.env('auth_password')
-  };
+  const args = { email, password };
 
   cy.visit('http://localhost:4200/');
-  cy.get('.auth-btn').contains('Log In').click()
+  cy.get('.auth-btn').contains('Log In').click();
 
-  cy.origin(Cypress.env("auth0_domain"), { args: userData }, (userData) => {
-    cy.get('input[name="email"]').type(userData.username);
-    cy.get('input[name="password"]').type(userData.password);
+  cy.origin(Cypress.env('auth0_domain'), { args }, ({ email, password }) => {
+    cy.get('input[name="email"]').type(email);
+    cy.get('input[name="password"]').type(password);
     cy.get('button[name="submit"]').click();
   });
 
