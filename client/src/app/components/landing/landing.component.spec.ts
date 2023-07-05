@@ -1,12 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthModule } from '@auth0/auth0-angular';
-import { AppComponent } from './app.component';
-import { environment as env } from '../environments/environment';
+import { LandingComponent } from './landing.component';
+import { environment as env } from '../../../environments/environment';
 
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
+
+describe('LandingComponent', () => {
+  let component: LandingComponent;
+  let fixture: ComponentFixture<LandingComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,11 +25,12 @@ describe('AppComponent', () => {
             ...env.httpInterceptor,
           },
         }),
+        LottieModule.forRoot({ player: playerFactory }),
       ],
-      declarations: [AppComponent]
+      declarations: [LandingComponent]
     });
 
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(LandingComponent);
     component = fixture.componentInstance;
   });
 
@@ -30,7 +38,5 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'BudgetBlocks'`, () => {
-    expect(component.title).toEqual('BudgetBlocks');
-  });
+
 });

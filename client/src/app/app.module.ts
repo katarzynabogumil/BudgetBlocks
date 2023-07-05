@@ -52,7 +52,7 @@ export function playerFactory() {
     ExpenseDetailsComponent,
     AddUsersFormComponent,
     InviteItemComponent,
-    CommentFormComponent
+    CommentFormComponent,
   ],
   imports: [
     BrowserModule,
