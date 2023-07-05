@@ -1,43 +1,49 @@
 import { mockdata } from '../fixtures/mockdata';
 
-describe('all-projects-dashboard', () => {
+describe('project-dashboard', () => {
   beforeEach(function () {
+    cy.task('db:seed', mockdata.invitedUser);
     cy.task('db:seed', mockdata.initialData).
       then(() => {
         cy.login(Cypress.env('email'), Cypress.env('password'));
         cy.visit('/projects');
-        cy.get('h2').contains(mockdata.initialData.project.name).click();
+        cy.get('app-project-item').children().contains(mockdata.initialData.project.name).click();
       });
   });
 
   afterEach(function () {
     cy.task('db:teardown', mockdata.initialData.user.sub);
+    cy.task('db:teardown', mockdata.invitedUser.user.sub);
   });
 
   it('should successfully display project information', () => {
-    cy.get('h2').contains(mockdata.initialData.project.name);
-    cy.get('a').contains('edit');
-    cy.get('a').contains('remove');
-    cy.get('a').contains('add users');
-
-    cy.get('b').contains('Budget:');
-    cy.get('b').contains('Project information:');
-
-    cy.get('h2').contains('Add an expense');
+    cy.get('div.main-card').children().contains(mockdata.initialData.project.name);
+    cy.get('div.main-card').children().contains('edit');
+    cy.get('div.main-card').children().contains('remove');
+    cy.get('div.main-card').children().contains('add users');
+    cy.get('div.main-card').children().contains('Budget:');
+    cy.get('div.main-card').children().contains(mockdata.initialData.project.budget
+      .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    cy.get('div.main-card').children().contains('Project information:');
+    cy.get('div.main-card').children().contains(mockdata.initialData.project.type);
+    cy.get('div.main-card').children().contains(mockdata.initialData.project.destination);
+    cy.get('div.main-card').children().contains(mockdata.initialData.project.description);
+    cy.contains('Add an expense');
   });
 
-  it('should successfully display expense information', () => {
-    cy.get('h2').contains(mockdata.initialData.expense.name);
-    cy.get('b').contains('Category:');
-    cy.get('div').contains(mockdata.initialData.category.category);
-    cy.get('b').contains('Cost:');
-    cy.get('div').contains(mockdata.initialData.expense.cost);
+  it('should successfully display expenses information', () => {
+    cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[0].name);
+    cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].name);
+    cy.get('app-expense-item').children().contains('Category:');
+    cy.get('app-expense-item').children().contains(mockdata.initialData.category.category);
+    cy.get('app-expense-item').children().contains('Cost:');
+    cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[0].cost);
+    cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].cost);
   });
 
   describe('add expense', () => {
-
     it('should successfully add an expense to an existing category', () => {
-      cy.get('h2').contains('Add an expense').click();
+      cy.contains('Add an expense').click();
       const newExpense = {
         name: 'New expense',
         cost: '100',
@@ -48,13 +54,13 @@ describe('all-projects-dashboard', () => {
       cy.get('select[formcontrolname="formCategory"]').select(newExpense.category);
       cy.get('button[type="submit"]').click();
 
-      cy.get('h2').contains(newExpense.name);
-      cy.get('div').contains(newExpense.cost);
-      cy.get('div').contains(newExpense.category);
+      cy.get('app-expense-item').children().contains(newExpense.name);
+      cy.get('app-expense-item').children().contains(newExpense.cost);
+      cy.get('app-expense-item').children().contains(newExpense.category);
     });
 
     it('should successfully add an expense to a new category', () => {
-      cy.get('h2').contains('Add an expense').click();
+      cy.contains('Add an expense').click();
       const newExpense = {
         name: 'New expense',
         cost: '100',
@@ -67,57 +73,87 @@ describe('all-projects-dashboard', () => {
       cy.get('input[formcontrolname="newCategory"]').type(newExpense.newCategory);
       cy.get('button[type="submit"]').click();
 
-      cy.get('h2').contains(newExpense.name);
-      cy.get('div').contains(newExpense.cost);
-      cy.get('div').contains(newExpense.newCategory);
+      cy.get('app-expense-item').children().contains(newExpense.name);
+      cy.get('app-expense-item').children().contains(newExpense.cost);
+      cy.get('app-expense-item').children().contains(newExpense.newCategory);
     });
 
     it('should validate fields', () => {
-      cy.get('h2').contains('Add an expense').click();
+      cy.contains('Add an expense').click();
 
       cy.get('button[type="submit"]').click();
 
-      cy.get('div').contains('Name is required.');
-      cy.get('div').contains('Cost is required.');
-      cy.get('div').contains('Category is required.');
+      cy.get('app-expense-form').children().contains('Name is required.');
+      cy.get('app-expense-form').children().contains('Cost is required.');
+      cy.get('app-expense-form').children().contains('Category is required.');
     });
   });
 
-  describe('edit expense', () => {
-    it('should successfully edit an expense', () => {
-      cy.get('span').contains('expand_circle_down').click();
-      cy.get('app-expense-details').find('a').contains('edit').click();
+  describe('compare mode', () => {
+    it('should successfully enter compare mode', () => {
+      cy.get('span.slider').click();
 
-      const newName = 'New name';
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="name"]').type(newName);
-      cy.get('button[type="submit"]').click();
-
-      cy.get('h2').contains(newName);
+      cy.contains(mockdata.initialData.expenses[0].name).parents('app-expense-item')
+        .should('have.class', 'compare-selected');
+      cy.contains(mockdata.initialData.expenses[1].name).parents('app-expense-item')
+        .should('have.class', 'compare-not-selected');
+      cy.get('div.main-card').children().contains('Sum:').parent()
+        .contains(mockdata.initialData.expenses[0].cost);
     });
 
-    it('should validate fields', () => {
-      cy.get('span').contains('expand_circle_down').click();
-      cy.get('app-expense-details').find('a').contains('edit').click();
+    it('should successfully select other expense', () => {
+      cy.get('span.slider').click();
+      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].name).click();
 
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="cost"]').clear();
-      cy.get('select[formcontrolname="formCategory"]').select('add new');
+      cy.contains(mockdata.initialData.expenses[1].name).parents('app-expense-item')
+        .should('have.class', 'compare-selected');
+      cy.contains(mockdata.initialData.expenses[0].name).parents('app-expense-item')
+        .should('have.class', 'compare-not-selected');
+      cy.get('div.main-card').children().contains('Sum:').parent()
+        .contains(mockdata.initialData.expenses[1].cost);
+    });
 
-      cy.get('button[type="submit"]').click();
+    it('should successfully deselect other expense', () => {
+      cy.get('span.slider').click();
+      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].name).click();
+      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].name).click();
 
-      cy.get('div').contains('Name is required.');
-      cy.get('div').contains('Cost is required.');
-      cy.get('div').contains('Category is required.');
+      cy.contains(mockdata.initialData.expenses[0].name).parents('app-expense-item')
+        .should('have.class', 'compare-selected');
+      cy.contains(mockdata.initialData.expenses[1].name).parents('app-expense-item')
+        .should('have.class', 'compare-not-selected');
+      cy.get('div.main-card').children().contains('Sum:').parent()
+        .contains(mockdata.initialData.expenses[0].cost);
     });
   });
 
-  describe('delete expense', () => {
-    it('should successfully delete expense', () => {
-      cy.get('span').contains('expand_circle_down').click();
-      cy.get('app-expense-details').find('a').contains('remove').click();
-      cy.get('h2').contains(mockdata.initialData.project.name);
-      cy.contains('h2', mockdata.initialData.expense.name).should('not.exist');
+  describe('ivite user', () => {
+    it('should successfully invite user', () => {
+      cy.get('div.main-card').contains('add users').click();
+
+      cy.get('input[formcontrolname="invite"]').type(mockdata.invitedUser.user.email);
+      cy.get('button[type="submit"]').click();
+
+      cy.contains('close').click();
+      cy.get('div.main-card').contains('add users').click();
+
+      cy.get('app-add-users-form').children().contains(mockdata.invitedUser.user.email);
+    });
+  });
+
+  describe('accept invitation', () => {
+    beforeEach(function () {
+      cy.get('div.main-card').contains('add users').click();
+      cy.get('input[formcontrolname="invite"]').type(mockdata.invitedUser.user.email);
+      cy.get('button[type="submit"]').click();
+
+      cy.login(Cypress.env('email2'), Cypress.env('password2'));
+      cy.visit('/projects');
+    });
+
+    it('should successfully accept an invitation', () => {
+      cy.get('app-invite-item').children().contains(mockdata.initialData.project.name).click();
+      cy.get('app-project-item').children().contains(mockdata.initialData.project.name);
     });
   });
 });

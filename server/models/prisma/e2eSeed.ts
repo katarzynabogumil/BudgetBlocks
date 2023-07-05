@@ -6,45 +6,65 @@ async function seed(data: seedData): Promise<null> {
   await findAndDeleteUser(data.user.sub);
   if (data.user.sub) {
     const user = await prisma.user.create({ data: data.user });
-    const project = await prisma.project.create({
-      data: {
-        ...data.project,
-        owners: {
-          connect: { id: user.id }
+
+    if (data.project) {
+      const project = await prisma.project.create({
+        data: {
+          ...data.project,
+          owners: {
+            connect: { id: user.id }
+          },
         },
-      },
-    });
-    const category = await prisma.expCategory.create({
-      data: {
-        ...data.category,
-        project: {
-          connect: { id: project.id }
+      });
+      const category = await prisma.expCategory.create({
+        data: {
+          ...data.category,
+          project: {
+            connect: { id: project.id }
+          },
         },
-      },
-    });
-    const expense = await prisma.expense.create({
-      data: {
-        ...data.expense,
-        project: {
-          connect: { id: project.id }
+      });
+      const expense = await prisma.expense.create({
+        data: {
+          ...data.expenses[0],
+          project: {
+            connect: { id: project.id }
+          },
+          category: {
+            connect: { id: category.id }
+          },
         },
-        category: {
-          connect: { id: category.id }
+      });
+      await prisma.comment.create({
+        data: {
+          ...data.comment,
+          expense: {
+            connect: { id: expense.id }
+          },
+          user: {
+            connect: { id: user.id }
+          },
         },
-      },
-    });
-    await prisma.comment.create({
-      data: {
-        ...data.comment,
-        expense: {
-          connect: { id: expense.id }
-        },
-        user: {
-          connect: { id: user.id }
-        },
-      },
-    });
+      });
+
+      data.expenses.forEach(async (exp, i) => {
+        if (i !== 0) {
+          await prisma.expense.create({
+            data: {
+              ...exp,
+              project: {
+                connect: { id: project.id }
+              },
+              category: {
+                connect: { id: category.id }
+              },
+            },
+          });
+        }
+      });
+    }
   }
+
   await prisma.$disconnect();
   return null;
 }
@@ -69,7 +89,7 @@ type CommentModel = Prisma.CommentCreateInput;
 type seedData = {
   user: UserModel,
   project: ProjectModel,
-  expense: ExpenseModel,
+  expenses: ExpenseModel[],
   category: ExpCategoryModel,
   comment: CommentModel
 }
