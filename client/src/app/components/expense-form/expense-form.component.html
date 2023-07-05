@@ -1,124 +1,112 @@
 <div class="form-card-container">
   <div class="card form-card">
-    <div class="form-row grid-single">
-      <div></div>
-      <h2 *ngIf="isAddMode">Add an expense</h2>
-      <h2 *ngIf="!isAddMode">Edit an expense</h2>
-    </div>
+    <div class="form-card-inner">
+      <div class="form-row grid-single">
+        <div></div>
+        <h2 *ngIf="isAddMode">Add an expense</h2>
+        <h2 *ngIf="!isAddMode">Edit an expense</h2>
+      </div>
 
-    <span class="material-symbols-outlined close pointer" (click)="close()">
-      close
-    </span>
+      <span class="material-symbols-outlined close pointer" (click)="close()">
+        close
+      </span>
 
-    <div class="form-container">
+      <div class="form-container">
 
-      <form [formGroup]="expenseForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-        <div *ngIf="this.submitted && expenseForm.get('name')?.errors" class="invalid-feedback">
-          Name is required.
-        </div>
-        <div class="form-row grid-single">
-          <label>NAME*</label>
-          <input type="text" maxlength="30" formControlName="name" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['name'].errors }" />
-        </div>
+        <form [formGroup]="expenseForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
+          <div *ngIf="this.submitted && expenseForm.get('name')?.errors" class="invalid-feedback">
+            Name is required.
+          </div>
+          <div class="form-row grid-single">
+            <label>NAME*</label>
+            <input type="text" maxlength="30" formControlName="name" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['name'].errors }" />
+          </div>
 
-        <div *ngIf="this.submitted && expenseForm.get('cost')?.errors" class="invalid-feedback">
-          Cost is required.
-        </div>
-        <div class="form-row grid-double">
-          <label>COST*</label>
-          <input type="number" formControlName="cost" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['cost'].errors }" />
+          <div *ngIf="this.submitted && expenseForm.get('cost')?.errors" class="invalid-feedback">
+            Cost is required.
+          </div>
+          <div class="form-row grid-double">
+            <label>COST*</label>
+            <input type="number" formControlName="cost" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['cost'].errors }" />
 
-          <label>CURRENCY</label>
-          <select formControlName="currency" class="form-control">
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-            <option value="GBP">GBP</option>
-            <option value="GBP">GBP</option>
-            <option value="--" disabled="[true]">--</option>
-            <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
-          </select>
-        </div>
+            <label>CURRENCY</label>
+            <select formControlName="currency" class="form-control">
+              <option value="EUR">EUR</option>
+              <option value="USD">USD</option>
+              <option value="GBP">GBP</option>
+              <option value="GBP">GBP</option>
+              <option value="--" disabled="[true]">--</option>
+              <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
+            </select>
+          </div>
 
-        <div *ngIf="
+          <div *ngIf="
             this.submitted && 
             ((expenseForm.value['formCategory'] === 'add' && 
             !expenseForm.value['newCategory']) || 
             !expenseForm.value['formCategory'])
           " class="invalid-feedback">
-          Category is required.
-        </div>
-        <div *ngIf="
+            Category is required.
+          </div>
+          <div *ngIf="
             this.submitted && 
             ((expenseForm.value['formCategory'] === 'add' && isDuplicate))
           " class="invalid-feedback">
-          This category exists.
-        </div>
-        <div class="form-row grid-double">
-          <label>CATEGORY*</label>
-          <select formControlName="formCategory" class="form-control">
-            <option value="" disabled="[true]"></option>
-            <option *ngFor="let category of categories" value="{{category.category}}">{{category.category}}</option>
-            <option value="add">add new</option>
-          </select>
-
-          <span *ngIf="expenseForm.value['formCategory'] === 'add'">
-            <label>CATEGORY NAME*</label>
-          </span>
-          <span *ngIf="expenseForm.value['formCategory'] === 'add'">
-            <input type="text" formControlName="newCategory" class="form-control" style="width: 100%" />
-          </span>
-        </div>
-
-        <div class="form-row grid-single">
-          <label>OPTIONAL</label>
-          <div id="optional-radio-container">
-            <input type="radio" id="true" name="optional" value="true" formControlName="optional">
-            <label for="true"> YES</label>
-            <input type="radio" id="false" name="optional" value="false" formControlName="optional">
-            <label for="false"> NO</label>
+            This category exists.
           </div>
-        </div>
+          <div class="form-row grid-double">
+            <label>CATEGORY*</label>
+            <select formControlName="formCategory" class="form-control">
+              <option value="" disabled="[true]"></option>
+              <option *ngFor="let category of categories" value="{{category.category}}">{{category.category}}</option>
+              <option value="add">add new</option>
+            </select>
 
-        <div class="form-row grid-single">
-          <label>LINK (URL)</label>
-          <input type="text" formControlName="link" class="form-control" />
-        </div>
+            <span *ngIf="expenseForm.value['formCategory'] === 'add'">
+              <label>CATEGORY NAME*</label>
+            </span>
+            <span *ngIf="expenseForm.value['formCategory'] === 'add'">
+              <input type="text" formControlName="newCategory" class="form-control" style="width: 100%" />
+            </span>
+          </div>
 
-        <div class="form-row grid-single">
-          <label>PHOTO (URL)</label>
-          <input type="text" formControlName="photo" class="form-control" />
-        </div>
-
-        <div class="form-row grid-single">
-          <label>NOTES</label>
-          <textarea formControlName="notes" class="form-control"></textarea>
-        </div>
-
-        <!-- <div class="form-row grid-single">
-          <label>OPTIONAL</label>
-          <div id="checkbox-options">
-            <div>
-              <input type="checkbox" id="true" name="true" value="true">
-              <label for="true"> YES</label><br>
-            </div>
-            <div>
-              <input type="checkbox" id="false" name="false" value="false">
+          <div class="form-row grid-single">
+            <label>OPTIONAL</label>
+            <div id="optional-radio-container">
+              <input type="radio" id="true" name="optional" value="true" formControlName="optional">
+              <label for="true"> YES</label>
+              <input type="radio" id="false" name="optional" value="false" formControlName="optional">
               <label for="false"> NO</label>
             </div>
           </div>
-        </div> -->
 
-        <div class="invalid-feedback">* Required fields.</div>
+          <div class="form-row grid-single">
+            <label>LINK (URL)</label>
+            <input type="text" formControlName="link" class="form-control" />
+          </div>
 
-        <div class="form-row grid-double">
-          <div></div>
-          <button type="submit" class="btn">
-            Save
-          </button>
-        </div>
-      </form>
+          <div class="form-row grid-single">
+            <label>PHOTO (URL)</label>
+            <input type="text" formControlName="photo" class="form-control" />
+          </div>
+
+          <div class="form-row grid-single">
+            <label>NOTES</label>
+            <textarea formControlName="notes" class="form-control"></textarea>
+          </div>
+
+          <div class="invalid-feedback">* Required fields.</div>
+
+          <div class="form-row grid-double">
+            <div></div>
+            <button type="submit" class="btn">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
