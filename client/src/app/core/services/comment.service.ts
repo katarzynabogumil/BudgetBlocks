@@ -56,6 +56,7 @@ export class CommentService {
         const { data, error } = response;
 
         if (!error) {
+          if (!this.comments[expenseId]) this.comments[expenseId] = [];
           this.comments[expenseId].push(data as CommentModel);
           this._comments$.next(this.comments);
         }

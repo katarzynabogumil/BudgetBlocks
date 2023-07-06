@@ -82,7 +82,7 @@ describe('OpenAiService', () => {
   });
 
   describe('getMissingCategories', () => {
-    it('should call getMissingCategories and return new user', () => {
+    it('should call getMissingCategories and return categories dict', () => {
       callApiSpy.and.returnValue(of({ data: { categories: CategoriesMock[id] }, error: null }));
 
       service.getMissingCategories(id).subscribe((res) => {
