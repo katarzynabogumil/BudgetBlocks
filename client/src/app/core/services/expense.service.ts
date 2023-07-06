@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
-import { ExpenseModel, ApiResponseExpenseModel, RequestConfigModel, EmptyExpense, CreateExpenseModel } from '../models';
+import { ExpenseModel, ApiResponseExpenseModel, RequestConfigModel, CreateExpenseModel } from '../models';
 import { ApiService } from './api.service';
 import { ProjectService } from './project.service';
 

@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class CurrenciesService {
-  public currencies: string[] = [
+  private _currencies: string[] = [
     'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN',
     'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL',
     'BSD', 'BTC', 'BTN', 'BWP', 'BYR', 'BZD', 'CAD', 'CDF', 'CHF', 'CLF',
@@ -26,11 +26,19 @@ export class CurrenciesService {
     'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF', 'VND', 'VUV',
     'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW'
   ];
-  currencyRates$ = new BehaviorSubject<CurrencyRatesModel>(EmptyCurrencyRates);
+  private _currencyRates$ = new BehaviorSubject<CurrencyRatesModel>(EmptyCurrencyRates);
 
   constructor(public api: ApiService) { }
 
-  getRates = (base: string): Observable<ApiResponseCurrenciesModel> => {
+  public get currencies(): string[] {
+    return this._currencies;
+  }
+
+  public get currencyRates$(): Observable<CurrencyRatesModel> {
+    return this._currencyRates$.asObservable();
+  }
+
+  public getRates = (base: string): Observable<ApiResponseCurrenciesModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/currencies/${base}`,
       method: 'GET',
@@ -42,7 +50,7 @@ export class CurrenciesService {
         const data = response.data as CurrencyRatesModel;
         const error = response.error;
 
-        if (!error) this.currencyRates$.next(data);
+        if (!error) this._currencyRates$.next(data);
 
         return of({
           data: data,
