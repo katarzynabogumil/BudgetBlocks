@@ -16,7 +16,7 @@ export class ProjectService {
   private _projectInvitations$ = new BehaviorSubject<ProjectModel[]>([]);
 
   constructor(
-    public api: ApiService,
+    private api: ApiService,
     private router: Router,
   ) { }
 
@@ -225,7 +225,10 @@ export class ProjectService {
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this.projects.push(data as ProjectModel);
+          this.projects = this.projects.map(project => {
+            if (project.id === projectId) project = data as ProjectModel;
+            return project;
+          });
           this._projects$.next(this.projects);
         }
 

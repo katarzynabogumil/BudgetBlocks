@@ -1,15 +1,14 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
-import { environment as env } from '../../../environments/environment';
 import { UserMock } from '../mocks';
-import { Observable, of } from 'rxjs';
-import { ApiResponseModel, RequestConfigModel, UserModel } from '../models';
+import { of } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
   let callApiSpy: jasmine.Spy;
+  let error: { message: string };
+  const initialSub = '';
 
   beforeEach(() => {
     const mockApiService = jasmine.createSpyObj<ApiService>(
@@ -17,8 +16,9 @@ describe('UserService', () => {
       ['callApi']
     );
 
+    error = { message: 'Error' };
     callApiSpy = mockApiService.callApi.and.returnValue(
-      of({ data: UserMock, error: null })
+      of({ data: null, error: error })
     );
 
     TestBed.configureTestingModule({
@@ -31,12 +31,28 @@ describe('UserService', () => {
     service = TestBed.inject(UserService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+
+  describe('initial', () => {
+
+    it('should be created', () => {
+      expect(service).toBeTruthy();
+    });
+
+    it('should get userSub', () => {
+      expect(service.userSub).toEqual(initialSub);
+    });
+
+    it('should set userSub', () => {
+      const newSub = 'X';
+      service.userSub = newSub;
+      expect(service.userSub).toEqual(newSub);
+    });
   });
+
 
   describe('getUser', () => {
     it('should call getUser and return user data', () => {
+      callApiSpy.and.returnValue(of({ data: UserMock, error: null }));
 
       service.getUser().subscribe((res) => {
         expect(res.data).toEqual(UserMock);
@@ -45,10 +61,7 @@ describe('UserService', () => {
       });
     });
 
-    it('should call getUser and return error', () => {
-      const error = { message: 'Error' };
-      callApiSpy.and.returnValue(of({ data: null, error }));
-
+    it('should call getUser and return error if error', () => {
       service.getUser().subscribe((res) => {
         expect(res.data).toEqual(null);
         expect(res.error).toEqual(error);
@@ -59,6 +72,8 @@ describe('UserService', () => {
 
   describe('saveUser', () => {
     it('should call saveUser and return new user', () => {
+      callApiSpy.and.returnValue(of({ data: UserMock, error: null }));
+
       service.saveUser(UserMock).subscribe((res) => {
         expect(res.data).toEqual(UserMock);
         expect(res.error).toEqual(null);
@@ -68,8 +83,8 @@ describe('UserService', () => {
 
     it('should call saveUser and return error if error', () => {
       service.saveUser(UserMock).subscribe((res) => {
-        expect(res.data).toEqual(UserMock);
-        expect(res.error).toEqual(null);
+        expect(res.data).toEqual(null);
+        expect(res.error).toEqual(error);
         expect(callApiSpy).toHaveBeenCalled();
       });
     });

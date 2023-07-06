@@ -50,6 +50,7 @@ export class UserService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
+
         return of({
           data: data ? data as UserModel : null,
           error,
