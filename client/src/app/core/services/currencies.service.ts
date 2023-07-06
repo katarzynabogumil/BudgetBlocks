@@ -28,7 +28,7 @@ export class CurrenciesService {
   ];
   private _currencyRates$ = new BehaviorSubject<CurrencyRatesModel>(EmptyCurrencyRates);
 
-  constructor(public api: ApiService) { }
+  constructor(private api: ApiService) { }
 
   public get currencies(): string[] {
     return this._currencies;

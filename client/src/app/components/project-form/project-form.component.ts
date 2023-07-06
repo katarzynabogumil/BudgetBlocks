@@ -110,19 +110,22 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private addProject(data: CreateProjectModel): void {
-    this.projectApi.addProject(data).subscribe((res: ApiResponseProjectModel) => {
-      if (!res.error) {
-        console.log('Project added.');
-        this.id = res.data.id || this.id;
-        this.getRating(this.id);
-      }
-      else console.log(res.error);
-      this.router.navigate([`/project/${res.data.id}`]);
-    });
+    this.projectApi.addProject(data)
+      .pipe(first())
+      .subscribe((res: ApiResponseProjectModel) => {
+        if (!res.error) {
+          console.log('Project added.');
+          this.id = res.data.id || this.id;
+          this.getRating(this.id);
+        }
+        else console.log(res.error);
+        this.router.navigate([`/project/${res.data.id}`]);
+      });
   }
 
   private editProject(id: number, data: CreateProjectModel): void {
     this.projectApi.editProject(id, data)
+      .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) {
           console.log('Project edited.');

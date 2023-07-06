@@ -79,6 +79,7 @@ export class AddUsersFormComponent implements OnInit {
 
   private inviteUser(email: string): void {
     this.projectApi.addUser(email, this.id)
+      .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
         if (!res.error) console.log('Project edited.');
         else console.log(res.error);

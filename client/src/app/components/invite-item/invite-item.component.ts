@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService } from '@app/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-invite-item',
@@ -15,7 +16,7 @@ export class InviteItemComponent {
 
   acceptInvitation(): void {
     if (this.project.id) {
-      this.projectApi.acceptInvitation(this.project.id).subscribe();
+      this.projectApi.acceptInvitation(this.project.id).pipe(first()).subscribe();
     }
   }
 }

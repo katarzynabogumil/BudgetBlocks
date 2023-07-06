@@ -63,7 +63,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   private getComments(id: number): void {
-    this.commentApi.getAllComments(id).subscribe();
+    this.commentApi.getAllComments(id).pipe(first()).subscribe();
   }
 
   private getExpensesToCategories(): void {

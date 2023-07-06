@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ExpenseModel, EmptyExpense, ExpenseService, ProjectService } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { map } from 'rxjs';
+import { first, map } from 'rxjs';
 
 @Component({
   selector: 'app-expense-item',
@@ -50,7 +50,9 @@ export class ExpenseItemComponent implements OnInit {
   }
 
   toggleVotes(direction: string): void {
-    this.expenseApi.vote(direction, this.projectId, this.expense.id || 0).subscribe();
+    this.expenseApi.vote(direction, this.projectId, this.expense.id || 0)
+      .pipe(first())
+      .subscribe();
   }
 
   private checkVotes(): void {

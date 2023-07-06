@@ -9,7 +9,7 @@ import { ApiService } from './api.service';
 })
 export class CategoriesService {
   constructor(
-    public api: ApiService,
+    private api: ApiService,
   ) { }
 
   changeCatOrderId = (categoryId: number, newOrderId: number): Observable<ApiResponseExpCategoryModel> => {

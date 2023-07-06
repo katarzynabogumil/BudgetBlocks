@@ -109,8 +109,9 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   private addExpense(projectId: number, data: CreateExpenseModel): void {
-    this.expenseApi.addExpense(projectId, data).
-      subscribe((res: ApiResponseExpenseModel) => {
+    this.expenseApi.addExpense(projectId, data)
+      .pipe(first())
+      .subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
           console.log('Expense added.');
           this.getMissingCategories(projectId);
@@ -120,8 +121,9 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   private editExpense(projectId: number, id: number, data: CreateExpenseModel): void {
-    this.expenseApi.editExpense(projectId, id, data).
-      subscribe((res: ApiResponseExpenseModel) => {
+    this.expenseApi.editExpense(projectId, id, data)
+      .pipe(first())
+      .subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
           console.log('Expense edited.');
           this.getMissingCategories(projectId);

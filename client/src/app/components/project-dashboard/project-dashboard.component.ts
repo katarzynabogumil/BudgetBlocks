@@ -39,6 +39,7 @@ export class ProjectDashboardComponent implements OnInit {
 
   editProject(id: number, data: ProjectModel): void {
     this.projectApi.editProject(id, data)
+      .pipe(first())
       .subscribe(() => {
         console.log('Project edited.');
         this.router.navigate([`/project/${id}`]);
@@ -47,6 +48,7 @@ export class ProjectDashboardComponent implements OnInit {
 
   removeProject(): void {
     this.projectApi.deleteProject(this.id)
+      .pipe(first())
       .subscribe(() => {
         console.log('Project removed.');
         this.router.navigate([`/projects/`]);

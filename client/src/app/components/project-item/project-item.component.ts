@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ProjectModel, EmptyProject, ProjectService } from '@app/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-project-item',
@@ -17,6 +18,7 @@ export class ProjectItemComponent {
   removeProject(): void {
     this.linkDisabled = true;
     this.projectApi.deleteProject(this.project.id)
+      .pipe(first())
       .subscribe();
   }
 }

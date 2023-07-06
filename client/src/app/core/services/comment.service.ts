@@ -8,15 +8,18 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class CommentService {
-  comments$ = new BehaviorSubject<CommentDictModel>({});
-  public comments: CommentDictModel = {};
+  private comments: CommentDictModel = {};
+  private _comments$ = new BehaviorSubject<CommentDictModel>({});
 
   constructor(
-    public api: ApiService,
+    private api: ApiService,
   ) { }
 
+  public get comments$(): Observable<CommentDictModel> {
+    return this._comments$.asObservable();
+  }
 
-  getAllComments = (projectId: number): Observable<ApiResponseCommentDictModel> => {
+  public getAllComments = (projectId: number): Observable<ApiResponseCommentDictModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/comments/${projectId}`,
       method: 'GET',
@@ -30,7 +33,7 @@ export class CommentService {
 
         if (!error) {
           this.comments = data;
-          this.comments$.next(data);
+          this._comments$.next(this.comments);
         }
 
         return of({
@@ -41,7 +44,7 @@ export class CommentService {
       ;
   };
 
-  addComment = (expenseId: number, data: CommentModel): Observable<ApiResponseCommentModel> => {
+  public addComment = (expenseId: number, data: CommentModel): Observable<ApiResponseCommentModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/comment/${expenseId}`,
       method: 'POST',
@@ -56,7 +59,7 @@ export class CommentService {
 
         if (!error) {
           this.comments[expenseId].push(data);
-          this.comments$.next(this.comments);
+          this._comments$.next(this.comments);
         }
 
         return of({
@@ -67,7 +70,7 @@ export class CommentService {
     );
   };
 
-  deleteComment = (expenseId: number, id: number): Observable<ApiResponseModel> => {
+  public deleteComment = (expenseId: number, id: number): Observable<ApiResponseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/comment/${id}`,
       method: 'DELETE',
@@ -81,7 +84,7 @@ export class CommentService {
 
         if (!error) {
           this.comments[expenseId] = this.comments[expenseId].filter(comment => comment.id !== data.id);
-          this.comments$.next(this.comments);
+          this._comments$.next(this.comments);
         }
 
         return of({

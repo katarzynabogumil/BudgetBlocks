@@ -16,8 +16,8 @@ export class ExpenseService {
   private _compareMode$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    public api: ApiService,
-    public projectApi: ProjectService,
+    private api: ApiService,
+    private projectApi: ProjectService,
   ) { }
 
   public get expenseSum$(): Observable<number> {

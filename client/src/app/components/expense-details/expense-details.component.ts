@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommentModel, CommentService, EmptyExpense, ExpenseModel, ExpenseService } from '@app/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { map } from 'rxjs';
+import { first, map } from 'rxjs';
 
 @Component({
   selector: 'app-expense-details',
@@ -38,15 +38,17 @@ export class ExpenseDetailsComponent {
         });
       });
     });
-
   }
 
   removeExpense(): void {
     this.expenseApi.deleteExpense(this.projectId, this.expense.id)
+      .pipe(first())
       .subscribe();
   }
 
   removeComment(id: number): void {
-    this.commentApi.deleteComment(this.expense.id, id).subscribe();
+    this.commentApi.deleteComment(this.expense.id, id)
+      .pipe(first())
+      .subscribe();
   }
 }

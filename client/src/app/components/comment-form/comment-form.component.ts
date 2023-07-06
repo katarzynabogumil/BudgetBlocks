@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CommentService, ExpenseModel, EmptyExpense } from '@app/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-comment-form',
@@ -32,6 +33,8 @@ export class CommentFormComponent {
   }
 
   private postComment(text: string): void {
-    this.commentApi.addComment(this.expense.id || -1, { text }).subscribe();
+    this.commentApi.addComment(this.expense.id || -1, { text })
+      .pipe(first())
+      .subscribe();
   }
 }
