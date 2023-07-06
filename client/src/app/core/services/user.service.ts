@@ -8,11 +8,19 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class UserService {
-  userSub = '';
+  private userSub = '';
 
   constructor(public api: ApiService) { }
 
-  getUser = (): Observable<ApiResponseUserModel> => {
+  public getCurrentUserSub = (): string => {
+    return this.userSub;
+  }
+
+  public setCurrentUserSub = (sub: string): void => {
+    this.userSub = sub;
+  }
+
+  public getUser = (): Observable<ApiResponseUserModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/user`,
       method: 'GET',
@@ -30,7 +38,7 @@ export class UserService {
       ;
   };
 
-  saveUser = (userData: UserModel): Observable<ApiResponseUserModel> => {
+  public saveUser = (userData: UserModel): Observable<ApiResponseUserModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/user`,
       method: 'POST',

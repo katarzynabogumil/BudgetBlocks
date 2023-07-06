@@ -29,10 +29,10 @@ export class AllProjectsDashboardComponent implements OnInit {
   }
 
   private checkIfNewUser(): void {
-    if (!this.userApi.userSub) {
+    if (!this.userApi.getCurrentUserSub()) {
       this.auth.user$.subscribe(user => {
 
-        if (user) this.userApi.userSub = user?.sub || '';
+        if (user) this.userApi.setCurrentUserSub(user?.sub || '');
 
         this.checkIfInDb().subscribe((isInDb => {
           if (!isInDb) this.saveToDb(user);

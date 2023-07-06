@@ -1,4 +1,5 @@
 export const ExpenseMock = {
+  id: 1,
   name: 'Morning Flights',
   cost: 724,
   currency: 'EUR',

@@ -9,8 +9,8 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class ProjectService {
+  private projects: ProjectModel[] = [];
   projects$ = new BehaviorSubject<ProjectModel[]>([]);
-  public projects: ProjectModel[] = [];
 
   projectInvitations$ = new BehaviorSubject<ProjectModel[]>([]);
 
