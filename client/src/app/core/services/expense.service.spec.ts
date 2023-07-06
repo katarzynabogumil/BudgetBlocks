@@ -1,21 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { ExpenseService } from './expense.service';
-import { ExpenseMock, ProjectMock } from '../mocks';
+import { ExpenseMock, ProjectMock, UserMock } from '../mocks';
 import { first, of } from 'rxjs';
 import { ProjectService } from './project.service';
 
 describe('ExpenseService', () => {
   let service: ExpenseService;
-  let projectService: ProjectService;
+  let mockProjectService: jasmine.SpyObj<ProjectService>;
   let callApiSpy: jasmine.Spy;
-  let projectSpy: jasmine.Spy;
   let error: { message: string };
   const initialSum = 0;
   const initialSumDict = {};
   const initialMode = false;
   const id = 1;
-  const Cat = 'Flights';
   const sumDictMock = { 'Flights': 100 };
 
   beforeEach(() => {
@@ -29,21 +27,12 @@ describe('ExpenseService', () => {
       of({ data: null, error: error })
     );
 
-    const mockProjectService = jasmine.createSpyObj<ProjectService>(
+    mockProjectService = jasmine.createSpyObj<ProjectService>(
       'ProjectService',
       ['project$']
     );
-
-    // projectSpy = spyOnProperty(
-    //   mockProjectService,
-    //   'project$',
-    //   'get'
-    // ).and.returnValue(of(ProjectMock));
-
-    // const moduleSpecServiceMock = {
-    //   ...jasmine.createSpyObj('moduleSpecServiceMock ', ['']),
-    //   activePropertyChanged: of()
-    // } as jasmine.SpyObj;
+    ProjectMock.expenses = [];
+    mockProjectService.project$ = of(ProjectMock);
 
     TestBed.configureTestingModule({
       providers: [
@@ -54,7 +43,6 @@ describe('ExpenseService', () => {
     });
 
     service = TestBed.inject(ExpenseService);
-    projectService = TestBed.inject(ProjectService);
   });
 
 
@@ -121,6 +109,20 @@ describe('ExpenseService', () => {
         expect(s).toEqual(sumDictMock);
       });
     });
+
+
+    it('should get compare mode', () => {
+      service.compareMode$.pipe(first()).subscribe(s => {
+        expect(s).toEqual(initialMode);
+      });
+    });
+
+    it('should successfully compare mode', () => {
+      service.compareMode$ = of(true);
+      service.compareMode$.pipe(first()).subscribe(s => {
+        expect(s).toEqual(true);
+      });
+    });
   });
 
 
@@ -128,7 +130,7 @@ describe('ExpenseService', () => {
     it('should call getExpense and return expense data', () => {
       callApiSpy.and.returnValue(of({ data: ExpenseMock, error: null }));
 
-      service.getExpense(id, id).subscribe((res) => {
+      service.getExpense(id, id).pipe(first()).subscribe((res) => {
         expect(res.data).toEqual(ExpenseMock);
         expect(res.error).toEqual(null);
         expect(callApiSpy).toHaveBeenCalled();
@@ -136,7 +138,7 @@ describe('ExpenseService', () => {
     });
 
     it('should call getExpense and return error if error', () => {
-      service.getExpense(id, id).subscribe((res) => {
+      service.getExpense(id, id).pipe(first()).subscribe((res) => {
         expect(res.data).toEqual(null);
         expect(res.error).toEqual(error);
         expect(callApiSpy).toHaveBeenCalled();
@@ -147,20 +149,20 @@ describe('ExpenseService', () => {
 
   describe('addExpense', () => {
     beforeEach(() => {
-      projectService.project$ = of(ProjectMock);
+      mockProjectService.project$ = of(ProjectMock);
     });
 
-    it('should call addExpense, update comments$ and return new commnet', () => {
+    it('should call addExpense, update project$ and return new expense', () => {
       callApiSpy.and.returnValue(
         of({ data: ExpenseMock, error: null })
       );
 
-      service.addExpense(id, ExpenseMock).subscribe((res) => {
+      service.addExpense(id, ExpenseMock).pipe(first()).subscribe((res) => {
         expect(res.data).toEqual(ExpenseMock);
         expect(res.error).toEqual(null);
         expect(callApiSpy).toHaveBeenCalled();
 
-        projectService.project$.pipe(first()).subscribe(p => {
+        mockProjectService.project$.pipe(first()).subscribe(p => {
           expect(p).toEqual({
             ...ProjectMock,
             expenses: [ExpenseMock]
@@ -169,13 +171,13 @@ describe('ExpenseService', () => {
       });
     });
 
-    it('should call addExpense, not update comments$ and return error if error', () => {
-      service.addExpense(id, ExpenseMock).subscribe((res) => {
+    it('should call addExpense, not update project$ and return error if error', () => {
+      service.addExpense(id, ExpenseMock).pipe(first()).subscribe((res) => {
         expect(res.data).toEqual(null);
         expect(res.error).toEqual(error);
         expect(callApiSpy).toHaveBeenCalled();
 
-        projectService.project$.pipe(first()).subscribe(p => {
+        mockProjectService.project$.pipe(first()).subscribe(p => {
           expect(p).toEqual(ProjectMock);
         });
       });
@@ -183,112 +185,181 @@ describe('ExpenseService', () => {
   });
 
 
-  // describe('editProject', () => {
-  //   beforeEach(() => {
-  //     callApiSpy.and.returnValue(
-  //       of({ data: ProjectMock, error: null })
-  //     );
-  //     service.addProject(ProjectMock).pipe(first()).subscribe();
-  //   });
+  describe('editExpense', () => {
+    beforeEach(() => {
+      callApiSpy.and.returnValue(
+        of({ data: ExpenseMock, error: null })
+      );
+      service.addExpense(id, ExpenseMock).pipe(first()).subscribe();
+      mockProjectService.project$ = of({ ...ProjectMock, expenses: [ExpenseMock] });
+    });
 
-  //   it('should call editProject, update projects$ and return project data', () => {
-  //     const id = ProjectMock.id;
-  //     const newName = 'New name';
-  //     const changedMock = { ...ProjectMock, name: newName }
-  //     callApiSpy.and.returnValue(
-  //       of({ data: changedMock, error: null })
-  //     );
+    it('should call editExpense, update project$ and return expense data', () => {
+      const newName = 'New name';
+      const changedMock = { ...ExpenseMock, name: newName }
+      callApiSpy.and.returnValue(
+        of({ data: changedMock, error: null })
+      );
 
-  //     service.projects$.pipe(first()).subscribe(p => {
-  //       expect(p).toEqual([ProjectMock]);
-  //     });
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
 
-  //     service.editProject(id, changedMock).subscribe((res) => {
-  //       expect(res.data).toEqual(changedMock);
-  //       expect(res.error).toEqual(null);
-  //       expect(callApiSpy).toHaveBeenCalled();
+      service.editExpense(id, id, changedMock).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(changedMock);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
 
-  //       service.projects$.pipe(first()).subscribe(p => {
-  //         expect(p).toEqual([changedMock]);
-  //       });
-  //     });
-  //   });
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [changedMock] });
+        });
+      });
+    });
 
-  //   it('should call editProject, not update projects$ and return error if error', () => {
-  //     const id = ProjectMock.id;
-  //     callApiSpy.and.returnValue(
-  //       of({ data: null, error })
-  //     );
+    it('should call editExpense, not update project$ and return error if error', () => {
+      const newName = 'New name';
+      const changedMock = { ...ExpenseMock, name: newName }
+      callApiSpy.and.returnValue(
+        of({ data: null, error: error })
+      );
 
-  //     service.projects$.pipe(first()).subscribe(p => {
-  //       expect(p).toEqual([ProjectMock]);
-  //     });
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
 
-  //     service.editProject(id, ProjectMock).subscribe((res) => {
-  //       expect(res.data).toEqual(null);
-  //       expect(res.error).toEqual(error);
-  //       expect(callApiSpy).toHaveBeenCalled();
+      service.editExpense(id, id, changedMock).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(null);
+        expect(res.error).toEqual(error);
+        expect(callApiSpy).toHaveBeenCalled();
 
-  //       service.projects$.pipe(first()).subscribe(p => {
-  //         expect(p).toEqual([ProjectMock]);
-  //       });
-  //     });
-  //   });
-  // });
-
-
-  // describe('deleteProject', () => {
-  //   beforeEach(() => {
-  //     callApiSpy.and.returnValue(
-  //       of({ data: ProjectMock, error: null })
-  //     );
-  //     service.addProject(ProjectMock).pipe(first()).subscribe();
-  //   });
-
-  //   it('should call deleteProject, update projects$ and return project data', () => {
-  //     const id = ProjectMock.id;
-  //     callApiSpy.and.returnValue(
-  //       of({ data: ProjectMock, error: null })
-  //     );
-
-  //     service.projects$.pipe(first()).subscribe(p => {
-  //       expect(p).toEqual([ProjectMock]);
-  //     });
-
-  //     service.deleteProject(id).subscribe((res) => {
-  //       expect(res.data).toEqual(ProjectMock);
-  //       expect(res.error).toEqual(null);
-  //       expect(callApiSpy).toHaveBeenCalled();
-
-  //       service.projects$.pipe(first()).subscribe(p => {
-  //         expect(p).toEqual([]);
-  //       });
-  //     });
-  //   });
-
-  //   it('should call deleteProject, not update projects$ and return error if error', () => {
-  //     const id = ProjectMock.id;
-  //     callApiSpy.and.returnValue(
-  //       of({ data: null, error })
-  //     );
-
-  //     service.projects$.pipe(first()).subscribe(p => {
-  //       expect(p).toEqual([ProjectMock]);
-  //     });
-
-  //     service.deleteProject(id).subscribe((res) => {
-  //       expect(res.data).toEqual(null);
-  //       expect(res.error).toEqual(error);
-  //       expect(callApiSpy).toHaveBeenCalled();
-
-  //       service.projects$.pipe(first()).subscribe(p => {
-  //         expect(p).toEqual([ProjectMock]);
-  //       });
-  //     });
-  //   });
-  // });
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+        });
+      });
+    });
+  });
 
 
-  // VOTE
+  describe('deleteExpense', () => {
+    beforeEach(() => {
+      callApiSpy.and.returnValue(
+        of({ data: ExpenseMock, error: null })
+      );
+      service.addExpense(id, ExpenseMock).pipe(first()).subscribe();
+      mockProjectService.project$ = of({ ...ProjectMock, expenses: [ExpenseMock] });
+    });
 
+    it('should call deleteExpense, update project$ and return project data', () => {
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
+
+      service.deleteExpense(id, id).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(ExpenseMock);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [] });
+        });
+      });
+    });
+
+    it('should call deleteExpense, not update project$ and return error if error', () => {
+      callApiSpy.and.returnValue(
+        of({ data: null, error })
+      );
+
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
+
+      service.deleteExpense(id, id).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(null);
+        expect(res.error).toEqual(error);
+        expect(callApiSpy).toHaveBeenCalled();
+
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+        });
+      });
+    });
+  });
+
+
+  describe('vote', () => {
+    const updatedExpense = {
+      ...ExpenseMock,
+      upvotes: [UserMock.sub],
+      downvotes: [],
+    };
+
+    beforeEach(() => {
+      callApiSpy.and.returnValue(
+        of({ data: ExpenseMock, error: null })
+      );
+      ExpenseMock.upvotes = [];
+      ExpenseMock.downvotes = [];
+      service.addExpense(id, ExpenseMock).pipe(first()).subscribe();
+      mockProjectService.project$ = of({ ...ProjectMock, expenses: [ExpenseMock] });
+
+      callApiSpy.and.returnValue(
+        of({ data: updatedExpense, error: null })
+      );
+    });
+
+    it(`should call vote, update project$ and return updated expense`, () => {
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
+
+      service.vote('up', id, id).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(updatedExpense);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({
+            ...ProjectMock, expenses: [updatedExpense]
+          });
+        });
+      });
+    });
+
+    it('should call vote, not update project$ and return error if invalid direction', () => {
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
+
+      service.vote('', id, id).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(null);
+        expect(res.error).not.toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+        });
+      });
+    });
+
+    it('should call vote, not update project$ and return error if API error', () => {
+      callApiSpy.and.returnValue(
+        of({ data: null, error })
+      );
+
+      mockProjectService.project$.pipe(first()).subscribe(p => {
+        expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+      });
+
+      service.deleteExpense(id, id).pipe(first()).subscribe((res) => {
+        expect(res.data).toEqual(null);
+        expect(res.error).toEqual(error);
+        expect(callApiSpy).toHaveBeenCalled();
+
+        mockProjectService.project$.pipe(first()).subscribe(p => {
+          expect(p).toEqual({ ...ProjectMock, expenses: [ExpenseMock] });
+        });
+      });
+    });
+  });
 });

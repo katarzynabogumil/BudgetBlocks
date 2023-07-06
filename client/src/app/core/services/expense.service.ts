@@ -160,16 +160,19 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        this.projectApi.project$.pipe(first()).subscribe(project => {
-          project.expenses = project.expenses.filter(expense => expense.id !== id);
+        if (!error) {
+          this.projectApi.project$.pipe(first()).subscribe(project => {
+            project.expenses = project.expenses.filter(expense => expense.id !== id);
 
-          const deletedCategory = data.category;
-          project.categories = project.categories?.filter(category => {
-            return !((category.expenses?.length === 1) && category.category === deletedCategory.category)
+            const deletedCategory = data.category;
+            project.categories = project.categories?.filter(category => {
+              return !((category.expenses?.length === 1)
+                && category.category === deletedCategory.category);
+            });
+
+            this.projectApi.project$ = of(project);
           });
-
-          this.projectApi.project$ = of(project);
-        });
+        }
 
         return of({
           data: data ? data as ExpenseModel : null,
@@ -184,6 +187,11 @@ export class ExpenseService {
       method: 'PUT',
       ...this.api.headers
     };
+
+    if (direction !== 'up' && direction !== 'down') return of({
+      data: null,
+      error: { message: 'Wrong direction input.' },
+    });
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {

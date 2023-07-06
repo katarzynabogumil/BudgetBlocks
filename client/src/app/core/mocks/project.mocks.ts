@@ -1,6 +1,7 @@
-import { ExpenseModel } from "../models"
+import { ExpCategoryModel, ExpenseModel } from "../models"
 
 const expenses: ExpenseModel[] = []
+const categories: ExpCategoryModel[] = []
 
 export const ProjectMock = {
   id: 1,
@@ -18,4 +19,5 @@ export const ProjectMock = {
   destination: 'Barcelona',
   description: 'Enjoy a summer vacation - sightseeing, sunbathing and sangria.',
   expenses: expenses,
+  categories: categories
 }

@@ -215,6 +215,8 @@ describe('ProjectService', () => {
 
     it('should call editProject, not update projects$ and return error if error', () => {
       const id = ProjectMock.id;
+      const newName = 'New name';
+      const changedMock = { ...ProjectMock, name: newName }
       callApiSpy.and.returnValue(
         of({ data: null, error })
       );
@@ -223,7 +225,7 @@ describe('ProjectService', () => {
         expect(p).toEqual([ProjectMock]);
       });
 
-      service.editProject(id, ProjectMock).subscribe((res) => {
+      service.editProject(id, changedMock).subscribe((res) => {
         expect(res.data).toEqual(null);
         expect(res.error).toEqual(error);
         expect(callApiSpy).toHaveBeenCalled();
