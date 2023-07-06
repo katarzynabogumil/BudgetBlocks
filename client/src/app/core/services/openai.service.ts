@@ -9,7 +9,7 @@ import { ApiService } from './api.service';
 })
 export class OpenAiService {
   private _rating$ = new BehaviorSubject<RatingModel>({ rating: 0 });
-  private _missingCategories: { [key: number]: string } = {};
+  private missingCategories: { [key: number]: string } = {};
   private _missingCategories$ = new BehaviorSubject<{ [key: number]: string }>({});
 
   constructor(
@@ -60,8 +60,8 @@ export class OpenAiService {
         const error = response.error;
 
         if (!error) {
-          this._missingCategories[projectId] = data.categories;
-          this._missingCategories$.next(this._missingCategories);
+          this.missingCategories[projectId] = data.categories;
+          this._missingCategories$.next(this.missingCategories);
         }
 
         return of({

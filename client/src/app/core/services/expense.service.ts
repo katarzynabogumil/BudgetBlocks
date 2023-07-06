@@ -9,19 +9,68 @@ import { ProjectService } from './project.service';
   providedIn: 'root'
 })
 export class ExpenseService {
-  expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
-  expenseSum$ = new BehaviorSubject<number>(0);
-  expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
-  minSum$ = new BehaviorSubject<number>(0);
-  maxSum$ = new BehaviorSubject<number>(0);
-  compareMode$ = new BehaviorSubject<boolean>(false);
+  private _expenseSum$ = new BehaviorSubject<number>(0);
+  private _expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
+  private _minSum$ = new BehaviorSubject<number>(0);
+  private _maxSum$ = new BehaviorSubject<number>(0);
+  private _compareMode$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     public api: ApiService,
     public projectApi: ProjectService,
   ) { }
 
-  getExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
+  public get expenseSum$(): Observable<number> {
+    return this._expenseSum$.asObservable();
+  }
+
+  public set expenseSum$(sum: Observable<number>) {
+    sum.pipe(first()).subscribe(s => {
+      this._expenseSum$.next(s);
+    })
+  }
+
+  public get expenseSumsByCat$(): Observable<{ [key: string]: number; }> {
+    return this._expenseSumsByCat$.asObservable();
+  }
+
+  public set expenseSumsByCat$(sums: Observable<{ [key: string]: number; }>) {
+    sums.pipe(first()).subscribe(s => {
+      this._expenseSumsByCat$.next(s);
+    })
+  }
+
+  public get minSum$(): Observable<number> {
+    return this._minSum$.asObservable();
+  }
+
+  public set minSum$(sum: Observable<number>) {
+    sum.pipe(first()).subscribe(s => {
+      this._minSum$.next(s);
+    })
+  }
+
+  public get maxSum$(): Observable<number> {
+    return this._maxSum$.asObservable();
+  }
+
+  public set maxSum$(sum: Observable<number>) {
+    sum.pipe(first()).subscribe(s => {
+      this._maxSum$.next(s);
+    })
+  }
+
+  public get compareMode$(): Observable<boolean> {
+    return this._compareMode$.asObservable();
+  }
+
+  public set compareMode$(sum: Observable<boolean>) {
+    sum.pipe(first()).subscribe(c => {
+      this._compareMode$.next(c);
+    })
+  }
+
+  public getExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'GET',
@@ -33,8 +82,6 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        if (!error) this.expense$.next(data);
-
         return of({
           data: data,
           error,
@@ -43,7 +90,7 @@ export class ExpenseService {
       ;
   };
 
-  addExpense = (projectId: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
+  public addExpense = (projectId: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense`,
       method: 'POST',
@@ -71,7 +118,7 @@ export class ExpenseService {
       ;
   }
 
-  editExpense = (projectId: number, id: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
+  public editExpense = (projectId: number, id: number, data: CreateExpenseModel): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'PUT',
@@ -104,7 +151,7 @@ export class ExpenseService {
     );
   }
 
-  deleteExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
+  public deleteExpense = (projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}`,
       method: 'DELETE',
@@ -134,7 +181,7 @@ export class ExpenseService {
       }));
   }
 
-  vote = (direction: string, projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
+  public vote = (direction: string, projectId: number, id: number): Observable<ApiResponseExpenseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/expense/${id}/${direction}`,
       method: 'PUT',

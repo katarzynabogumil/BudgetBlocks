@@ -9,7 +9,7 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class ProjectService {
-  private _projects: ProjectModel[] = [];
+  private projects: ProjectModel[] = [];
   private _projects$ = new BehaviorSubject<ProjectModel[]>([]);
 
   private _project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
@@ -52,8 +52,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`/`]);
         else {
-          this._projects = data;
-          this._projects$.next(this._projects);
+          this.projects = data;
+          this._projects$.next(this.projects);
         }
 
         return of({
@@ -103,8 +103,8 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this._projects.push(data);
-          this._projects$.next(this._projects);
+          this.projects.push(data);
+          this._projects$.next(this.projects);
         }
 
         return of({
@@ -129,11 +129,11 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this._projects = this._projects.map(project => {
+          this.projects = this.projects.map(project => {
             if (project.id === id) project = data;
             return project;
           });
-          this._projects$.next(this._projects);
+          this._projects$.next(this.projects);
         }
 
         return of({
@@ -157,8 +157,8 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this._projects = this._projects.filter(project => project.id !== id);
-          this._projects$.next(this._projects);
+          this.projects = this.projects.filter(project => project.id !== id);
+          this._projects$.next(this.projects);
         }
 
         return of({
@@ -206,8 +206,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this._projects.push(data);
-          this._projects$.next(this._projects);
+          this.projects.push(data);
+          this._projects$.next(this.projects);
         }
 
         return of({
@@ -233,8 +233,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this._projects.push(data);
-          this._projects$.next(this._projects);
+          this.projects.push(data);
+          this._projects$.next(this.projects);
         }
 
         return of({

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, CommentService, CategoriesService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { first } from 'rxjs';
+import { first, of } from 'rxjs';
 
 @Component({
   selector: 'app-expense-items-container',
@@ -39,7 +39,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.params['id']);
-    this.expenseApi.compareMode$.next(false);
+    this.expenseApi.compareMode$ = of(false);
     this.getProject();
     this.onModeChanges();
   }
@@ -110,7 +110,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
         this.compareMode = false;
         this.updateSum();
       }
-      this.expenseApi.compareMode$.next(compareMode);
+      this.expenseApi.compareMode$ = of(compareMode);
     });
   }
 
@@ -159,10 +159,10 @@ export class ExpenseItemsContainerComponent implements OnInit {
       }).cost;
     }
 
-    this.expenseApi.expenseSum$.next(this.sum);
-    this.expenseApi.maxSum$.next(this.maxSum);
-    this.expenseApi.minSum$.next(this.minSum);
-    this.expenseApi.expenseSumsByCat$.next(this.expenseSumsByCat);
+    this.expenseApi.expenseSum$ = of(this.sum);
+    this.expenseApi.maxSum$ = of(this.maxSum);
+    this.expenseApi.minSum$ = of(this.minSum);
+    this.expenseApi.expenseSumsByCat$ = of(this.expenseSumsByCat);
   }
 
   handleSelect(event: Event, expense: ExpenseModel): void {
