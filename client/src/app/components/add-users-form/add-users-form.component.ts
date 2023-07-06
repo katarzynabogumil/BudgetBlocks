@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ProjectModel, ProjectService, ApiResponseProjectModel, UserModel, EmptyProject } from '@app/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-add-users-form',
@@ -68,7 +69,7 @@ export class AddUsersFormComponent implements OnInit {
   }
 
   private getProject(id: number): void {
-    this.projectApi.getProject(id).subscribe();
+    this.projectApi.getProject(id).pipe(first()).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.owners = p.owners || [];

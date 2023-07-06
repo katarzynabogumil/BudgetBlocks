@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectModel, ProjectService } from '@app/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-project-items-container',
@@ -19,7 +20,7 @@ export class ProjectItemsContainerComponent implements OnInit {
   }
 
   private getProjects(): void {
-    this.projectApi.getAllProjects().subscribe();
+    this.projectApi.getAllProjects().pipe(first()).subscribe();
     this.projectApi.projects$.
       subscribe(res => {
         this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
@@ -33,7 +34,7 @@ export class ProjectItemsContainerComponent implements OnInit {
   }
 
   private getProjectInvitations(): void {
-    this.projectApi.getProjectInvitations().subscribe();
+    this.projectApi.getProjectInvitations().pipe(first()).subscribe();
     this.projectApi.projectInvitations$.
       subscribe(projects => {
         this.projectInvitations = projects;

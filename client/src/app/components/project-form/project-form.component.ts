@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
 import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
-import { Observable, of, switchMap } from 'rxjs';
+import { first, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-project-form',
@@ -52,6 +52,7 @@ export class ProjectFormComponent implements OnInit {
 
     if (!this.isAddMode) {
       this.projectApi.getProject(this.id)
+        .pipe(first())
         .subscribe((res: ApiResponseProjectModel) => {
           const projectData = res.data as CreateProjectModel;
           projectData.dateTo = projectData.dateTo?.toString().slice(0, -1);
@@ -153,12 +154,13 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private getRating(id: number): void {
-    this.aiApi.getRating(id).subscribe();
+    this.aiApi.getRating(id).pipe(first()).subscribe();
     this.aiApi.rating$.subscribe((res: RatingModel) => {
       const rating = res.rating;
 
       if (this.rating !== rating && rating > 0) {
         this.projectApi.getProject(id)
+          .pipe(first())
           .subscribe((res: ApiResponseProjectModel) => {
             res.data.budgetRating = rating;
             this.editProject(id, res.data as CreateProjectModel);

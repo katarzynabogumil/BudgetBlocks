@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpCategoryModel } from '@app/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -53,7 +54,7 @@ export class ProjectDashboardComponent implements OnInit {
   }
 
   private getProject(id: number): void {
-    this.projectApi.getProject(id).subscribe();
+    this.projectApi.getProject(id).pipe(first()).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       this.project = p;
       this.categories = p.categories;

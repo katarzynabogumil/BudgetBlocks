@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpenseModel, ExpCategoryModel, CommentService, CategoriesService } from '@app/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-expense-items-container',
@@ -44,7 +45,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   private getProject(): void {
-    this.projectApi.getProject(this.id).subscribe();
+    this.projectApi.getProject(this.id).pipe(first()).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       if (p.id >= 0) {
         this.project = p;
@@ -233,7 +234,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
       if (newOrderId > -1) {
         this.categoriesApi.changeCatOrderId(cat.id, newOrderId).subscribe(() => {
           if (cat.orderId === lastOrderIdToChange) {
-            this.projectApi.getProject(this.id).subscribe();
+            this.projectApi.getProject(this.id).pipe(first()).subscribe();
           }
         });
       }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
+import { BehaviorSubject, first, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
 import { ExpenseModel, ApiResponseExpenseModel, RequestConfigModel, EmptyExpense, CreateExpenseModel } from '../models';
 import { ApiService } from './api.service';
@@ -57,9 +57,10 @@ export class ExpenseService {
         const error = response.error;
 
         if (!error) {
-          const project = this.projectApi.project$.getValue();
-          project.expenses.push(data);
-          this.projectApi.project$.next(project);
+          this.projectApi.project$.pipe(first()).subscribe(project => {
+            project.expenses.push(data);
+            this.projectApi.project$ = of(project);
+          });
         }
 
         return of({
@@ -84,14 +85,15 @@ export class ExpenseService {
         const error = response.error;
 
         if (!error) {
-          const project = this.projectApi.project$.getValue();
-          project.expenses = project.expenses.map(expense => {
-            if (expense.id === id) {
-              expense = data;
-            }
-            return expense
+          this.projectApi.project$.pipe(first()).subscribe(project => {
+            project.expenses = project.expenses.map(expense => {
+              if (expense.id === id) {
+                expense = data;
+              }
+              return expense
+            });
+            this.projectApi.project$ = of(project);
           });
-          this.projectApi.project$.next(project);
         }
 
         return of({
@@ -114,15 +116,16 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        const project = this.projectApi.project$.getValue();
-        project.expenses = project.expenses.filter(expense => expense.id !== id);
+        this.projectApi.project$.pipe(first()).subscribe(project => {
+          project.expenses = project.expenses.filter(expense => expense.id !== id);
 
-        const deletedCategory = data.category;
-        project.categories = project.categories?.filter(category => {
-          return !((category.expenses?.length === 1) && category.category === deletedCategory.category)
+          const deletedCategory = data.category;
+          project.categories = project.categories?.filter(category => {
+            return !((category.expenses?.length === 1) && category.category === deletedCategory.category)
+          });
+
+          this.projectApi.project$ = of(project);
         });
-
-        this.projectApi.project$.next(project);
 
         return of({
           data: data,
@@ -143,15 +146,16 @@ export class ExpenseService {
         const data = response.data as ExpenseModel;
         const error = response.error;
 
-        const project = this.projectApi.project$.getValue();
+        this.projectApi.project$.pipe(first()).subscribe(project => {
+          project.expenses = project.expenses.map(expense => {
+            if (expense.id === id) {
+              expense = data;
+            }
+            return expense
+          });
 
-        project.expenses = project.expenses.map(expense => {
-          if (expense.id === id) {
-            expense = data;
-          }
-          return expense
+          this.projectApi.project$ = of(project);
         });
-        this.projectApi.project$.next(project);
 
         return of({
           data: data,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, mergeMap, Observable, of } from 'rxjs';
+import { BehaviorSubject, first, mergeMap, Observable, of } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
 import { ApiResponseProjectModel, ApiResponseProjectModelArr, CreateProjectModel, EmptyProject, ProjectModel, RequestConfigModel } from '../models';
 import { ApiService } from './api.service';
@@ -9,42 +9,36 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class ProjectService {
-  private projects: ProjectModel[] = [];
-  projects$ = new BehaviorSubject<ProjectModel[]>([]);
+  private _projects: ProjectModel[] = [];
+  private _projects$ = new BehaviorSubject<ProjectModel[]>([]);
 
-  projectInvitations$ = new BehaviorSubject<ProjectModel[]>([]);
-
-  project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
+  private _project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
+  private _projectInvitations$ = new BehaviorSubject<ProjectModel[]>([]);
 
   constructor(
     public api: ApiService,
     private router: Router,
   ) { }
 
-  getProjectInvitations = (): Observable<ApiResponseProjectModelArr> => {
-    const config: RequestConfigModel = {
-      url: `${env.api.serverUrl}/projects/invitations`,
-      method: 'GET',
-      ...this.api.headers
-    };
+  public get projects$(): Observable<ProjectModel[]> {
+    return this._projects$.asObservable();
+  }
 
-    return this.api.callApi(config).pipe(
-      mergeMap((response) => {
-        const data = response.data as ProjectModel[];
-        const error = response.error;
+  public get project$(): Observable<ProjectModel> {
+    return this._project$.asObservable();
+  }
 
-        if (error) this.router.navigate([`/`]);
-        else this.projectInvitations$.next(data);
+  public set project$(project: Observable<ProjectModel>) {
+    project.pipe(first()).subscribe(p => {
+      this._project$.next(p);
+    })
+  }
 
-        return of({
-          data: data,
-          error,
-        });
-      }))
-      ;
-  };
+  public get projectInvitations$(): Observable<ProjectModel[]> {
+    return this._projectInvitations$.asObservable();
+  }
 
-  getAllProjects = (): Observable<ApiResponseProjectModelArr> => {
+  public getAllProjects = (): Observable<ApiResponseProjectModelArr> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/projects`,
       method: 'GET',
@@ -58,8 +52,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`/`]);
         else {
-          this.projects = data;
-          this.projects$.next(this.projects);
+          this._projects = data;
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -70,7 +64,7 @@ export class ProjectService {
       ;
   };
 
-  getProject = (id: number): Observable<ApiResponseProjectModel> => {
+  public getProject = (id: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'GET',
@@ -84,7 +78,7 @@ export class ProjectService {
 
         if (error) this.router.navigate([`projects/`]);
         else {
-          this.project$.next(data);
+          this._project$.next(data);
         }
 
         return of({
@@ -95,7 +89,7 @@ export class ProjectService {
       ;
   };
 
-  addProject = (projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
+  public addProject = (projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project`,
       method: 'POST',
@@ -109,8 +103,8 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this.projects.push(data);
-          this.projects$.next(this.projects);
+          this._projects.push(data);
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -121,7 +115,7 @@ export class ProjectService {
       ;
   }
 
-  editProject = (id: number, projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
+  public editProject = (id: number, projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'PUT',
@@ -135,11 +129,11 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this.projects = this.projects.map(project => {
+          this._projects = this._projects.map(project => {
             if (project.id === id) project = data;
             return project;
           });
-          this.projects$.next(this.projects);
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -150,7 +144,7 @@ export class ProjectService {
       ;
   }
 
-  deleteProject = (id: number): Observable<ApiResponseProjectModel> => {
+  public deleteProject = (id: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${id}`,
       method: 'DELETE',
@@ -163,8 +157,8 @@ export class ProjectService {
         const error = response.error;
 
         if (!error) {
-          this.projects = this.projects.filter(project => project.id !== id);
-          this.projects$.next(this.projects);
+          this._projects = this._projects.filter(project => project.id !== id);
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -175,7 +169,30 @@ export class ProjectService {
       ;
   }
 
-  acceptInvitation = (projectId: number): Observable<ApiResponseProjectModel> => {
+  public getProjectInvitations = (): Observable<ApiResponseProjectModelArr> => {
+    const config: RequestConfigModel = {
+      url: `${env.api.serverUrl}/projects/invitations`,
+      method: 'GET',
+      ...this.api.headers
+    };
+
+    return this.api.callApi(config).pipe(
+      mergeMap((response) => {
+        const data = response.data as ProjectModel[];
+        const error = response.error;
+
+        if (error) this.router.navigate([`/`]);
+        else this._projectInvitations$.next(data);
+
+        return of({
+          data: data,
+          error,
+        });
+      }))
+      ;
+  };
+
+  public acceptInvitation = (projectId: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/accept`,
       method: 'PUT',
@@ -189,8 +206,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this.projects.push(data);
-          this.projects$.next(this.projects);
+          this._projects.push(data);
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -201,7 +218,7 @@ export class ProjectService {
       ;
   }
 
-  addUser = (email: string, projectId: number): Observable<ApiResponseProjectModel> => {
+  public addUser = (email: string, projectId: number): Observable<ApiResponseProjectModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/project/${projectId}/adduser`,
       method: 'POST',
@@ -216,8 +233,8 @@ export class ProjectService {
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this.projects.push(data);
-          this.projects$.next(this.projects);
+          this._projects.push(data);
+          this._projects$.next(this._projects);
         }
 
         return of({
@@ -227,6 +244,5 @@ export class ProjectService {
       }))
       ;
   }
-
 
 }

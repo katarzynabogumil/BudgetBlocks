@@ -4,7 +4,7 @@ import { ApiService } from './api.service';
 import { ProjectService } from './project.service';
 import { environment as env } from '../../../environments/environment';
 import { ProjectMock } from '../mocks';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, first } from 'rxjs';
 import { EmptyProject, ProjectModel } from '../models';
 
 describe('ProjectService', () => {
@@ -39,7 +39,7 @@ describe('ProjectService', () => {
   });
 
   it('should call getProjectInvitations and return project array', () => {
-    service.getProjectInvitations().subscribe((res) => {
+    service.fetchProjectInvitations().pipe(first()).subscribe((res) => {
       expect(res.data).toEqual(projects);
     });
 
@@ -52,7 +52,7 @@ describe('ProjectService', () => {
   });
 
   it('should call getAllProjects and return project array', () => {
-    service.getAllProjects().subscribe((res) => {
+    service.fetchAllProjects().subscribe((res) => {
       expect(res.data).toEqual(projects);
     });
 

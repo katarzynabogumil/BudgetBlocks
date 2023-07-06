@@ -8,15 +8,23 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class OpenAiService {
-  rating$ = new BehaviorSubject<RatingModel>({ rating: 0 });
-  missingCategories$ = new BehaviorSubject<{ [key: number]: string }>({});
-  missingCategories: { [key: number]: string } = {};
+  private _rating$ = new BehaviorSubject<RatingModel>({ rating: 0 });
+  private _missingCategories: { [key: number]: string } = {};
+  private _missingCategories$ = new BehaviorSubject<{ [key: number]: string }>({});
 
   constructor(
-    public api: ApiService
+    private api: ApiService
   ) { }
 
-  getRating = (projectId: number): Observable<ApiResponseRatingModel> => {
+  public get rating$(): Observable<RatingModel> {
+    return this._rating$.asObservable();
+  }
+
+  public get missingCategories$(): Observable<{ [key: number]: string }> {
+    return this._missingCategories$.asObservable();
+  }
+
+  public getRating = (projectId: number): Observable<ApiResponseRatingModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/rating/${projectId}`,
       method: 'GET',
@@ -29,7 +37,7 @@ export class OpenAiService {
         const error = response.error;
 
         if (!error) {
-          this.rating$.next(data);
+          this._rating$.next(data);
         }
 
         return of({
@@ -39,7 +47,7 @@ export class OpenAiService {
       }));
   };
 
-  getMissingCategories = (projectId: number): Observable<ApiResponseModel> => {
+  public getMissingCategories = (projectId: number): Observable<ApiResponseModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/missing-categories/${projectId}`,
       method: 'GET',
@@ -52,8 +60,8 @@ export class OpenAiService {
         const error = response.error;
 
         if (!error) {
-          this.missingCategories[projectId] = data.categories;
-          this.missingCategories$.next(this.missingCategories);
+          this._missingCategories[projectId] = data.categories;
+          this._missingCategories$.next(this._missingCategories);
         }
 
         return of({

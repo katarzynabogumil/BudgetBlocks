@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory, EmptyCreateExpCategory } from '@app/core';
+import { first } from 'rxjs';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 
 @Component({
@@ -175,6 +176,6 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   private getMissingCategories(projectId: number): void {
-    this.aiApi.getMissingCategories(projectId).subscribe();
+    this.aiApi.getMissingCategories(projectId).pipe(first()).subscribe();
   }
 }

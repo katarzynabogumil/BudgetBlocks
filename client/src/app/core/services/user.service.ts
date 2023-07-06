@@ -8,16 +8,16 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class UserService {
-  private userSub = '';
+  private _userSub = '';
 
-  constructor(public api: ApiService) { }
+  constructor(private api: ApiService) { }
 
-  public getCurrentUserSub = (): string => {
-    return this.userSub;
+  public get userSub(): string {
+    return this._userSub;
   }
 
-  public setCurrentUserSub = (sub: string): void => {
-    this.userSub = sub;
+  public set userSub(sub: string) {
+    this._userSub = sub;
   }
 
   public getUser = (): Observable<ApiResponseUserModel> => {
