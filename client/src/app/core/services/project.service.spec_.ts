@@ -25,12 +25,6 @@ describe('ProjectService', () => {
 
     service = TestBed.inject(ProjectService);
 
-    projects = [];
-    service.projects$ = new BehaviorSubject<ProjectModel[]>(projects);
-    service.projects = projects;
-    service.projectInvitations$ = new BehaviorSubject<ProjectModel[]>(projects);
-    service.project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
-
     httpController = TestBed.inject(HttpTestingController);
   });
 

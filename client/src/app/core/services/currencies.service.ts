@@ -28,7 +28,7 @@ export class CurrenciesService {
   ];
   private _currencyRates$ = new BehaviorSubject<CurrencyRatesModel>(EmptyCurrencyRates);
 
-  constructor(private api: ApiService) { }
+  constructor(public api: ApiService) { }
 
   public get currencies(): string[] {
     return this._currencies;
@@ -47,16 +47,15 @@ export class CurrenciesService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as CurrencyRatesModel;
-        const error = response.error;
+        const { data, error } = response;
 
-        if (!error) this._currencyRates$.next(data);
+        if (data) this._currencyRates$.next(data as CurrencyRatesModel);
 
         return of({
-          data: data,
+          data: data ? data as CurrencyRatesModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   };
 }

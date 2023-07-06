@@ -58,8 +58,10 @@ export class ExpenseFormComponent implements OnInit {
       this.expenseApi.getExpense(this.projectId, this.expenseId)
         .pipe(first())
         .subscribe((res: ApiResponseExpenseModel) => {
-          res.data.formCategory = res.data.category.category;
-          this.expenseForm.patchValue(res.data);
+          if (res.data) {
+            res.data.formCategory = res.data.category.category;
+            this.expenseForm.patchValue(res.data);
+          }
         });
     }
   }

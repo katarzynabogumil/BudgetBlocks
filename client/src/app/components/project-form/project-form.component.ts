@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment as env } from '../../../environments/environment';
-import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel } from '@app/core';
+import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel, AppErrorModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 import { first, Observable, of, switchMap } from 'rxjs';
 
@@ -73,7 +73,7 @@ export class ProjectFormComponent implements OnInit {
     } else {
 
       this.getCurrencyRates(project).pipe(
-        switchMap((rates: CurrencyRatesModel | null) => {
+        switchMap((rates: CurrencyRatesModel | AppErrorModel | null) => {
           if (rates) {
             project.currencyRates = rates;
             return of(rates);
@@ -81,7 +81,7 @@ export class ProjectFormComponent implements OnInit {
             return of(null);
           }
         })
-      ).subscribe((rates: CurrencyRatesModel | null) => {
+      ).subscribe((rates: CurrencyRatesModel | AppErrorModel | null) => {
         if (rates) {
           delete project.refreshRates;
           if (this.isAddMode) {
@@ -113,13 +113,14 @@ export class ProjectFormComponent implements OnInit {
     this.projectApi.addProject(data)
       .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
-        if (!res.error) {
+        if (res.data) {
           console.log('Project added.');
           this.id = res.data.id || this.id;
           this.getRating(this.id);
         }
         else console.log(res.error);
-        this.router.navigate([`/project/${res.data.id}`]);
+        const route = res.data ? `/project/${res.data.id}` : '/projects';
+        this.router.navigate([route]);
       });
   }
 
@@ -127,7 +128,7 @@ export class ProjectFormComponent implements OnInit {
     this.projectApi.editProject(id, data)
       .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
-        if (!res.error) {
+        if (res.data) {
           console.log('Project edited.');
           this.rating = res.data.budgetRating || this.rating;
           this.getRating(this.id);
@@ -136,7 +137,7 @@ export class ProjectFormComponent implements OnInit {
       });
   }
 
-  private getCurrencyRates(project: CreateProjectModel): Observable<CurrencyRatesModel> {
+  private getCurrencyRates(project: CreateProjectModel): Observable<CurrencyRatesModel | AppErrorModel | null> {
     if (!project.currencyRates || project.refreshRates) {
       return this.currenciesApi.currencyRates$.pipe(
         switchMap(rates => {
@@ -145,7 +146,8 @@ export class ProjectFormComponent implements OnInit {
           } else {
             return this.currenciesApi.getRates(project.currency).pipe(
               switchMap((rates: ApiResponseCurrenciesModel) => {
-                return of(rates.data);
+                if (rates.data) return of(rates.data);
+                else return of(rates.error);
               })
             );
           }
@@ -165,8 +167,10 @@ export class ProjectFormComponent implements OnInit {
         this.projectApi.getProject(id)
           .pipe(first())
           .subscribe((res: ApiResponseProjectModel) => {
-            res.data.budgetRating = rating;
-            this.editProject(id, res.data as CreateProjectModel);
+            if (res.data) {
+              res.data.budgetRating = rating;
+              this.editProject(id, res.data as CreateProjectModel);
+            }
           });
       }
     });

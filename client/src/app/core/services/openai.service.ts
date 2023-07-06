@@ -33,15 +33,14 @@ export class OpenAiService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as RatingModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
-          this._rating$.next(data);
+          this._rating$.next(data as RatingModel);
         }
 
         return of({
-          data: data,
+          data: data ? data as RatingModel : null,
           error,
         });
       }));
@@ -65,7 +64,7 @@ export class OpenAiService {
         }
 
         return of({
-          data: data,
+          data: data ? data as { categories: string } : null,
           error,
         });
       }));

@@ -47,21 +47,20 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel[];
-        const error = response.error;
+        const { data, error } = response;
 
         if (error) this.router.navigate([`/`]);
         else {
-          this.projects = data;
+          this.projects = data as ProjectModel[];
           this._projects$.next(this.projects);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel[] : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   };
 
   public getProject = (id: number): Observable<ApiResponseProjectModel> => {
@@ -73,20 +72,19 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (error) this.router.navigate([`projects/`]);
         else {
-          this._project$.next(data);
+          this._project$.next(data as ProjectModel);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   };
 
   public addProject = (projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
@@ -99,20 +97,19 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
-          this.projects.push(data);
+          this.projects.push(data as ProjectModel);
           this._projects$.next(this.projects);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
   public editProject = (id: number, projectData: CreateProjectModel): Observable<ApiResponseProjectModel> => {
@@ -125,23 +122,22 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
           this.projects = this.projects.map(project => {
-            if (project.id === id) project = data;
+            if (project.id === id) project = data as ProjectModel;
             return project;
           });
           this._projects$.next(this.projects);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
   public deleteProject = (id: number): Observable<ApiResponseProjectModel> => {
@@ -153,8 +149,7 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
           this.projects = this.projects.filter(project => project.id !== id);
@@ -162,11 +157,11 @@ export class ProjectService {
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
   public getProjectInvitations = (): Observable<ApiResponseProjectModelArr> => {
@@ -178,18 +173,17 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel[];
-        const error = response.error;
+        const { data, error } = response;
 
         if (error) this.router.navigate([`/`]);
-        else this._projectInvitations$.next(data);
+        else this._projectInvitations$.next(data as ProjectModel[]);
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel[] : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   };
 
   public acceptInvitation = (projectId: number): Observable<ApiResponseProjectModel> => {
@@ -201,21 +195,20 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this.projects.push(data);
+          this.projects.push(data as ProjectModel);
           this._projects$.next(this.projects);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
   public addUser = (email: string, projectId: number): Observable<ApiResponseProjectModel> => {
@@ -228,21 +221,20 @@ export class ProjectService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ProjectModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (error) this.router.navigate([`project/${projectId}`]);
         else {
-          this.projects.push(data);
+          this.projects.push(data as ProjectModel);
           this._projects$.next(this.projects);
         }
 
         return of({
-          data: data,
+          data: data ? data as ProjectModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   }
 
 }

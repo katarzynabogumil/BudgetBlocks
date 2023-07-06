@@ -13,56 +13,51 @@ export interface ApiResponseModel {
 }
 
 export interface ApiResponseUserModel {
-  data: UserModel;
+  data: UserModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseProjectModel {
-  data: ProjectModel;
+  data: ProjectModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseProjectModelArr {
-  data: ProjectModel[];
+  data: ProjectModel[] | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseExpenseModel {
-  data: ExpenseModel;
+  data: ExpenseModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseExpCategoryModel {
-  data: ExpCategoryModel;
+  data: ExpCategoryModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseExpenseModelArr {
-  data: ExpenseModel[];
+  data: ExpenseModel[] | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseCommentDictModel {
-  data: CommentDictModel;
+  data: CommentDictModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseCommentModel {
-  data: CommentModel;
+  data: CommentModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseRatingModel {
-  data: RatingModel;
+  data: RatingModel | null;
   error: AppErrorModel | null;
 }
 
 export interface ApiResponseCurrenciesModel {
-  data: CurrencyRatesModel;
-  error: AppErrorModel | null;
-}
-
-export interface ApiResponseTokenModel {
-  data: { csrfToken: string };
+  data: CurrencyRatesModel | null;
   error: AppErrorModel | null;
 }

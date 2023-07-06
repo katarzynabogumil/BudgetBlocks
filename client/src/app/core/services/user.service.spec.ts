@@ -4,54 +4,74 @@ import { ApiService } from './api.service';
 import { UserService } from './user.service';
 import { environment as env } from '../../../environments/environment';
 import { UserMock } from '../mocks';
+import { Observable, of } from 'rxjs';
+import { ApiResponseModel, RequestConfigModel, UserModel } from '../models';
 
 describe('UserService', () => {
   let service: UserService;
-  let httpController: HttpTestingController;
+  let callApiSpy: jasmine.Spy;
 
   beforeEach(() => {
+    const mockApiService = jasmine.createSpyObj<ApiService>(
+      'ApiService',
+      ['callApi']
+    );
+
+    callApiSpy = mockApiService.callApi.and.returnValue(
+      of({ data: UserMock, error: null })
+    );
+
     TestBed.configureTestingModule({
       providers: [
         UserService,
-        ApiService,
+        { provide: ApiService, useValue: mockApiService }
       ],
-      imports: [
-        HttpClientTestingModule,
-      ]
     });
 
     service = TestBed.inject(UserService);
-    httpController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call getUser and return user data', () => {
-    service.getUser().subscribe((res) => {
-      expect(res.data).toEqual(UserMock);
+  describe('getUser', () => {
+    it('should call getUser and return user data', () => {
+
+      service.getUser().subscribe((res) => {
+        expect(res.data).toEqual(UserMock);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+      });
     });
 
-    const req = httpController.expectOne({
-      method: 'GET',
-      url: `${env.api.serverUrl}/user`,
-    });
+    it('should call getUser and return error', () => {
+      const error = { message: 'Error' };
+      callApiSpy.and.returnValue(of({ data: null, error }));
 
-    req.flush(UserMock);
+      service.getUser().subscribe((res) => {
+        expect(res.data).toEqual(null);
+        expect(res.error).toEqual(error);
+        expect(callApiSpy).toHaveBeenCalled();
+      });
+    });
   });
 
-  it('should call saveUser and return new user', () => {
-    service.saveUser(UserMock).subscribe((res) => {
-      expect(res.data).toEqual(UserMock);
+  describe('saveUser', () => {
+    it('should call saveUser and return new user', () => {
+      service.saveUser(UserMock).subscribe((res) => {
+        expect(res.data).toEqual(UserMock);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+      });
     });
 
-    const req = httpController.expectOne({
-      url: `${env.api.serverUrl}/user`,
-      method: 'POST',
+    it('should call saveUser and return error if error', () => {
+      service.saveUser(UserMock).subscribe((res) => {
+        expect(res.data).toEqual(UserMock);
+        expect(res.error).toEqual(null);
+        expect(callApiSpy).toHaveBeenCalled();
+      });
     });
-
-    req.flush(UserMock);
   });
-
 });

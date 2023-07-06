@@ -23,12 +23,12 @@ describe('CommentService', () => {
       ]
     });
 
-    service = TestBed.inject(CommentService);
-    expenseId = 1;
-    const comments: CommentDictModel = {};
-    comments[expenseId] = []
-    service.comments$ = new BehaviorSubject<CommentDictModel>(comments);
-    service.comments = comments;
+    // service = TestBed.inject(CommentService);
+    // expenseId = 1;
+    // const comments: CommentDictModel = {};
+    // comments[expenseId] = []
+    // service.comments$ = new BehaviorSubject<CommentDictModel>(comments);
+    // service.comments = comments;
 
     httpController = TestBed.inject(HttpTestingController);
   });

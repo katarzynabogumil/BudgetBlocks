@@ -232,11 +232,13 @@ export class ExpenseItemsContainerComponent implements OnInit {
       }
 
       if (newOrderId > -1) {
-        this.categoriesApi.changeCatOrderId(cat.id, newOrderId).subscribe(() => {
-          if (cat.orderId === lastOrderIdToChange) {
-            this.projectApi.getProject(this.id).pipe(first()).subscribe();
-          }
-        });
+        this.categoriesApi.changeCatOrderId(cat.id, newOrderId)
+          .pipe(first())
+          .subscribe(() => {
+            if (cat.orderId === lastOrderIdToChange) {
+              this.projectApi.getProject(this.id).pipe(first()).subscribe();
+            }
+          });
       }
     });
   }

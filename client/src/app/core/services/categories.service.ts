@@ -12,7 +12,7 @@ export class CategoriesService {
     private api: ApiService,
   ) { }
 
-  changeCatOrderId = (categoryId: number, newOrderId: number): Observable<ApiResponseExpCategoryModel> => {
+  public changeCatOrderId = (categoryId: number, newOrderId: number): Observable<ApiResponseExpCategoryModel> => {
     const config: RequestConfigModel = {
       url: `${env.api.serverUrl}/categories/${categoryId}/${newOrderId}`,
       method: 'PUT',
@@ -21,11 +21,10 @@ export class CategoriesService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ExpCategoryModel;
-        const error = response.error;
+        const { data, error } = response;
 
         return of({
-          data: data,
+          data: data ? data as ExpCategoryModel : null,
           error,
         });
       }))

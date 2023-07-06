@@ -24,21 +24,21 @@ describe('ApiService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call callApi and return data', () => {
+  it('should call callApi and return valid data if no error', () => {
     const config = {
       url: `${env.api.serverUrl}/`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
-      credentials: 'include',
-      mode: 'cors',
+      ...service.headers
     };
 
-    const mockRes = '';
+    const data = '';
+    const mockRes = {
+      data,
+      error: null
+    };
 
     service.callApi(config).subscribe((res) => {
-      expect(res.data).toEqual(mockRes);
+      expect(res).toEqual(mockRes);
     });
 
     const req = httpController.expectOne({
@@ -46,6 +46,30 @@ describe('ApiService', () => {
       url: `${env.api.serverUrl}/`,
     });
 
-    req.flush(mockRes);
+    req.flush(data);
+  });
+
+  it('should call callApi and return no data and error if error', () => {
+    const config = {
+      url: `${env.api.serverUrl}/`,
+      method: 'GET',
+      ...service.headers
+    };
+
+    const url = `${env.api.serverUrl}/`;
+    const error = { status: 500, statusText: 'Internal server error' }
+
+    service.callApi(config).subscribe((res) => {
+      expect(res.data).toEqual(null);
+      expect(res.error?.message).toContain(error.status);
+      expect(res.error?.message).toContain(error.statusText);
+    });
+
+    const req = httpController.expectOne({
+      method: 'GET',
+      url,
+    });
+
+    req.flush('', error);
   });
 });

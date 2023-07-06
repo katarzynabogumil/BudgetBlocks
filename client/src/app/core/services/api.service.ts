@@ -19,7 +19,7 @@ export class ApiService {
     private http: HttpClient,
   ) { }
 
-  callApi = (config: RequestConfigModel): Observable<ApiResponseModel> => {
+  public callApi = (config: RequestConfigModel): Observable<ApiResponseModel> => {
 
     return this.http
       .request<unknown>(

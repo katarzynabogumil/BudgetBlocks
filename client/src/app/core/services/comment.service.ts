@@ -28,16 +28,15 @@ export class CommentService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as CommentDictModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
-          this.comments = data;
+          this.comments = data as CommentDictModel;
           this._comments$.next(this.comments);
         }
 
         return of({
-          data: data,
+          data: data ? (data as CommentDictModel) : null,
           error,
         });
       }))
@@ -54,16 +53,15 @@ export class CommentService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as CommentModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
-          this.comments[expenseId].push(data);
+          this.comments[expenseId].push(data as CommentModel);
           this._comments$.next(this.comments);
         }
 
         return of({
-          data: data,
+          data: data ? (data as CommentModel) : null,
           error,
         });
       })
@@ -82,7 +80,7 @@ export class CommentService {
         const data = response.data as CommentModel;
         const error = response.error;
 
-        if (!error) {
+        if (!error && this.comments[expenseId]) {
           this.comments[expenseId] = this.comments[expenseId].filter(comment => comment.id !== data.id);
           this._comments$.next(this.comments);
         }

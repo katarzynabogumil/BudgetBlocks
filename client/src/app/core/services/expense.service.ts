@@ -79,11 +79,10 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ExpenseModel;
-        const error = response.error;
+        const { data, error } = response;
 
         return of({
-          data: data,
+          data: data ? data as ExpenseModel : null,
           error,
         });
       }))
@@ -100,18 +99,17 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ExpenseModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
           this.projectApi.project$.pipe(first()).subscribe(project => {
-            project.expenses.push(data);
+            project.expenses.push(data as ExpenseModel);
             this.projectApi.project$ = of(project);
           });
         }
 
         return of({
-          data: data,
+          data: data ? data as ExpenseModel : null,
           error,
         });
       }))
@@ -128,14 +126,13 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ExpenseModel;
-        const error = response.error;
+        const { data, error } = response;
 
         if (!error) {
           this.projectApi.project$.pipe(first()).subscribe(project => {
             project.expenses = project.expenses.map(expense => {
               if (expense.id === id) {
-                expense = data;
+                expense = data as ExpenseModel;
               }
               return expense
             });
@@ -144,7 +141,7 @@ export class ExpenseService {
         }
 
         return of({
-          data: data,
+          data: data ? data as ExpenseModel : null,
           error,
         });
       })
@@ -175,7 +172,7 @@ export class ExpenseService {
         });
 
         return of({
-          data: data,
+          data: data ? data as ExpenseModel : null,
           error,
         });
       }));
@@ -190,13 +187,12 @@ export class ExpenseService {
 
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
-        const data = response.data as ExpenseModel;
-        const error = response.error;
+        const { data, error } = response;
 
         this.projectApi.project$.pipe(first()).subscribe(project => {
           project.expenses = project.expenses.map(expense => {
             if (expense.id === id) {
-              expense = data;
+              expense = data as ExpenseModel;
             }
             return expense
           });
@@ -205,7 +201,7 @@ export class ExpenseService {
         });
 
         return of({
-          data: data,
+          data: data ? data as ExpenseModel : null,
           error,
         });
       })

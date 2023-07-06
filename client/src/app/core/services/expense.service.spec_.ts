@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { ExpenseService } from './expense.service';
 import { environment as env } from '../../../environments/environment';
-import { ExpenseMock } from '../mocks';
+import { ExpenseMock, ProjectMock } from '../mocks';
 import { BehaviorSubject, of } from 'rxjs';
 import { ProjectService } from './project.service';
 import { EmptyProject, ProjectModel } from '../models';
@@ -25,25 +25,16 @@ describe('ExpenseService', () => {
       ]
     });
 
-    // const spy = spyOn<ProjectService, any>(ProjectService.prototype, 'project$')
-    //   .and.returnValue(new BehaviorSubject<ProjectModel>(EmptyProject));
-
     const mockProjectService = jasmine.createSpyObj<ProjectService>(
       'ProjectService',
-      ['project$']
+      {
+        project$: of(ProjectMock)
+      }
     );
-    mockProjectService.project$ = new BehaviorSubject<ProjectModel>(EmptyProject);
+
 
     service = TestBed.inject(ExpenseService);
 
-    // service.expense$ = new BehaviorSubject<CommentDictModel>(comments);
-    // service.expense = comments;
-    // expense$ = new BehaviorSubject<ExpenseModel>(EmptyExpense);
-    // expenseSum$ = new BehaviorSubject<number>(0);
-    // expenseSumsByCat$ = new BehaviorSubject<{ [key: string]: number; }>({});
-    // minSum$ = new BehaviorSubject<number>(0);
-    // maxSum$ = new BehaviorSubject<number>(0);
-    // compareMode$ = new BehaviorSubject<boolean>(false);
 
     httpController = TestBed.inject(HttpTestingController);
   });

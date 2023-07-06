@@ -30,12 +30,13 @@ export class UserService {
     return this.api.callApi(config).pipe(
       mergeMap((response) => {
         const { data, error } = response;
+
         return of({
-          data: data as UserModel,
+          data: data ? data as UserModel : null,
           error,
         });
-      }))
-      ;
+      })
+    );
   };
 
   public saveUser = (userData: UserModel): Observable<ApiResponseUserModel> => {
@@ -50,7 +51,7 @@ export class UserService {
       mergeMap((response) => {
         const { data, error } = response;
         return of({
-          data: data as UserModel,
+          data: data ? data as UserModel : null,
           error,
         });
       })
