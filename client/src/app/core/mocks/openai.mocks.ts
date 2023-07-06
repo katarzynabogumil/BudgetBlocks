@@ -3,5 +3,5 @@ export const RatingMock = {
 };
 
 export const CategoriesMock = {
-  categories: 'Souvenirs, food, travel insurance',
+  1: 'Souvenirs, food, travel insurance',
 };

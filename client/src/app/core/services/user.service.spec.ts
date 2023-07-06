@@ -33,7 +33,6 @@ describe('UserService', () => {
 
 
   describe('initial', () => {
-
     it('should be created', () => {
       expect(service).toBeTruthy();
     });
