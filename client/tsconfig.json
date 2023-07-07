@@ -2,8 +2,8 @@
 {
   "compileOnSave": false,
   "exclude": [
-    "./cypress.config.ts",
     "node_modules",
+    "./cypress.config.ts",
     "cypress",
     "**/*.cy.tsx"
   ],

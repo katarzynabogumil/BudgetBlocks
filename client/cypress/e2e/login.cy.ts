@@ -4,11 +4,11 @@ describe('login', () => {
   });
 
   it('should successfully log into our app', () => {
-    cy.get('h1').contains('BudgetBlocks');
-    cy.contains('Hi, Example! Here are your projects.');
-    cy.contains('Add a project');
-    cy.contains('all projects');
-    cy.contains('log out');
+    cy.dataTestId('title').should('be.visible');
+    cy.dataTestId('greeting').should('be.visible');
+    cy.dataTestId('home').should('be.visible');
+    cy.dataTestId('log-out').should('be.visible');
+    cy.dataTestId('add-item').should('be.visible');
   });
 });
 

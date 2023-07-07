@@ -14,74 +14,77 @@ describe('all-projects-dashboard', () => {
   });
 
   it('should successfully display projects dashboard', () => {
-    cy.get('div.main-card').children().contains('Hi, Example! Here are your projects.');
-    cy.get('div.main-card').children().contains('all projects');
-    cy.get('div.main-card').children().contains('log out');
+    cy.dataTestId('greeting').should('be.visible');
+    cy.dataTestId('home').should('be.visible');
+    cy.dataTestId('log-out').should('be.visible');
+    cy.dataTestId('add-project').should('be.visible');
   });
 
   it('should successfully display project information', () => {
-    cy.get('app-project-item').children().contains(mockdata.initialData.project.name);
-    cy.get('app-project-item').children().contains('edit');
-    cy.get('app-project-item').children().contains('remove');
+    cy.dataTestId('project-name').should('be.visible');
+    cy.dataTestId('project-edit').should('be.visible');
+    cy.dataTestId('project-remove').should('be.visible');
   });
 
   describe('add project', () => {
 
     it('should successfully add a project', () => {
-      cy.contains('Add a project').click();
+      cy.dataTestId('add-project').click();
       const newProject = {
         name: 'New project',
         budget: '1000',
         type: 'trip',
       }
-      cy.get('input[formcontrolname="name"]').type(newProject.name);
-      cy.get('input[formcontrolname="budget"]').type(newProject.budget);
-      cy.get('select[formcontrolname="type"]').select(newProject.type);
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('form-name').type(newProject.name);
+      cy.dataTestId('form-budget').type(newProject.budget);
+      cy.dataTestId('form-type').select(newProject.type);
+      cy.dataTestId('submit').click();
 
-      cy.get('h2').contains(newProject.name);
+      cy.dataTestId('project-name').should('be.visible');
+      cy.dataTestId('project-name').contains(newProject.name);
     });
 
     it('should validate fields', () => {
-      cy.contains('Add a project').click();
+      cy.dataTestId('add-project').click();
 
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('submit').click();
 
-      cy.get('app-project-form').children().contains('Name is required.');
-      cy.get('app-project-form').children().contains('Budget is required.');
-      cy.get('app-project-form').children().contains('Type is required.');
+      cy.dataTestId('name-validator').should('be.visible');
+      cy.dataTestId('budget-validator').should('be.visible');
+      cy.dataTestId('type-validator').should('be.visible');
     });
   });
 
   describe('edit project', () => {
     it('should successfully edit a project', () => {
-      cy.get('app-project-item').children().contains('edit').click();
+      cy.dataTestId('project-edit').click();
 
       const newName = 'New name';
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="name"]').type(newName);
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('form-name').clear();
+      cy.dataTestId('form-name').type(newName);
+      cy.dataTestId('submit').click();
 
-      cy.get('h2').contains(newName);
+      cy.dataTestId('project-name').should('be.visible');
+      cy.dataTestId('project-name').contains(newName);
     });
 
     it('should validate fields', () => {
-      cy.get('app-project-item').children().contains('edit').click();
+      cy.dataTestId('project-edit').click();
 
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="budget"]').clear();
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('form-name').clear();
+      cy.dataTestId('form-budget').clear();
+      cy.dataTestId('submit').click();
 
-      cy.get('app-project-form').children().contains('Name is required.');
-      cy.get('app-project-form').children().contains('Budget is required.');
+      cy.dataTestId('name-validator').should('be.visible');
+      cy.dataTestId('budget-validator').should('be.visible');
     });
   });
 
   describe('delete project', () => {
     it('should successfully delete project', () => {
-      cy.get('app-project-item').children().contains('remove').click();
-      cy.get('app-project-item').should('not.exist');
-      cy.get('h2').contains(mockdata.initialData.project.name).should('not.exist');
+      cy.dataTestId('project-remove').click();
+      cy.dataTestId('project-item').should('not.exist');
+      cy.contains(mockdata.initialData.project.name).should('not.exist');
     });
   });
 });

@@ -70,7 +70,7 @@ describe('AddItemComponent', () => {
 
       fixture.detectChanges();
       const categories: HTMLDivElement = fixture.debugElement.query(
-        By.css('[data-testid="missing_categories"]')
+        By.css('[data-testid="missing-categories"]')
       ).nativeElement;
 
       expect(categories.textContent).toContain(CategoriesMock[id]);
@@ -97,7 +97,7 @@ describe('AddItemComponent', () => {
 
       fixture.detectChanges();
       const categories: DebugElement = fixture.debugElement.query(
-        By.css('[data-testid="missing_categories"]')
+        By.css('[data-testid="missing-categories"]')
       );
 
       expect(categories).toBeFalsy();

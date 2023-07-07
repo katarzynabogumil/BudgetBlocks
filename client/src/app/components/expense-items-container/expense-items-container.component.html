@@ -5,7 +5,7 @@
     <form [formGroup]="checkboxForm">
       <label class="switch">
         <input type="checkbox" formControlName="compareMode" class="form-control" />
-        <span class="slider"></span>
+        <span class="slider" data-testid="compare-mode-switch"></span>
       </label>
     </form>
     <b id="switch-right">compare</b>
@@ -26,11 +26,12 @@
           <app-expense-item [ngClass]="(compareMode && expense.selected) ? 'compare-selected' : 
       compareMode ? 'compare-not-selected' : null" class="card expense-item" [expense]="expense"
             (click)="handleSelect($event, expense)" [compareMode]="this.compareMode"
-            (toggleDetailsEvent)="toggleDetails($event)" [projectCurrency]="this.project.currency">
+            (toggleDetailsEvent)="toggleDetails($event)" [projectCurrency]="this.project.currency"
+            data-testid="expense-item">
           </app-expense-item>
 
           <app-expense-details [expense]="expense" [isHidden]="!expense.showDetails"
-            [ngStyle]="{'display': expense.showDetails ? 'block' : 'none'}">
+            [ngStyle]="{'display': expense.showDetails ? 'block' : 'none'}" data-testid="expense-details">
           </app-expense-details>
         </div>
       </div>
@@ -38,6 +39,6 @@
     </div>
   </div>
 
-  <app-add-item [item]="'an expense'" [link]="'./add'" [project]="project">
+  <app-add-item [item]="'an expense'" [link]="'./add'" [project]="project" data-testid="add-expense">
   </app-add-item>
 </div>

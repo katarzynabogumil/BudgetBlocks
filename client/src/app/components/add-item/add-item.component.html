@@ -1,14 +1,14 @@
-<div class="card add-card" [ngClass]="{'compare-not-selected' : compareMode }">
-  <a class="pointer" [routerLink]="[link]">
+<a class="pointer" [routerLink]="[link]">
+  <div class="card add-card" [ngClass]="{'compare-not-selected' : compareMode }">
     <h2>
       <span class="material-symbols-outlined add">
         add
       </span>
       Add {{item}}
     </h2>
-    <div *ngIf="categories" class="smaller missing-categories" data-testid="missing_categories">
+    <div *ngIf="categories" class="smaller missing-categories" data-testid="missing-categories">
       You might be still missing some categories:
       {{categories}}
     </div>
-  </a>
-</div>
+  </div>
+</a>

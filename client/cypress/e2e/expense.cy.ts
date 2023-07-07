@@ -6,9 +6,9 @@ describe('expense-details', () => {
       then(() => {
         cy.login(Cypress.env('email'), Cypress.env('password'));
         cy.visit('/projects');
-        cy.get('app-project-item').children().contains(mockdata.initialData.project.name).click();
-        cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[0].name)
-          .parents('app-expense-item').children().contains('expand_circle_down').click();
+        cy.dataTestId('project-name').contains(mockdata.initialData.project.name).click();
+        cy.dataTestId('expense-name').contains(mockdata.initialData.expenses[0].name)
+          .parents('[data-testid="expense-item"]').find('[data-testid="show-details"]').click();
       });
   });
 
@@ -17,78 +17,79 @@ describe('expense-details', () => {
   });
 
   it('should successfully display expense details', () => {
-    cy.get('app-expense-details').children().contains('Notes:');
-    cy.get('app-expense-details').children().contains('Comments:');
-
-    cy.get('app-expense-details').children().contains(mockdata.initialData.expenses[0].notes)
+    cy.dataTestId('expense-notes').should('be.visible');
+    cy.dataTestId('expense-notes').contains(mockdata.initialData.expenses[0].notes)
       .should('be.visible');
-    cy.get('app-expense-details').children().contains(mockdata.initialData.expenses[1].notes)
+    cy.dataTestId('expense-notes').contains(mockdata.initialData.expenses[1].notes)
       .should('not.be.visible');
-    cy.get('app-expense-details').children().contains(mockdata.initialData.comment.text);
+
+    cy.dataTestId('expense-comment').should('be.visible');
+    cy.dataTestId('expense-comment').contains(mockdata.initialData.comment.text)
+      .should('be.visible');
   });
 
   describe('edit expense', () => {
     it('should successfully edit an expense', () => {
-      cy.get('app-expense-details:visible').children().contains('edit').click();
+      cy.dataTestIdVisible('expense-edit').click();
 
       const newName = 'New name';
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="name"]').type(newName);
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('form-name').clear();
+      cy.dataTestId('form-name').type(newName);
+      cy.dataTestId('submit').click();
 
-      cy.get('app-expense-item').children().contains(newName);
+      cy.dataTestId('expense-name').contains(newName);
     });
 
     it('should validate fields', () => {
-      cy.get('app-expense-details:visible').children().contains('edit').click();
+      cy.dataTestIdVisible('expense-edit').click();
 
-      cy.get('input[formcontrolname="name"]').clear();
-      cy.get('input[formcontrolname="cost"]').clear();
-      cy.get('select[formcontrolname="formCategory"]').select('add new');
+      cy.dataTestId('form-name').clear();
+      cy.dataTestId('form-cost').clear();
+      cy.dataTestId('form-formCategory').select('add new');
 
-      cy.get('button[type="submit"]').click();
+      cy.dataTestId('submit').click();
 
-      cy.get('app-expense-form').children().contains('Name is required.');
-      cy.get('app-expense-form').children().contains('Cost is required.');
-      cy.get('app-expense-form').children().contains('Category is required.');
+      cy.dataTestId('name-validator').should('be.visible');
+      cy.dataTestId('cost-validator').should('be.visible');
+      cy.dataTestId('category-validator').should('be.visible');
     });
   });
 
   describe('delete expense', () => {
     it('should successfully delete expense', () => {
-      cy.get('app-expense-details:visible').children().contains('a', 'remove').click();
-      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[0].name).should('not.exist');
+      cy.dataTestIdVisible('expense-remove').click();
+      cy.dataTestId('expense-item').contains(mockdata.initialData.expenses[0].name)
+        .should('not.exist');
     });
   });
 
   describe('add comment', () => {
     it('comment form should be visible', () => {
-      cy.get('input:visible[formcontrolname="comment"]').should('be.visible');
-      cy.get('button:visible[type="submit"]').should('be.visible');
+      cy.dataTestIdVisible('form-comment').should('be.visible');
+      cy.dataTestIdVisible('submit-comment').should('be.visible');
     });
 
     it('should successfully add a comment to an expense', () => {
       const newComment = 'New Comment';
-      cy.get('input:visible[formcontrolname="comment"]').type(newComment);
-      cy.get('button:visible[type="submit"]').click();
-      cy.get('app-expense-details:visible').children().contains(newComment);
+      cy.dataTestIdVisible('form-comment').type(newComment);
+      cy.dataTestIdVisible('submit-comment').click();
+      cy.dataTestIdVisible('expense-comment').contains(newComment);
     });
 
     it('should not add an empty comment', () => {
-      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[0].name).parents('app-expense-item')
-        .contains('expand_circle_up').click();
-      cy.get('app-expense-item').children().contains(mockdata.initialData.expenses[1].name).parents('app-expense-item')
-        .contains('expand_circle_down').click();
-      cy.get('button:visible[type="submit"]').click();
-      cy.get('app-expense-details:visible').children().contains(`This expense doesn't have any comments yet.`);
+      cy.dataTestId('expense-name').contains(mockdata.initialData.expenses[0].name)
+        .parents('[data-testid="expense-item"]').find('[data-testid="hide-details"]').click();
+      cy.dataTestId('expense-name').contains(mockdata.initialData.expenses[1].name)
+        .parents('[data-testid="expense-item"]').find('[data-testid="show-details"]').click();
+      cy.dataTestIdVisible('submit-comment').click();
+      cy.dataTestId('no-comments').should('be.visible');
     });
   });
 
   describe('delete comment', () => {
     it('should successfully delete comment', () => {
-      cy.get('app-expense-details:visible').children().contains('Comments:')
-        .parents('app-expense-details').children().contains('remove').click();
-      cy.get('app-expense-details:visible').children().contains(`This expense doesn't have any comments yet.`);
+      cy.dataTestId('comment-remove').click();
+      cy.dataTestId('no-comments').should('be.visible');
     });
   });
 

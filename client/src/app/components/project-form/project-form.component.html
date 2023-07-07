@@ -1,4 +1,4 @@
-<div class="form-card-container">
+<div class="form-card-container" data-testid="project-form">
   <div class="card form-card">
     <div class="form-card-inner">
       <div class="form-row grid-single">
@@ -14,21 +14,23 @@
       <div class="form-container">
 
         <form [formGroup]="projectForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-          <div *ngIf="this.submitted && projectForm.get('name')?.errors" class="invalid-feedback">
+          <div *ngIf="this.submitted && projectForm.get('name')?.errors" class="invalid-feedback"
+            data-testid="name-validator">
             Name is required.
           </div>
           <div class="form-row grid-single">
             <label>NAME*</label>
-            <input type="text" maxlength="255" formControlName="name" class="form-control"
+            <input type="text" maxlength="255" formControlName="name" class="form-control" data-testid="form-name"
               [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['name'].errors }" />
           </div>
 
-          <div *ngIf="this.submitted && projectForm.get('budget')?.errors" class="invalid-feedback">
+          <div *ngIf="this.submitted && projectForm.get('budget')?.errors" class="invalid-feedback"
+            data-testid="budget-validator">
             Budget is required.
           </div>
           <div class="form-row grid-double">
             <label>BUDGET*</label>
-            <input type="number" formControlName="budget" class="form-control"
+            <input type="number" formControlName="budget" class="form-control" data-testid="form-budget"
               [ngClass]="{ 'is-invalid': submitted && this.projectForm.controls['budget'].errors }" />
 
             <label>CURRENCY</label>
@@ -46,12 +48,13 @@
             </select>
           </div>
 
-          <div *ngIf="this.submitted && projectForm.get('type')?.errors" class="invalid-feedback">
+          <div *ngIf="this.submitted && projectForm.get('type')?.errors" class="invalid-feedback"
+            data-testid="type-validator">
             Type is required.
           </div>
           <div *ngIf="isAddMode" class="form-row grid-double">
             <label>TYPE*</label>
-            <select formControlName="type" class="form-control">
+            <select formControlName="type" class="form-control" data-testid="form-type">
               <option value="" disabled="[true]"></option>
               <option value="trip">trip</option>
               <option value="event">event</option>
@@ -134,7 +137,7 @@
 
           <div class="form-row grid-double">
             <div></div>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn" data-testid="submit">
               Save
             </button>
           </div>

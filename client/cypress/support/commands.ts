@@ -37,20 +37,13 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 });
 
 
-Cypress.Commands.add('visitLoggedIn', (endpoint, token) => {
-  Cypress.log({
-    name: 'visitLoggedIn',
-  });
+Cypress.Commands.add('dataTestId', (value) => {
+  return cy.get(`[data-testid=${value}]`);
+})
 
-  const options = {
-    method: 'GET',
-    url: `http://localhost:4200${endpoint}`,
-    auth: {
-      'bearer': token
-    }
-  };
-  return cy.request(options);
-});
+Cypress.Commands.add('dataTestIdVisible', (value) => {
+  return cy.get(`[data-testid=${value}]:visible`);
+})
 
 //
 // -- This is a child command --

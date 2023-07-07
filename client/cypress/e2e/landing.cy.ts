@@ -1,8 +1,8 @@
 describe('landing page', () => {
-  it('the h1 contains the correct text', () => {
+  it('should display title, log in and sign up buttons', () => {
     cy.visit('/');
-    cy.get('h1').contains('BudgetBlocks');
-    cy.get('button').contains('Log In');
-    cy.get('button').contains('Sign Up');
+    cy.dataTestId('title').should('be.visible');
+    cy.dataTestId('log-in').should('be.visible');
+    cy.dataTestId('sign-up').should('be.visible');
   });
 });

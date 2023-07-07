@@ -1,4 +1,4 @@
-<div class="form-card-container">
+<div class="form-card-container" data-testid="add-users-form">
   <div class="card form-card">
     <div class="form-card-inner">
       <div class="form-row grid-single title-row">
@@ -14,7 +14,7 @@
         </p>
       </div>
 
-      <span class="material-symbols-outlined close pointer" (click)="close()">
+      <span class="material-symbols-outlined close pointer" (click)="close()" data-testid="close">
         close
       </span>
 
@@ -59,7 +59,7 @@
 
           <div class="form-row grid-single ">
             <label>INVITE USERS (EMAIL)</label>
-            <input type="text" formControlName="invite" class="form-control" />
+            <input type="text" formControlName="invite" class="form-control" data-testid="form-invite" />
           </div>
 
           <div *ngIf="this.submitted && addUserForm.get('invite')?.errors" class="invalid-feedback">
@@ -74,13 +74,9 @@
             User is already in the project.
           </div>
 
-          <div *ngIf="this.submitted && this.isOwner" class="invalid-feedback">
-            User is already in the project.
-          </div>
-
           <div class="form-row grid-single">
             <div></div>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn" data-testid="submit">
               Save
             </button>
           </div>

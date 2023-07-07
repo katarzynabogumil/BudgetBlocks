@@ -1,14 +1,14 @@
 <div class="background"></div>
 
-<div id="project-dashboard">
+<div id="project-dashboard" data-testid="project-dashboard">
   <div class="card main-card">
     <div class="main-card-inner">
       <div>
-        <h1 class="pointer" [routerLink]="['/projects/']">
+        <h1 class="pointer" [routerLink]="['/projects/']" data-testid="title">
           <span class="avoidwrap">Budget</span>
           <span class="avoidwrap">Blocks</span>
         </h1>
-        <h2>{{ project.name }}</h2>
+        <h2 data-testid="project-name">{{ project.name }}</h2>
 
         <div id="main-budget">
           <div>
@@ -115,13 +115,13 @@
 
       <div>
         <div class="edit-remove-links">
-          <a class="pointer" [routerLink]="['/projects/edit/' + id]">
+          <a class="pointer" [routerLink]="['/projects/edit/' + id]" data-testid="project-edit">
             edit
           </a> /
-          <a class="pointer" (click)="removeProject()">
+          <a class="pointer" (click)="removeProject()" data-testid="project-remove">
             remove
           </a> /
-          <a class="pointer" [routerLink]="['/projects/addusers/' + id]">
+          <a class="pointer" [routerLink]="['/projects/addusers/' + id]" data-testid="project-add-users">
             add users
           </a>
         </div>

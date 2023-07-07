@@ -1,4 +1,4 @@
-<div class="form-card-container">
+<div class="form-card-container" data-testid="expense-form">
   <div class="card form-card">
     <div class="form-card-inner">
       <div class="form-row grid-single">
@@ -14,21 +14,23 @@
       <div class="form-container">
 
         <form [formGroup]="expenseForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-          <div *ngIf="this.submitted && expenseForm.get('name')?.errors" class="invalid-feedback">
+          <div *ngIf="this.submitted && expenseForm.get('name')?.errors" class="invalid-feedback"
+            data-testid="name-validator">
             Name is required.
           </div>
           <div class="form-row grid-single">
             <label>NAME*</label>
-            <input type="text" maxlength="30" formControlName="name" class="form-control"
+            <input type="text" maxlength="30" formControlName="name" class="form-control" data-testid="form-name"
               [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['name'].errors }" />
           </div>
 
-          <div *ngIf="this.submitted && expenseForm.get('cost')?.errors" class="invalid-feedback">
+          <div *ngIf="this.submitted && expenseForm.get('cost')?.errors" class="invalid-feedback"
+            data-testid="cost-validator">
             Cost is required.
           </div>
           <div class="form-row grid-double">
             <label>COST*</label>
-            <input type="number" formControlName="cost" class="form-control"
+            <input type="number" formControlName="cost" class="form-control" data-testid="form-cost"
               [ngClass]="{ 'is-invalid': submitted && this.expenseForm.controls['cost'].errors }" />
 
             <label>CURRENCY</label>
@@ -47,7 +49,7 @@
             ((expenseForm.value['formCategory'] === 'add' && 
             !expenseForm.value['newCategory']) || 
             !expenseForm.value['formCategory'])
-          " class="invalid-feedback">
+          " class="invalid-feedback" data-testid="category-validator">
             Category is required.
           </div>
           <div *ngIf="
@@ -58,7 +60,7 @@
           </div>
           <div class="form-row grid-double">
             <label>CATEGORY*</label>
-            <select formControlName="formCategory" class="form-control">
+            <select formControlName="formCategory" class="form-control" data-testid="form-formCategory">
               <option value="" disabled="[true]"></option>
               <option *ngFor="let category of categories" value="{{category.category}}">{{category.category}}</option>
               <option value="add">add new</option>
@@ -68,7 +70,8 @@
               <label>CATEGORY NAME*</label>
             </span>
             <span *ngIf="expenseForm.value['formCategory'] === 'add'">
-              <input type="text" formControlName="newCategory" class="form-control" style="width: 100%" />
+              <input type="text" formControlName="newCategory" class="form-control" style="width: 100%"
+                data-testid="form-newCategory" />
             </span>
           </div>
 
@@ -101,7 +104,7 @@
 
           <div class="form-row grid-double">
             <div></div>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn" data-testid="submit">
               Save
             </button>
           </div>

@@ -1,5 +1,5 @@
 <div [hidden]="isHidden" class="card detail-card smaller">
-  <p>
+  <p data-testid="expense-notes">
     <b>Notes:</b><br>
     {{ expense.notes }}
   </p>
@@ -9,7 +9,7 @@
     <div *ngIf="(comments && comments.length) > 0 else noComments">
       <div *ngFor="let comment of comments" class="comment">
         <p>
-          <span class="smaller">
+          <span class="smaller" data-testid="expense-comment">
             <b *ngIf="comment.user">{{ comment.user.nickname }}: </b>
             {{ comment.text }}<br>
           </span>
@@ -18,7 +18,8 @@
             <i>
               {{ comment.createdAt | date }}
             </i>
-            <span *ngIf="comment.isUser" class="pointer" (click)="removeComment(comment.id || -1)">
+            <span *ngIf="comment.isUser" class="pointer" (click)="removeComment(comment.id || -1)"
+              data-testid="comment-remove">
               / remove
             </span>
           </span>
@@ -27,20 +28,20 @@
     </div>
 
     <ng-template #noComments>
-      <p>This expense doesn't have any comments yet.</p>
+      <p data-testid="no-comments">This expense doesn't have any comments yet.</p>
     </ng-template>
   </div>
 
   <app-comment-form [expense]="expense"></app-comment-form>
-  <div class=" edit-remove-links smaller">
+  <div class="edit-remove-links smaller">
     <b>
       <span *ngIf="expense.link">
         <a class="pointer smaller" href="{{expense.link}}">more information </a>/
       </span>
-      <a class="pointer" [routerLink]="['./edit/' + expense.id]">
+      <a class="pointer" [routerLink]="['./edit/' + expense.id]" data-testid="expense-edit">
         edit
       </a> /
-      <a class="pointer" (click)="removeExpense()">
+      <a class="pointer" (click)="removeExpense()" data-testid="expense-remove">
         remove
       </a>
     </b>

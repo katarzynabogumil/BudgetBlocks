@@ -1,16 +1,16 @@
 <div class="background"></div>
 
-<div id="all-projects-dashboard">
+<div id="all-projects-dashboard" data-testid="all-projects-dashboard">
   <div class="card main-card">
     <div class="main-card-inner">
       <div>
-        <h1 id="title" class="pointer" [routerLink]="['/projects/']">
+        <h1 id="title" class="pointer" [routerLink]="['/projects/']" data-testid="title">
           <span class="avoidwrap">Budget</span>
           <span class="avoidwrap">Blocks</span>
         </h1>
         <span *ngIf="id === -1">
           <ng-container *ngIf="username$ | async as username">
-            <h2>Hi, {{ username }}! Here are your projects.</h2>
+            <h2 data-testid="greeting">Hi, {{ username }}! Here are your projects.</h2>
           </ng-container>
         </span>
       </div>

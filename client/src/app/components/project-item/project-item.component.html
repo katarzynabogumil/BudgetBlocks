@@ -1,15 +1,15 @@
 <div class="card project-item" [routerLink]="linkDisabled ? null : ['/project/' + project.id]">
 
   <div>
-    <h2>{{project.name}}</h2>
+    <h2 data-testid="project-name">{{project.name}}</h2>
     <b>Budget:</b> {{project.budget | currency: project.currency : 'symbol' : '1.0-0' }}
   </div>
   <br>
   <div class="edit-remove-links">
-    <a class="pointer" [routerLink]="['/projects/edit/' + project.id]">
+    <a class="pointer" [routerLink]="['/projects/edit/' + project.id]" data-testid="project-edit">
       edit
     </a> /
-    <a class="pointer" (click)="removeProject()">
+    <a class="pointer" (click)="removeProject()" data-testid="project-remove">
       remove
     </a>
   </div>

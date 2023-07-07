@@ -4,8 +4,8 @@
 
 <div class="expense-text">
   <div>
-    <h2>{{expense.name}}</h2>
-    <div class="smaller">
+    <h2 data-testid="expense-name">{{expense.name}}</h2>
+    <div class="smaller" data-testid="expense-data">
       <b>Category: </b> <span class="avoidwrap"> {{expense.category.category }}</span>
       <span *ngIf="expense.category.optional"> (opt.)</span>
       <br>
@@ -29,12 +29,12 @@
     </span>
 
     <span *ngIf="showDetails else hide">
-      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()">
+      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()" data-testid="hide-details">
         expand_circle_up
       </span>
     </span>
     <ng-template #hide>
-      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()">
+      <span class="material-symbols-outlined expand-icon" (click)="toggleDetails()" data-testid="show-details">
         expand_circle_down
       </span>
     </ng-template>

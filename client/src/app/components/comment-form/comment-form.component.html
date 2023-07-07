@@ -1,6 +1,6 @@
 <form [formGroup]="commentForm" (ngSubmit)="handleSubmit()" novalidate #thisForm="ngForm">
-  <input type="text" formControlName="comment" class="form-control smaller" />
-  <button type="submit" class="btn" id="btn-add">
+  <input type="text" formControlName="comment" class="form-control smaller" data-testid="form-comment" />
+  <button type="submit" class="btn" id="btn-add" data-testid="submit-comment">
     Add
   </button>
 </form>
