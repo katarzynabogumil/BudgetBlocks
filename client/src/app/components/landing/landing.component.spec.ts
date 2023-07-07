@@ -28,10 +28,13 @@ describe('LandingComponent', () => {
         LottieModule.forRoot({ player: playerFactory }),
       ],
       declarations: [LandingComponent]
-    });
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LandingComponent);
     component = fixture.componentInstance;
+
+    fixture.detectChanges();
+
   });
 
   it('should be created', () => {

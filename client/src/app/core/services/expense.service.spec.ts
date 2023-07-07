@@ -27,11 +27,13 @@ describe('ExpenseService', () => {
       of({ data: null, error: error })
     );
 
+    // mock getter & setter
     mockProjectService = jasmine.createSpyObj<ProjectService>(
       'ProjectService',
       ['project$']
     );
     ProjectMock.expenses = [];
+    // set value
     mockProjectService.project$ = of(ProjectMock);
 
     TestBed.configureTestingModule({

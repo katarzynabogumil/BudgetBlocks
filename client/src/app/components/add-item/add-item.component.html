@@ -6,7 +6,9 @@
       </span>
       Add {{item}}
     </h2>
-    <div *ngIf="categories" class="smaller missing-categories">You might be still missing some categories:
-      {{categories}}</div>
+    <div *ngIf="categories" class="smaller missing-categories" data-testid="missing_categories">
+      You might be still missing some categories:
+      {{categories}}
+    </div>
   </a>
 </div>

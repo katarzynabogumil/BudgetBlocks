@@ -64,8 +64,8 @@ export class ExpenseService {
     return this._compareMode$.asObservable();
   }
 
-  public set compareMode$(sum: Observable<boolean>) {
-    sum.pipe(first()).subscribe(c => {
+  public set compareMode$(mode: Observable<boolean>) {
+    mode.pipe(first()).subscribe(c => {
       this._compareMode$.next(c);
     })
   }
