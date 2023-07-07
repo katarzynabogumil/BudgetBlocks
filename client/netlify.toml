@@ -1,0 +1,10 @@
+[[redirects]]
+  from = "/callback"
+  to = "/projects"
+  status = 200
+  force = false
+
+[[redirects]]
+from = "/*"
+to = "/"
+status = 200
