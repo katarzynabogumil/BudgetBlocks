@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import { seed, teardown, seedData } from '../server/models/prisma/e2eSeed';
+import { seed, teardown, seedData } from '../server/prisma/e2eSeed';
 import * as dotenv from "dotenv";
 dotenv.config();
 

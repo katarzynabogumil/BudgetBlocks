@@ -60,10 +60,9 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
 
    ```bash
    cd ..
-   cd server/models
+   cd server
    npx prisma migrate dev --name init 
    npx prisma migrate reset
-   cd ..
    npm start
    ```
 
@@ -72,10 +71,15 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
 
 * [Angular](https://github.com/angular)
 * [Express](https://github.com/expressjs)
+* [Prisma](https://github.com/prisma)
+* [PostgreSQL](https://www.postgresql.org/)
+* Testing
+  * [Jest](https://jestjs.io/)
+  * [Cypress](https://www.cypress.io/)
+  * [Jasmine](https://jasmine.github.io/)
 * Other dependencies:
   * [Typescript](https://www.typescriptlang.org/)
   * [Auth0](https://github.com/auth01)
-  * [Prisma](https://github.com/prisma)
   * [Dotenv](https://github.com/dotenv-org)
   * [Lottie Web](https://github.com/airbnb/lottie-web)
 
@@ -94,5 +98,6 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
   * Edit/ remove the expense. When the currency of the exchange is changed and does not match the project's currency, it will be recalculated using fresh Exchange Rates API data.
   * Add/ remove up-votes, down-votes, and comments to the expenses. 
   * After adding or editing expenses, you will receive information from OpenAI about which expense categories might still be missing.
+  * Change order of expense categories.
 * Compare data: switch to the compare mode to analyze the effect that different expense combinations have on the overall budget.
 * You can also enjoy the app on your mobile phone.
