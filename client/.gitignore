@@ -44,7 +44,6 @@ Thumbs.db
 
 .env
 .gitignore
-src/environments/environment.ts
 proxy.config.json
 proxy.config.ts
 cypress.env.json
