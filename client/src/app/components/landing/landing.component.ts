@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-landing',
@@ -13,7 +14,10 @@ export class LandingComponent {
     path: '/assets/animation.json',
   };
 
-  constructor(private auth: AuthService) { }
+  constructor(
+    private logger: NGXLogger,
+    private auth: AuthService
+  ) { }
 
   handleLogin(): void {
     this.auth.loginWithRedirect({
@@ -39,6 +43,6 @@ export class LandingComponent {
   }
 
   animationCreated(animationItem: AnimationItem): void {
-    console.log(animationItem);
+    this.logger.log(animationItem);
   }
 }

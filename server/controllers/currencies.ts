@@ -2,6 +2,9 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import debug from 'debug';
+const error = debug('app:error');
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env === 'development';
 
@@ -34,7 +37,7 @@ async function getCurrencyRates(req: express.Request, res: express.Response): Pr
     res.status(200);
     res.send(currencies);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }

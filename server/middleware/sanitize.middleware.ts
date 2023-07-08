@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, param, check, validationResult, ValidationError } from 'express-validator';
 
+import debug from 'debug';
+const error = debug('app:error');
+
 const paramsValidationRules = () => {
   return [
     check('id').optional({ nullable: true }).toInt(),
@@ -118,7 +121,7 @@ function validate(
   }
   const extractedErrors: ValidationError[] = []
   errors.array().map(err => extractedErrors.push(err))
-  console.log(extractedErrors);
+  error(extractedErrors);
 
   return response.status(422).json({
     errors: extractedErrors,

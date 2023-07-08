@@ -35,12 +35,16 @@
 
             <label>CURRENCY</label>
             <select formControlName="currency" class="form-control">
-              <option value="EUR">EUR</option>
-              <option value="USD">USD</option>
-              <option value="GBP">GBP</option>
-              <option value="GBP">GBP</option>
-              <option value="--" disabled="[true]">--</option>
-              <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
+              <optgroup *ngIf="isProduction else notProduction">
+                <option value="EUR" selected>EUR</option>
+              </optgroup>
+              <ng-template #notProduction>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="--" disabled="[true]">--</option>
+                <option *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
+              </ng-template>
             </select>
           </div>
 

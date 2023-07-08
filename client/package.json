@@ -5,6 +5,7 @@
     "ng": "ng",
     "env": "ts-node set-env.ts",
     "start": "npm run env && ng serve",
+    "start-dev": "NODE_ENV=development npm run env && ng serve",
     "build": "npm run env && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage=true",
@@ -23,6 +24,7 @@
     "@angular/router": "^16.0.0",
     "@auth0/auth0-angular": "^2.1.0",
     "lottie-web": "^5.12.0",
+    "ngx-logger": "^5.0.12",
     "ngx-lottie": "^10.0.0",
     "path": "^0.12.7",
     "rxjs": "~7.8.0",
@@ -51,5 +53,5 @@
   },
   "browser": {
     "crypto": false
-}
+  }
 }

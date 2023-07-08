@@ -12,6 +12,9 @@ import {
   acceptInvitationDb
 } from '../models/projects';
 
+import debug from 'debug';
+const error = debug('app:error');
+
 async function saveProject
   (
     req: express.Request<object, object, Prisma.ProjectCreateInput>,
@@ -26,7 +29,7 @@ async function saveProject
     res.status(201);
     res.send(newProject);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -39,11 +42,11 @@ async function getAllProjects(req: express.Request, res: express.Response): Prom
       res.status(200);
       res.send(projects);
     } else {
-      console.log('Error: Failed authentication.');
+      error('Error: Failed authentication.');
       res.sendStatus(401);
     }
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -56,11 +59,11 @@ async function getProjectInvitations(req: express.Request, res: express.Response
       res.status(200);
       res.send(projects);
     } else {
-      console.log('Error: Failed authentication.');
+      error('Error: Failed authentication.');
       res.sendStatus(401);
     }
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -72,7 +75,7 @@ async function getProject(req: express.Request, res: express.Response): Promise<
     res.status(200);
     res.send(project);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -89,7 +92,7 @@ async function editProject
     res.status(200);
     res.send(project);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -101,7 +104,7 @@ async function deleteProject(req: express.Request, res: express.Response): Promi
     res.status(204);
     res.send(project);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -120,7 +123,7 @@ async function addUser
     res.status(201);
     res.send(updatedProject);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(404);
   }
 }
@@ -139,7 +142,7 @@ async function acceptInvitation
     res.status(201);
     res.send(updatedProject);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(404);
   }
 }

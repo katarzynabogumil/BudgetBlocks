@@ -35,16 +35,14 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
 
     * Get an [exchange rates api key](https://exchangeratesapi.io/) and fill out the necessary flied in the serverside `.env` file.
 
-    * Make new `environment.ts` file in `/client/src/environments` folder. You can copy the `environment-example.ts` file for that and leave the values empty. They can be filled by a script at `npm start`.
-
-    * *Optional* Get an [openAI api key](https://platform.openai.com/account/api-keys) and fill out the necessary field in the serverside `.env` file. Please note, for API to be called, the `NODE_ENV` in the `.env` file on the server-side has to be set to `development`.
+    * Get an [openAI api key](https://platform.openai.com/account/api-keys) and fill out the necessary field in the serverside `.env` file.
 
 3. Change to `server` folder, install dependencies and run server.
 
    ```bash
    cd server
    npm install
-   npm start
+   npm run start-dev
    ```
 
 4. Duplicate the terminal window, change to the `client` folder, install dependencies and run server.
@@ -53,7 +51,7 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
    cd ..
    cd client
    npm install
-   npm start
+   npm run start-dev
    ```
 
 5. If you want to seed the database with the provided mockdata, sign up a user to the app and fill out their data in the serverside `.env` file. Then migrate database from `server/models` folder and start the server again.
@@ -63,21 +61,18 @@ Make sure you have `git`, `node`, `npm` and `postgresql` installed. Then follow 
    cd server
    npx prisma migrate dev --name init 
    npx prisma migrate reset
-   npm start
+   npm run start-dev
    ```
-
-
-## Tech Stack
 
 * [Angular](https://github.com/angular)
 * [Express](https://github.com/expressjs)
 * [Prisma](https://github.com/prisma)
 * [PostgreSQL](https://www.postgresql.org/)
-* Testing
+* Testing:
   * [Jest](https://jestjs.io/)
   * [Cypress](https://www.cypress.io/)
   * [Jasmine](https://jasmine.github.io/)
-* Other dependencies:
+* Other dependencies
   * [Typescript](https://www.typescriptlang.org/)
   * [Auth0](https://github.com/auth01)
   * [Dotenv](https://github.com/dotenv-org)

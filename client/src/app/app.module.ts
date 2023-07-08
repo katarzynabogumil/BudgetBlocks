@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
@@ -68,6 +69,10 @@ export function playerFactory() {
       },
     }),
     LottieModule.forRoot({ player: playerFactory }),
+    LoggerModule.forRoot({
+      level: env.production ? NgxLoggerLevel.OFF : NgxLoggerLevel.LOG,
+      serverLogLevel: NgxLoggerLevel.OFF
+    })
   ],
   providers: [
     {

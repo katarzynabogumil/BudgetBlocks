@@ -1,7 +1,9 @@
 import express from 'express';
 import { Prisma } from '@prisma/client'
-
 import { saveUserToDb, getUserFromDB } from '../models/users';
+
+import debug from 'debug';
+const error = debug('app:error');
 
 async function saveUser
   (
@@ -14,7 +16,7 @@ async function saveUser
     res.status(201);
     res.send(newUser);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -27,11 +29,11 @@ async function getUser(req: express.Request, res: express.Response): Promise<voi
       res.status(200);
       res.send(user);
     } else {
-      console.log('Error: Failed authentication.');
+      error('Error: Failed authentication.');
       res.sendStatus(401);
     }
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }

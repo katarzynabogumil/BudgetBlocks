@@ -8,6 +8,9 @@ import {
 } from '../models/comments';
 import { getUserFromDB } from '../models/users';
 
+import debug from 'debug';
+const error = debug('app:error');
+
 async function getAllComments(req: express.Request, res: express.Response): Promise<void> {
   try {
     const projectId = Number(req.params.projectId);
@@ -15,7 +18,7 @@ async function getAllComments(req: express.Request, res: express.Response): Prom
     res.status(200);
     res.send(comments);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -34,7 +37,7 @@ async function saveComment(req: express.Request<{ expenseId: string }, object, P
     res.status(201);
     res.send(newComment);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -46,7 +49,7 @@ async function deleteComment(req: express.Request, res: express.Response): Promi
     res.status(200);
     res.send(comment);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }

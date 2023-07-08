@@ -5,6 +5,7 @@ import { environment as env } from '../../../environments/environment';
 import { ProjectService, CurrenciesService, ApiResponseProjectModel, RatingModel, CurrencyRatesModel, CreateProjectModel, ApiResponseCurrenciesModel, AppErrorModel } from '@app/core';
 import { OpenAiService } from 'src/app/core/services/openai.service';
 import { first, Observable, of, switchMap } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-project-form',
@@ -42,7 +43,8 @@ export class ProjectFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private currenciesApi: CurrenciesService,
-    private aiApi: OpenAiService
+    private aiApi: OpenAiService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit(): void {
@@ -114,11 +116,11 @@ export class ProjectFormComponent implements OnInit {
       .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
         if (res.data) {
-          console.log('Project added.');
+          this.logger.log('Project added.');
           this.id = res.data.id || this.id;
           this.getRating(this.id);
         }
-        else console.log(res.error);
+        else this.logger.log(res.error);
         const route = res.data ? `/project/${res.data.id}` : '/projects';
         this.router.navigate([route]);
       });
@@ -129,10 +131,10 @@ export class ProjectFormComponent implements OnInit {
       .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
         if (res.data) {
-          console.log('Project edited.');
+          this.logger.log('Project edited.');
           this.rating = res.data.budgetRating || this.rating;
           this.getRating(this.id);
-        } else console.log(res.error);
+        } else this.logger.log(res.error);
         this.router.navigate([`/project/${id}`]);
       });
   }

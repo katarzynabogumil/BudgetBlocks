@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { environment as env } from '../../../environments/environment';
 import { ExpenseService, ProjectService, CurrenciesService, CurrencyRatesModel, EmptyCurrencyRates, ApiResponseExpenseModel, CreateExpenseModel, ProjectModel, ExpCategoryModel, EmptyExpCategory, EmptyCreateExpCategory } from '@app/core';
 import { first } from 'rxjs';
 import { OpenAiService } from 'src/app/core/services/openai.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-expense-form',
@@ -33,6 +34,7 @@ export class ExpenseFormComponent implements OnInit {
   isAddMode = false;
   isDuplicate = false;
   submitted = false;
+  isProduction: boolean = env.production;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +43,8 @@ export class ExpenseFormComponent implements OnInit {
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private aiApi: OpenAiService
+    private aiApi: OpenAiService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit(): void {
@@ -115,9 +118,9 @@ export class ExpenseFormComponent implements OnInit {
       .pipe(first())
       .subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
-          console.log('Expense added.');
+          this.logger.log('Expense added.');
           this.getMissingCategories(projectId);
-        } else console.log(res.error);
+        } else this.logger.log(res.error);
         this.router.navigate([`/project/${projectId}`]);
       });
   }
@@ -127,9 +130,9 @@ export class ExpenseFormComponent implements OnInit {
       .pipe(first())
       .subscribe((res: ApiResponseExpenseModel) => {
         if (!res.error) {
-          console.log('Expense edited.');
+          this.logger.log('Expense edited.');
           this.getMissingCategories(projectId);
-        } else console.log(res.error);
+        } else this.logger.log(res.error);
         this.router.navigate([`/project/${this.projectId}`]);
       });
   }

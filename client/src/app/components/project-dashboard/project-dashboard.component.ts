@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmptyProject, ProjectModel, ProjectService, ExpenseService, ExpCategoryModel } from '@app/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -28,6 +29,7 @@ export class ProjectDashboardComponent implements OnInit {
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
+    private logger: NGXLogger,
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.editProject(id, data)
       .pipe(first())
       .subscribe(() => {
-        console.log('Project edited.');
+        this.logger.log('Project edited.');
         this.router.navigate([`/project/${id}`]);
       });
   }
@@ -50,7 +52,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.projectApi.deleteProject(this.id)
       .pipe(first())
       .subscribe(() => {
-        console.log('Project removed.');
+        this.logger.log('Project removed.');
         this.router.navigate([`/projects/`]);
       });
   }

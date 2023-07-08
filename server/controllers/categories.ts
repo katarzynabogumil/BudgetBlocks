@@ -5,6 +5,9 @@ import {
   updateCatOrderIdinDb
 } from '../models/categories';
 
+import debug from 'debug';
+const error = debug('app:error');
+
 async function changeOrderId
   (
     req: express.Request<{ categoryId: string, orderId: string }, object, Prisma.ExpenseUpdateInput>,
@@ -17,7 +20,7 @@ async function changeOrderId
     res.status(200);
     res.send(category);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }

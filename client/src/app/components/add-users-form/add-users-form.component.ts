@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ProjectModel, ProjectService, ApiResponseProjectModel, UserModel, EmptyProject } from '@app/core';
+import { NGXLogger } from 'ngx-logger';
 import { first } from 'rxjs';
 
 @Component({
@@ -29,6 +30,7 @@ export class AddUsersFormComponent implements OnInit {
     private projectApi: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit(): void {
@@ -81,8 +83,8 @@ export class AddUsersFormComponent implements OnInit {
     this.projectApi.addUser(email, this.id)
       .pipe(first())
       .subscribe((res: ApiResponseProjectModel) => {
-        if (!res.error) console.log('Project edited.');
-        else console.log(res.error);
+        if (!res.error) this.logger.log('Project edited.');
+        else this.logger.log(res.error);
       });
   }
 }

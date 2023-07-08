@@ -4,6 +4,9 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+import debug from 'debug';
+const error = debug('app:error');
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env === 'development';
 
@@ -70,7 +73,6 @@ async function getProjectRating
         res.status(200);
         res.send({ rating });
       } else {
-        console.log(responseData);
         res.sendStatus(400);
         return;
       }
@@ -80,7 +82,7 @@ async function getProjectRating
     }
 
   } catch (e) {
-    console.log('Error: ', e)
+    error('Error: ', e)
     res.sendStatus(500);
   }
 }
@@ -117,7 +119,6 @@ async function getMissingCategories
       if (!responseData.error) {
         categories = responseData.choices[0].message.content;
       } else {
-        console.log(responseData);
         res.sendStatus(400);
         return;
       }
@@ -126,7 +127,7 @@ async function getMissingCategories
     res.send({ categories });
 
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }

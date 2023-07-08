@@ -30,7 +30,6 @@ describe('Server tests - currencies endpoints:', () => {
       const res = await request(server)
         .get(`/currencies/EEE`)
         .set('Authorization', `Bearer ${mockdata.token}`);
-      console.log(res)
       expect(res.statusCode).toEqual(500);
     });
   });

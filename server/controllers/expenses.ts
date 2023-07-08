@@ -9,6 +9,9 @@ import {
   addUserVoteToDb,
 } from '../models/expenses';
 
+import debug from 'debug';
+const error = debug('app:error');
+
 async function saveExpense
   (
     req: express.Request<{ id: string, projectId: string }, object, Prisma.ExpenseCreateInput>,
@@ -23,7 +26,7 @@ async function saveExpense
     res.status(201);
     res.send(newExpense);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -35,7 +38,7 @@ async function getExpense(req: express.Request, res: express.Response): Promise<
     res.status(200);
     res.send(expense);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -53,7 +56,7 @@ async function editExpense
     res.status(200);
     res.send(expense);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -66,7 +69,7 @@ async function deleteExpense(req: express.Request, res: express.Response): Promi
     res.status(200);
     res.send(expense);
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
@@ -82,11 +85,11 @@ async function vote(req: express.Request, res: express.Response): Promise<void> 
       res.status(200);
       res.send(expense);
     } else {
-      console.log('Error: Failed authentication.');
+      error('Error: Failed authentication.');
       res.sendStatus(401);
     }
   } catch (e) {
-    console.log('Error: ', e);
+    error('Error: ', e);
     res.sendStatus(500);
   }
 }
