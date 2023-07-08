@@ -1,6 +1,7 @@
 <div class="form-card-container" data-testid="project-form">
   <div class="card form-card">
     <div class="form-card-inner">
+
       <div class="form-row grid-single">
         <div></div>
         <h2 *ngIf="isAddMode">Add Project</h2>
@@ -140,6 +141,10 @@
             <button type="submit" class="btn" data-testid="submit">
               Save
             </button>
+
+            <div *ngIf="loading">
+              <app-page-loader></app-page-loader>
+            </div>
           </div>
         </form>
       </div>

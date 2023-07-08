@@ -1,8 +1,8 @@
 @media screen and (min-width: 800px) {
   #items-container {
     position: absolute;
-    left: 30px;
-    padding: 30px 30px 30px 370px;
+    left: 0px;
+    padding: 30px 30px 30px 400px;
     width: calc(100% - 90px);
     height: calc(100% - 60px);
   }
