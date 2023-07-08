@@ -65,7 +65,7 @@ describe('Server tests - user endpoints:', () => {
     });
 
     test('should not save user without valid email to db', async () => {
-      const user = mockdata.user;
+      const user = { ...mockdata.user };
       user.email = '';
       const res = await request(server)
         .post('/user')
