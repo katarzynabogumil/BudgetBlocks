@@ -119,6 +119,9 @@ export class ExpenseItemsContainerComponent implements OnInit {
 
   private markSelectedInit(flag: boolean): void {
     for (const expArr of Object.values(this.expensesAtCatOrderId)) {
+      expArr.forEach(exp => {
+        exp.selected = false;
+      })
       expArr[0].selected = flag;
     }
   }
@@ -202,15 +205,15 @@ export class ExpenseItemsContainerComponent implements OnInit {
   }
 
   onDragStart(fromId: number): void {
-    this.fromId = fromId;
+    if (!this.compareMode) this.fromId = fromId;
   }
 
   onDragEnter(toId: number): void {
-    this.toId = toId;
+    if (!this.compareMode) this.toId = toId;
   }
 
   onDragEnd(): void {
-    if (this.fromId !== this.toId) {
+    if (!this.compareMode && this.fromId !== this.toId) {
       this.reorderCategory(this.fromId, this.toId);
     }
     this.fromId = -1;

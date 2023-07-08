@@ -21,6 +21,12 @@
   flex-direction: row;
 }
 
+.category-row:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
 .expense-item {
   display: flex;
   flex-direction: row;

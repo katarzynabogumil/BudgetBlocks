@@ -30,12 +30,10 @@ export class ExpenseItemComponent implements OnInit {
     private auth: AuthService,
     private expenseApi: ExpenseService,
     private route: ActivatedRoute,
-    private projectApi: ProjectService,
   ) { }
 
   ngOnInit(): void {
     this.projectId = this.route.parent?.snapshot.params['id'];
-
     this.usersub$.subscribe(sub => {
       this.usersub = sub || '';
       this.checkVotes();
@@ -43,10 +41,8 @@ export class ExpenseItemComponent implements OnInit {
   }
 
   toggleDetails(): void {
-    if (!this.compareMode) {
-      this.showDetails = !this.showDetails;
-      this.toggleDetailsEvent.emit([this.showDetails, this.expense]);
-    }
+    this.showDetails = !this.showDetails;
+    this.toggleDetailsEvent.emit([this.showDetails, this.expense]);
   }
 
   toggleVotes(direction: string): void {

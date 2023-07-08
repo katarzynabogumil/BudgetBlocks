@@ -49,8 +49,7 @@ export class ProjectService {
       mergeMap((response) => {
         const { data, error } = response;
 
-        if (error) this.router.navigate([`/`]);
-        else {
+        if (!error) {
           this.projects = data as ProjectModel[];
           this._projects$.next(this.projects);
         }
