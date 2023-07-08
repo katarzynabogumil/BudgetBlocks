@@ -15,7 +15,7 @@
       </span>
     </div>
   </div>
-  <div class="icons">
+  <div class="icons" *ngIf="!compareMode">
     <span class="votes">{{upvotes}} </span>
     <span class="material-symbols-outlined" [ngClass]="upIsFilled ? 'filled' : 'not-filled'"
       (click)="toggleVotes('up')">

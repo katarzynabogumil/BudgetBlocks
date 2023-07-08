@@ -21,7 +21,7 @@
 <div id="expenses-items-container" *ngIf="!loading">
   <div *ngIf="expenses" id="expenses-items-inner-container">
     <div *ngFor="let category of categories">
-      <div class="category-row" [draggable]="true" (dragstart)="onDragStart(category.orderId)"
+      <div class="category-row" [draggable]="!compareMode" (dragstart)="onDragStart(category.orderId)"
         (dragenter)="onDragEnter(category.orderId)" (dragend)="onDragEnd()">
         <div *ngFor="let expense of expensesAtCatOrderId[category.orderId]" class="category-row-item">
           <div class="card whitespace" [hidden]="!expense.showDetails"></div>
