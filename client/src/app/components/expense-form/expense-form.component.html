@@ -111,6 +111,11 @@
             <button type="submit" class="btn" data-testid="submit">
               Save
             </button>
+
+            <div *ngIf="loading">
+              <app-page-loader></app-page-loader>
+            </div>
+
           </div>
         </form>
       </div>

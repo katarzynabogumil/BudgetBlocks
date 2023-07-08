@@ -1,21 +1,29 @@
 <div id="items-container">
 
-  <div *ngIf="projects.length > 0 else noProjects" id="items-inner-container">
-    <div *ngFor="let project of projects">
-      <app-project-item [project]="project" data-testid="project-item">
-      </app-project-item>
-    </div>
-    <app-add-item [item]="'a project'" [link]="'./add'" data-testid="add-item"></app-add-item>
+  <div *ngIf="loading" class="loader-container">
+    <app-page-loader></app-page-loader>
   </div>
 
-  <div *ngIf="projectInvitations.length > 0" id="items-inner-container">
-    <div *ngFor="let project of projectInvitations">
-      <app-invite-item [project]="project" data-testid="invite-item"></app-invite-item>
-    </div>
-  </div>
+  <div *ngIf="!loading">
 
-  <ng-template #noProjects>
-    <app-add-item [item]="'a project'" [link]="'./add'" data-testid="add-project"></app-add-item>
-  </ng-template>
+    <div *ngIf="projects.length > 0 else noProjects" id="items-inner-container">
+      <div *ngFor="let project of projects">
+        <app-project-item [project]="project" data-testid="project-item">
+        </app-project-item>
+      </div>
+      <app-add-item [item]="'a project'" [link]="'./add'" data-testid="add-item"></app-add-item>
+    </div>
+
+    <div *ngIf="projectInvitations.length > 0" id="items-inner-container">
+      <div *ngFor="let project of projectInvitations">
+        <app-invite-item [project]="project" data-testid="invite-item"></app-invite-item>
+      </div>
+    </div>
+
+    <ng-template #noProjects>
+      <app-add-item [item]="'a project'" [link]="'./add'" data-testid="add-project"></app-add-item>
+    </ng-template>
+
+  </div>
 
 </div>

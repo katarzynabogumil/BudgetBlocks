@@ -10,6 +10,7 @@ import { first } from 'rxjs';
 export class ProjectItemsContainerComponent implements OnInit {
   projects: ProjectModel[] = [];
   projectInvitations: ProjectModel[] = [];
+  loading = true;
 
   constructor(
     private projectApi: ProjectService
@@ -23,6 +24,7 @@ export class ProjectItemsContainerComponent implements OnInit {
     this.projectApi.getAllProjects().pipe(first()).subscribe();
     this.projectApi.projects$.
       subscribe(res => {
+        this.loading = false;
         this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
           if (a.createdAt && b.createdAt
             && b.createdAt > a.createdAt) {

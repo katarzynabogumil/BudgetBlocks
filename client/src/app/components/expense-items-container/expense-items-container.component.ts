@@ -28,6 +28,8 @@ export class ExpenseItemsContainerComponent implements OnInit {
   fromId = -1;
   toId = -1;
 
+  loading = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private expenseApi: ExpenseService,
@@ -48,6 +50,7 @@ export class ExpenseItemsContainerComponent implements OnInit {
     this.projectApi.getProject(this.id).pipe(first()).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
       if (p.id >= 0) {
+        this.loading = false;
         this.project = p;
         this.expenses = p.expenses;
         this.categories = p.categories?.sort((a, b) => {

@@ -36,6 +36,7 @@ export class ProjectFormComponent implements OnInit {
   submitted = false;
   dateIsValid = true;
   isProduction: boolean = env.production;
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,6 +87,7 @@ export class ProjectFormComponent implements OnInit {
       ).subscribe((rates: CurrencyRatesModel | AppErrorModel | null) => {
         if (rates) {
           delete project.refreshRates;
+          this.loading = true;
           if (this.isAddMode) {
             this.addProject(project);
           } else {

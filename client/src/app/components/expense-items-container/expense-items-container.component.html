@@ -14,9 +14,12 @@
   <app-nav-bar></app-nav-bar>
 </div>
 
-<div id="expenses-items-container">
-  <div *ngIf="expenses" id="expenses-items-inner-container">
+<div id="expenses-items-container loader-container" *ngIf="loading">
+  <app-page-loader></app-page-loader>
+</div>
 
+<div id="expenses-items-container" *ngIf="!loading">
+  <div *ngIf="expenses" id="expenses-items-inner-container">
     <div *ngFor="let category of categories">
       <div class="category-row" [draggable]="true" (dragstart)="onDragStart(category.orderId)"
         (dragenter)="onDragEnter(category.orderId)" (dragend)="onDragEnd()">

@@ -35,6 +35,7 @@ export class ExpenseFormComponent implements OnInit {
   isDuplicate = false;
   submitted = false;
   isProduction: boolean = env.production;
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,6 +86,7 @@ export class ExpenseFormComponent implements OnInit {
     if (this.expenseForm.invalid) {
       return;
     } else {
+      this.loading = true;
       if (this.isAddMode) {
         this.addExpense(this.projectId, expense);
       } else {
