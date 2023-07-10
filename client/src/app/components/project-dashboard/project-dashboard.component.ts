@@ -61,10 +61,12 @@ export class ProjectDashboardComponent implements OnInit {
   private getProject(id: number): void {
     this.projectApi.getProject(id).pipe(first()).subscribe();
     this.projectApi.project$.subscribe((p: ProjectModel) => {
-      this.loading = false;
-      this.project = p;
-      this.categories = p.categories;
-      this.backupRates = p.currencyRates?.backup ? true : false;
+      if (p.id) {
+        this.loading = false;
+        this.project = p;
+        this.categories = p.categories;
+        this.backupRates = p.currencyRates?.backup ? true : false;
+      }
     });
   }
 
