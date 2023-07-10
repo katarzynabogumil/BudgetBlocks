@@ -21,16 +21,19 @@ export class ProjectItemsContainerComponent implements OnInit {
   }
 
   private getProjects(): void {
-    this.projectApi.getAllProjects().pipe(first()).subscribe();
+    this.projectApi.getAllProjects().pipe(first()).subscribe(() => {
+      this.loading = false;
+    });
     this.projectApi.projects$.
       subscribe(res => {
-        this.loading = false;
-        this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
-          if (a.createdAt && b.createdAt
-            && b.createdAt > a.createdAt) {
-            return 1;
-          } else return 0;
-        });
+        if (res.length > 0) {
+          this.projects = res.sort((a: ProjectModel, b: ProjectModel) => {
+            if (a.createdAt && b.createdAt
+              && b.createdAt > a.createdAt) {
+              return 1;
+            } else return 0;
+          });
+        }
         this.getProjectInvitations()
       });
   }
