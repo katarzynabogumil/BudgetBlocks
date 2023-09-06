@@ -67,7 +67,7 @@ export class AddUsersFormComponent implements OnInit {
   }
 
   close(): void {
-    this.router.navigate([`/project/` + this.id]);
+    this.router.navigateByUrl(`/project/` + this.id);
   }
 
   private getProject(id: number): void {
