@@ -1,10 +1,16 @@
 <div class="form-card-container" data-testid="add-users-form">
   <div class="card form-card">
     <div class="form-card-inner">
-      <div class="form-row grid-single title-row">
+
+      <div class="form-row grid-single">
         <div></div>
         <h2>Add Users</h2>
       </div>
+
+      <span class="material-symbols-outlined close pointer" (click)="close()">
+        close
+      </span>
+
       <div class="form-row grid-single start">
         <div></div>
         <p id="description">
@@ -13,10 +19,6 @@
           If they don't have an account yet, invite them after they sing up.
         </p>
       </div>
-
-      <span class="material-symbols-outlined close pointer" (click)="close()" data-testid="close">
-        close
-      </span>
 
       <div class="form-container">
 

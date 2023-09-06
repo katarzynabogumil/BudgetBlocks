@@ -251,6 +251,7 @@ h2 {
   }
 
   app-expense-form,
+  app-add-users-form,
   app-project-form {
     position: relative;
   }
