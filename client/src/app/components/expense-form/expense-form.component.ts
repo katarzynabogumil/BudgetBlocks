@@ -144,6 +144,8 @@ export class ExpenseFormComponent implements OnInit {
       this.allCategoryNames.push(cat.category.toLowerCase());
     }
 
+    if (!expense.formCategory) return null;
+
     expense.category = EmptyCreateExpCategory;
     if ((!expense.formCategory && expense.newCategory) ||
       (expense.formCategory === 'add' && expense.newCategory &&
